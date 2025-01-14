@@ -1,6 +1,8 @@
-#+date: [2025-01-14 Tue 17:49]
+#+date: [2025-01-14 Tue 18:11]
 
-* Introduction to dynamical systems
+* Introduction to Dynamical Systems - Lecture Notes
+
+This repository offers lecture notes that present a structured introduction to the fundamental concepts and tools of dynamical systems.
 
 1. [[./lecnotes_matrix_calculus.pdf][Preliminaries]]
 2. [[./lecnotes_eigen.pdf][Eigenvalues and eigenvectors]]
