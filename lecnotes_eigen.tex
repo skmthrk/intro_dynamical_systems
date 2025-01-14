@@ -1,0 +1,1214 @@
+\documentclass[12pt,a4paper]{article} 
+\input{preambles/preamble_lecnotes.tex} 
+
+\title{Eigenvalues and eigenvectors}
+\subtitle{Introduction to dynamical systems~\#2}
+\author{Hiroaki Sakamoto}
+\date{\today}
+
+\DeclareMathOperator{\vect}{vec}
+ 
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Eigenvalues and eigenvectors}
+
+\subsection{Definition}
+
+\begin{itemize}
+
+\item \textbf{Definition of eigenvalues and eigenvectors}
+  \begin{itemize}
+  \item Let $\bm{A}\in \R^{n\times n}$ be a square matrix.
+  \item If a real value $\lambda\in \R$
+    and a non-zero vector $\bm{v}\in\R^{n}\setminus\{\bm{0}\}$ jointly satisfy
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A}\bm{v} = \lambda \bm{v},
+    \end{equation}
+    we say that $\lambda$ is an \emph{eigenvalue} of $\bm{A}$
+    and $\bm{v}$ is an \emph{eigenvector} of $\bm{A}$ associated with $\lambda$
+    (and we also call $(\lambda, \bm{v})$ an \emph{eigenpair} of $\bm{A}$)
+  \item Notice:
+    \begin{itemize}
+    \item If $\bm{v}_{1}$ and $\bm{v}_{2}$ are both eigenvectors associated with the same eigenvalue $\lambda$ of $\bm{A}$,
+      then so is their linear combination $\alpha_{1}\bm{v}_{2}+ \alpha_{2}\bm{v}_{2}$ because
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{A}\left(\alpha_{1}\bm{v}_{1}+ \alpha_{2}\bm{v}_{2}\right)
+        = \left(\alpha_{1}\bm{A}\bm{v}_{1}+ \alpha_{2}\bm{A}\bm{v}_{2}\right)
+        = \left(\alpha_{1}\lambda\bm{v}_{1}+ \alpha_{2}\lambda\bm{v}_{2}\right)
+        = \lambda \left(\alpha_{1}\bm{v}_{1}+ \alpha_{2}\bm{v}_{2}\right)
+      \end{equation}
+%    \item If $\bm{v}$ is an eigenvector associated with an eigenvalue $\lambda$ of $\bm{A}$,
+%      so is $\alpha\bm{v}$ for any $\alpha\neq 0$ because
+%      $\bm{A}(\alpha\bm{v}) = \alpha \bm{A}\bm{v} = \alpha \lambda\bm{v} = \lambda(\alpha\bm{v})$
+    \item If $(\lambda, \bm{v})$ is an eigenpair of $\bm{A}$,
+      then $(\lambda^{k}, \bm{v})$ is an eigenpair of $\bm{A}^{k}$ for any $k\in \N$
+      because
+      $\bm{A}^{k}\bm{v} = \bm{A}^{k-1}\bm{A}\bm{v}  = \lambda\bm{A}^{k-1}\bm{v} = \lambda^{2}\bm{A}^{k-2}\bm{v} = \cdots = \lambda^{k}\bm{A}^{k-k}\bm{v} = \lambda^{k}\bm{v}$
+    \item Provided that $\bm{A}$ is non-singular (which is the case if and only if $0$ is not an eigenvalue of $\bm{A}$; See below),
+      \begin{equation}\nonumber%\label{eq:}%
+        \text{$(\lambda,\bm{v})$ is an eigenpair of $\bm{A}$}
+        \iff
+        \text{$(\lambda^{-1}, \bm{v})$ is an eigenpair of $\bm{A}^{-1}$}
+      \end{equation}
+%      \begin{equation}\nonumber%\label{eq:}%
+%        \bm{A}\bm{v} = \lambda\bm{v}
+%        \implies
+%        \bm{A}^{-1}\bm{v}
+%        = \bm{A}^{-1}\lambda^{-1}\lambda\bm{v}
+%        = \bm{A}^{-1}\lambda^{-1}\bm{A}\bm{v}
+%        = \lambda^{-1}\bm{A}^{-1}\bm{A}\bm{v}
+%        = \lambda^{-1}\bm{v}
+%      \end{equation}
+%      \begin{equation}\nonumber%\label{eq:}%
+%        \bm{A}^{-1}\bm{v} = \lambda^{-1}\bm{v}
+%        \implies
+%        \bm{A}\bm{v}
+%        = \bm{A}\lambda\lambda^{-1}\bm{v}
+%        = \bm{A}\lambda\bm{A}^{-1}\bm{v}
+%        = \lambda\bm{A}\bm{A}^{-1}\bm{v}
+%        = \lambda\bm{v}
+%      \end{equation}
+
+  \item If $\bm{A}\in \R^{m\times m}$ has eigenpairs $(\lambda_{1},\bm{v}_{1}),(\lambda_{2},\bm{v}_{2}),\ldots,(\lambda_{m},\bm{v}_{m})$
+      and $\bm{B}\in \R^{p\times p}$ has eigenpairs $(\mu_{1},\bm{u}_{1}),(\mu_{2},\bm{u}_{2}),\ldots,(\mu_{p},\bm{u}_{p})$,
+      then, for any $i=1,2, \ldots, m$ and $j=1,2, \ldots, p$,
+      \begin{equation}\nonumber%\label{eq:}%
+        (\bm{A}\otimes \bm{B}) (\bm{v}_{i}\otimes \bm{u}_{j})
+        =
+        (\bm{A}\bm{v}_{i}\otimes \bm{B}\bm{u}_{j})
+        =
+        (\lambda_{i}\bm{v}_{i}\otimes \mu_{j}\bm{u}_{j})
+        =
+        \lambda_{i}\mu_{j} (\bm{v}_{i}\otimes \bm{u}_{j}),
+      \end{equation}
+      meaning that $(\lambda_{i}\mu_{j}, \bm{v}_{i}\otimes \bm{u}_{j})$ is an eigenpair of $\bm{A}\otimes \bm{B}$,
+      which implies that $\bm{A}\otimes \bm{B}\in \R^{mp\times mp}$ has the following $mp$ eigenvalues
+      \begin{equation}\nonumber%\label{eq:}%
+        \lambda_{i}\mu_{j} \quad \forall i = 1, 2, \ldots, m, \quad \forall j= 1,2, \ldots, p
+      \end{equation}
+    \end{itemize}
+  \end{itemize}
+
+\clearpage
+\item \textbf{Example}
+  \begin{itemize}
+  \item Consider a square matrix
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} :=
+      \begin{bmatrix}
+        5/2 & -1 \\
+        1 & 0
+      \end{bmatrix}
+    \end{equation}
+  \item Then
+    $\lambda_{1}:=2$ is an eigenvalue of $\bm{A}$
+    and $\bm{v}_{1}:=(2, 1)^{\top}$ is an eigenvector of $\bm{A}$ associated with $\lambda_{1}$
+    because
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A}
+      \bm{v}_{1}
+      = 
+      \begin{bmatrix}
+        5/2 & -1 \\
+        1 & 0
+      \end{bmatrix}
+      \begin{bmatrix}
+        2 \\
+        1
+      \end{bmatrix}
+      = 
+      \begin{bmatrix}
+        4 \\
+        2
+      \end{bmatrix}
+      = 2
+      \begin{bmatrix}
+        2 \\
+        1
+      \end{bmatrix}
+      = \lambda_{1}\bm{v}_{1}
+    \end{equation}
+
+  \item Also,
+    $\lambda_{2}:=1/2$ is another eigenvalue of $\bm{A}$
+    and $\bm{v}_{2}:=(1, 2)^{\top}$ is an eigenvector of $\bm{A}$ associated with $\lambda_{2}$
+    because
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A}
+      \bm{v}_{2}
+      = 
+      \begin{bmatrix}
+        5/2 & -1 \\
+        1 & 0
+      \end{bmatrix}
+      \begin{bmatrix}
+        1 \\
+        2
+      \end{bmatrix}
+      = 
+      \begin{bmatrix}
+        1/2 \\
+        1
+      \end{bmatrix}
+      = \frac{1}{2}
+      \begin{bmatrix}
+        1 \\
+        2
+      \end{bmatrix}
+      = \lambda_{2}\bm{v}_{2}
+    \end{equation}
+  \end{itemize}
+
+\end{itemize}
+
+\subsection{Characteristic polynomials}
+
+\begin{itemize}
+
+\item \textbf{Definition of characteristic polynomials}
+  \begin{itemize}
+  \item Let $\bm{A}\in \R^{n\times n}$ be a square matrix.
+  \item Define a function $\phi_{\bm{A}}:\R \to \R$ by
+    \begin{equation}\nonumber%\label{eq:}%
+      \phi_{\bm{A}}(t) := |\bm{A}-t\bm{I}| \quad \forall t\in \R,
+    \end{equation}
+    where $\bm{I}\in \R^{n\times n}$ is the identity matrix.
+    We call $\phi_{\bm{A}}$ the \emph{characteristic polynomial} of $\bm{A}$
+  \end{itemize}
+
+\item \textbf{Useful results}
+
+  \begin{itemize}
+  \item Note that $\lambda$ is an eigenvalue of $\bm{A}$
+    if and only if $\phi_{\bm{A}}(\lambda)=0$ because:
+    \begin{itemize}
+    \item $|\bm{A}-\lambda \bm{I}| = 0$ iff $(\bm{A}-\lambda\bm{I})$ is singular (i.e., not invertible)
+    \item $(\bm{A}-\lambda\bm{I})$ is singular iff column vectors of $(\bm{A}-\lambda\bm{I})$ are linearly dependent
+    \item column vectors of $(\bm{A}-\lambda\bm{I})$ are linearly dependent iff $(\bm{A}-\lambda\bm{I})\bm{v}=\bm{0}$ for some $\bm{v}\neq \bm{0}$
+    \end{itemize}
+  \item In general, $\bm{A}\in \R^{n\times n}$ has $m\leq n$ distinct eigenvalues $\lambda_{1},\ldots, \lambda_{m}$ if and only if
+    \begin{equation}\nonumber%\label{eq:}%
+      \phi_{\bm{A}}(t) = (\lambda_{1}-t)^{k_{1}}(\lambda_{2}-t)^{k_{2}}\cdots(\lambda_{m}-t)^{k_{m}},
+    \end{equation}
+    where $k_{i}\in \N$ is called the \emph{algebraic multiplicity} of $\lambda_{i}$,
+    satisfying $k_{1}+k_{2}+\ldots+k_{m}=n$
+  \item An immediate consequence:
+    \begin{equation}\nonumber%\label{eq:}%
+      \text{$\bm{A}$ is singular}
+      \iff
+      |\bm{A}| = 0
+      \iff \phi_{\bm{A}}(0) = 0
+      \iff \text{$0$ is an eigenvalue of $\bm{A}$}
+    \end{equation}
+  \item If $\bm{A}$ is a triangle matrix,
+    the eigenvalues of $\bm{A}$ are the diagonal elements of $\bm{A}$ because
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} =
+      \begin{bmatrix}
+        a_{11} & a_{12} & \cdots & a_{1n} \\
+        0 & a_{22} & \cdots & a_{2n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0  & 0 & \cdots & a_{nn} \\
+      \end{bmatrix}
+      \implies
+      \phi_{\bm{A}}(t)
+      = (a_{11}-t)(a_{22}-t)\cdots (a_{nn}-t)
+    \end{equation}
+  \item The determinant of $\bm{A}$ equals the product of all eigenvalues of $\bm{A}$ (including duplicates):
+    \begin{equation}\nonumber%\label{eq:}%
+      |\bm{A}| = |\bm{A}-0\bm{I}|
+      = \phi_{\bm{A}}(0)
+      = (\lambda_{1}-0)^{k_{1}}(\lambda_{2}-0)^{k_{2}}\cdots(\lambda_{m}-0)^{k_{m}}
+      = \lambda_{1}^{k_{1}}\lambda_{2}^{k_{2}}\cdots\lambda_{m}^{k_{m}}
+    \end{equation}
+    
+  \end{itemize}
+
+\item \textbf{Examples}
+  \begin{itemize}
+  \item Consider a square matrix
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} :=
+      \begin{bmatrix}
+        5/2 & -1 \\
+        1 & 0
+      \end{bmatrix},
+    \end{equation}
+    whose characteristic polynomial is
+    \begin{equation}\nonumber%\label{eq:}%
+      \phi_{\bm{A}}(t) :=
+      \left|
+      \begin{bmatrix}
+        5/2 & -1 \\
+        1 & 0
+      \end{bmatrix}
+      - t
+      \begin{bmatrix}
+        1 & 0 \\
+        0 & 1
+      \end{bmatrix}
+      \right|
+      = 
+      \begin{vmatrix}
+        5/2 - t & -1 \\
+        1 & - t
+      \end{vmatrix}
+      = - \left(\frac{5}{2} - t\right)t + 1
+      = (t - 2) \left(t - \frac{1}{2}\right),
+    \end{equation}
+    meaning that
+    $\lambda_{1}:=2$ and $\lambda_{1}:=1/2$
+    are two eigenvalues of $\bm{A}$
+    and their algebraic multiplicity is $1$
+
+  \item Consider another square matrix
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} :=
+      \begin{bmatrix}
+        5 & 4 \\
+        -1 & 1 \\
+      \end{bmatrix},
+    \end{equation}
+    whose characteristic polynomial is
+    \begin{equation}\nonumber%\label{eq:}%
+      \phi_{\bm{A}}(t) =
+      \begin{vmatrix}
+        5-t & 4 \\
+        -1 & 1-t \\
+      \end{vmatrix}
+      =
+      (t-3)^{2},
+    \end{equation}
+    which means that
+    $\lambda_{1}:=3$
+    is the unique eigenvalue of $\bm{A}$
+    and its algebraic multiplicity is $2$
+
+  \end{itemize}
+
+\end{itemize}
+
+%\clearpage
+\subsection{Solving for eigenvectors}
+
+\begin{itemize}
+
+\item \textbf{Procedure}
+  \begin{enumerate}
+  \item Given a square matrix $\bm{A}\in \R^{n\times n}$,
+    find eigenvalues $\lambda_{1},\lambda_{2},\ldots, \lambda_{n}$
+    of $\bm{A}$
+    by solving $\phi_{\bm{A}}(\lambda)=0$ for $\lambda$
+  \item For each $\lambda_{i}$,
+    solve the linear system of equations $\bm{A}\bm{v} = \lambda_{i}\bm{v}$
+    for $\bm{v}\in\R^{n}\setminus\{\bm{0}\}$,
+    i.e.,
+    \begin{equation}\nonumber%\label{eq:}%
+      \left(\bm{A} - \lambda_{i}\bm{I}\right)\bm{v} = \bm{0}
+      \iff
+      \bm{v} = \ldots,
+    \end{equation}
+    which is an eigenvector of $\bm{A}$ associated with $\lambda_{i}$
+  \end{enumerate}
+
+\item \textbf{Example}
+  \begin{itemize}
+  \item Consider a square matrix
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} :=
+      \begin{bmatrix}
+        5/2 & -1 \\
+        1 & 0
+      \end{bmatrix}
+    \end{equation}
+  \item We know that
+    \begin{equation}\nonumber%\label{eq:}%
+      \phi_{\bm{A}}(\lambda) = 0
+      \iff
+      \lambda = 2, \frac{1}{2}
+    \end{equation}
+    so let $\lambda_{1}:=2$, $\lambda_{2}:=1/2$
+  \item Solve $(\bm{A}-\lambda_{1}\bm{I})\bm{v}=\bm{0}$ for $\bm{v}$, i.e.,
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        5/2-2 & -1 \\
+        1 & - 2
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+      \end{bmatrix}
+      = 
+      \begin{bmatrix}
+        0 \\
+        0 \\
+      \end{bmatrix}
+      \iff
+      v_{1} = 2v_{2}
+      \iff
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+      \end{bmatrix}
+      =
+      \alpha
+      \begin{bmatrix}
+        2\\
+        1
+      \end{bmatrix}
+      \quad \forall \alpha \in \R,
+    \end{equation}
+    meaning that $\bm{v}_{1}:= (2, 1)^{\top}$
+    is an eigenvector of $\bm{A}$ associated with $\lambda_{1}=2$
+  \item Similarly, solve $(\bm{A}-\lambda_{2}\bm{I})\bm{v}=\bm{0}$ for $\bm{v}$, i.e.,
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        5/2-1/2 & -1 \\
+        1 & - 1/2
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+      \end{bmatrix}
+      = 
+      \begin{bmatrix}
+        0 \\
+        0 \\
+      \end{bmatrix}
+      \iff
+      v_{1} = \frac{1}{2}v_{2}
+      \iff
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+      \end{bmatrix}
+      =
+      \alpha
+      \begin{bmatrix}
+        1\\
+        2
+      \end{bmatrix}
+      \quad \forall \alpha \in \R,
+    \end{equation}
+    meaning that $\bm{v}_{2}:= (1,2)^{\top}$
+    is an eigenvector of $\bm{A}$ associated with $\lambda_{2}=1/2$
+
+  \end{itemize}
+
+\end{itemize}
+
+\section{Diagonalization}
+
+\subsection{Definition}
+
+\begin{itemize}
+\item \textbf{Definition of diagonalizable matrices}
+  \begin{itemize}
+  \item A square matrix $\bm{A}\in \R^{n\times n}$ is said to be \emph{diagonalizable}
+    if there exists a nonsingular (i.e., invertible) matrix $\bm{V}\in \R^{n\times n}$
+    and a diagonal matrix $\bm{\Lambda}\in \R^{n\times n}$ such that
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} = \bm{V}\bm{\Lambda}\bm{V}^{-1}
+    \end{equation}
+  \item $\bm{\Lambda}$ is the `simplest' matrix that is \emph{similar} to $\bm{A}$
+  \end{itemize}
+\item \textbf{Remark}
+  \begin{itemize}
+  \item Let $\lambda_{1},\lambda_{2},\ldots, \lambda_{n}$ be (arbitrarily chosen) $n$ eigenvalues of $\bm{A}$ 
+    and let $\bm{v}_{1}, \bm{v}_{2}, \ldots, \bm{v}_{n}$ be the associated eigenvectors
+  \item Let $\bm{\Lambda}:=\text{diag}(\lambda_{1},\ldots, \lambda_{n})\in \R^{n\times n}$
+    and $\bm{V}:=[\bm{v}_{1} \ldots \bm{v}_{n}]\in \R^{n\times n}$
+  \item Since $\bm{A}\bm{v}_{i} = \lambda_{i}\bm{v}_{i}$ for $i=1,2,\ldots, n$, we have
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A}
+      \begin{bmatrix}
+        \bm{v}_{1} & \bm{v}_{2} & \ldots & \bm{v}_{n}
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        \bm{A}\bm{v}_{1} & \bm{A}\bm{v}_{2} & \ldots & \bm{A}\bm{v}_{n}
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        \bm{v}_{1} & \bm{v}_{2} & \ldots & \bm{v}_{n}
+      \end{bmatrix}
+      \begin{bmatrix}
+        \lambda_{1} & 0 & \dots & 0 \\
+        0 & \lambda_{2} & \dots & 0 \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \dots & \lambda_{n} \\
+      \end{bmatrix}
+    \end{equation}
+    or $\bm{A}\bm{V} = \bm{V}\bm{\Lambda}$
+    
+  \item Thus, $\bm{A}$ is diagonalizable whenever $\bm{V}$ is non-singular
+  \item $\bm{V}$ is non-singular if and only if its column vectors are linearly independent
+  \item $\bm{A}$ is diagonalizable whenever \textbf{one can find $n$ linearly independent eigenvectors of $\bm{A}$}
+  \end{itemize}
+
+\item \textbf{A sufficient condition for diagonalization}
+  \begin{itemize}
+  \item A square matrix $\bm{A}\in \R^{n\times n}$ is diagonalizable
+    if it has $n$ distinct eigenvalues\footnote{%
+      This is a sufficient, but not necessary, condition for a matrix to be diagonalizable.
+    }
+  \item Let $\lambda_{1},\lambda_{2},\ldots, \lambda_{n}$ be the $n$ distinct eigenvalues of $\bm{A}$
+    and let $\bm{v}_{1}, \bm{v}_{2}, \ldots, \bm{v}_{n}$ be the associated eigenvectors
+    so that
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A}\bm{V} = \bm{V}\bm{\Lambda}
+    \end{equation}
+  \item Since $\lambda_{1},\ldots, \lambda_{n}$ are distinct from each other,
+    $\bm{v}_{1}, \ldots, \bm{v}_{n}$ are linearly independent:
+    \begin{itemize}
+    \item If $\bm{v}_{i}$ and $\bm{v}_{j}$ are linearly dependent,
+      there exists $c\neq 0$ such that $c\bm{v}_{i}=\bm{v}_{j}$ and thus
+      \begin{equation}\nonumber%\label{eq:}%
+        c(\lambda_{i}\bm{v}_{i}) =
+        c(\bm{A}\bm{v}_{i}) = 
+        \bm{A}(c\bm{v}_{i}) = 
+        \bm{A}\bm{v}_{j} = 
+        \lambda_{j}\bm{v}_{j} = 
+        \lambda_{j}(c\bm{v}_{i}) =
+        c(\lambda_{j}\bm{v}_{i}),
+      \end{equation}
+      which, because $c\neq 0$ and $\bm{v}_{i}\neq \bm{0}$, implies $\lambda_{i}=\lambda_{j}$, a contradiction
+    \item By induction, one can conclude $\bm{v}_{1}, \ldots, \bm{v}_{n}$ are linearly independent
+    \end{itemize}
+  \item Since $\bm{v}_{1}, \ldots, \bm{v}_{n}$ are linearly independent,
+    the matrix $\bm{V}=[\bm{v}_{1}\ldots \bm{v}_{n}]$ is nonsingular
+  \item Then there exists the inverse $\bm{V}^{-1}$ and therefore
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} = \bm{A}\bm{V}\bm{V}^{-1} = \bm{V}\bm{\Lambda}\bm{V}^{-1},
+    \end{equation}
+    meaning that $\bm{A}$ is diagonalizable
+  \end{itemize}
+
+\item \textbf{Similar matrices}
+  \begin{itemize}
+  \item We say that two matrices, $\bm{A}$ and $\bm{B}$, are \emph{similar}
+    if there exits a non-singular $\bm{C}$ such that
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} = \bm{C}\bm{B}\bm{C}^{-1}
+    \end{equation}
+  \item If $\bm{A}$ and $\bm{B}$ are similar, then
+    \begin{itemize}
+    \item $|\bm{A}| = |\bm{B}|$ because
+      \begin{equation}\nonumber%\label{eq:}%
+        |\bm{A}|
+        =
+        |\bm{C}\bm{B}\bm{C}^{-1}|
+        =
+        |\bm{C}||\bm{B}||\bm{C}^{-1}|
+        =
+        |\bm{C}||\bm{B}||\bm{C}|^{-1}
+        = |\bm{B}|
+      \end{equation}
+    \item $\bm{A}$ and $\bm{B}$ have the same characteristic polynomial because
+      \begin{equation}\nonumber%\label{eq:}%
+        \phi_{\bm{A}}(t)
+        = |\bm{A}-t\bm{I}|
+        = |\bm{C}\bm{B}\bm{C}^{-1}-t\bm{I}|
+        = |\bm{C}||\bm{B}-t\bm{I}||\bm{C}^{-1}|
+        = |\bm{B}-t\bm{I}|
+        =
+        \phi_{\bm{B}}(t)
+        \quad \forall t \in \R
+      \end{equation}
+    \item $\bm{A}$ and $\bm{B}$ have the same set of eigenvalues
+    \item $\bm{A}$ is diagonalizable if and only if $\bm{B}$ is diagonalizable
+%      \begin{equation}\nonumber%\label{eq:}%
+%        \bm{A} = \bm{V}\bm{\Lambda}\bm{V}^{-1}
+%        \implies
+%        \bm{B}
+%        = \bm{C}\bm{A}\bm{C}^{-1}
+%        = \bm{C}\bm{V}\bm{\Lambda}\bm{V}^{-1}\bm{C}^{-1}
+%        = (\bm{C}\bm{V})\bm{\Lambda}(\bm{C}\bm{V})^{-1}
+%      \end{equation}
+
+    \end{itemize}
+  \end{itemize}
+
+\end{itemize}
+
+\subsection{Examples}
+
+\begin{itemize}
+
+\item \textbf{Example~1}
+  \begin{itemize}
+  \item Consider a square matrix
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} :=
+      \begin{bmatrix}
+        5/2 & -1 \\
+        1 & 0
+      \end{bmatrix},
+    \end{equation}
+    which we know has $\lambda_{1}=2, \lambda_{2}=1/2$ as eigenvalues
+    and $\bm{v}_{1}=(2, 1)^{\top}, \bm{v}_{2}=(1, 2)^{\top}$ as associated eigenvectors
+  \item Define
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{V}:=
+      \begin{bmatrix}
+        \bm{v}_{1} & \bm{v}_{2}
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        2 & 1 \\
+        1 & 2 \\
+      \end{bmatrix},
+      \quad
+      \bm{\Lambda}:=
+      \begin{bmatrix}
+        \lambda_{1} & 0 \\
+        0 & \lambda_{2} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        2 & 0 \\
+        0 & 1/2 \\
+      \end{bmatrix}
+    \end{equation}
+  \item Then
+    \begin{equation}\nonumber%\label{eq:}%
+      |\bm{V}| = 3,
+      \quad
+      \bm{V}^{-1}
+      = \frac{1}{|\bm{V}|}
+      \begin{bmatrix}
+        2 & -1 \\
+        -1 & 2 \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        2/3 & -1/3 \\
+        -1/3 & 2/3 \\
+      \end{bmatrix}
+    \end{equation}
+    and therefore
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{V}\bm{\Lambda}\bm{V}^{-1}
+      = 
+      \begin{bmatrix}
+        2 & 1 \\
+        1 & 2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        2 & 0 \\
+        0 & 1/2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        2/3 & -1/3 \\
+        -1/3 & 2/3 \\
+      \end{bmatrix}
+      = 
+      \begin{bmatrix}
+        5/2 & -1 \\
+        1 & 0 \\
+      \end{bmatrix}
+      = \bm{A}
+    \end{equation}
+  \end{itemize}
+  
+\item \textbf{Example~2}
+  \begin{itemize}
+  \item Consider a square matrix
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} :=
+      \begin{bmatrix}
+        1 & 0 & -1 \\
+        1 & 2 & 1 \\
+        2 & 2 & 3 \\
+      \end{bmatrix}
+    \end{equation}
+  \item The characteristic polynomial is
+    \begin{equation}\nonumber%\label{eq:}%
+      \phi_{\bm{A}}(t) =
+      \begin{vmatrix}
+        1-t & 0 & -1 \\
+        1 & 2-t & 1 \\
+        2 & 2 & 3-t \\
+      \end{vmatrix}
+      = (1-t)(2-t)(3-t),
+    \end{equation}
+    which means that
+    $\lambda_{1}:=1$,
+    $\lambda_{2}:=2$,
+    $\lambda_{3}:=3$
+    are the eigenvalues of $\bm{A}$
+  \item Solving $\bm{A}\bm{v}=\lambda_{1}\bm{v}$ for $\bm{v}$ yields
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        1-1 & 0 & -1 \\
+        1 & 2-1 & 1 \\
+        2 & 2 & 3-1 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      = \bm{0}
+      \iff
+      \begin{matrix*}[l]
+        v_{2} = -v_{1} \\
+        v_{3} = 0 \\
+      \end{matrix*}
+      \iff
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      =
+      \alpha
+      \begin{bmatrix}
+        1 \\
+        -1 \\
+        0 \\
+      \end{bmatrix},
+      \quad \forall \alpha \in \R
+    \end{equation}
+    so we choose the following $\bm{v}_{1}$ as an eigenvector associated with $\lambda_{1}$:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{v}_{1} := 
+      \begin{bmatrix}
+        1 \\
+        -1 \\
+        0 \\
+      \end{bmatrix}
+    \end{equation}
+  \item Solving $\bm{A}\bm{v}=\lambda_{2}\bm{v}$ for $\bm{v}$ yields
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        1-2 & 0 & -1 \\
+        1 & 2-2 & 1 \\
+        2 & 2 & 3-2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      = \bm{0}
+      \iff
+      \begin{matrix*}[l]
+        v_{1} = -2v_{2} \\
+        v_{3} = -v_{1} \\
+      \end{matrix*}
+      \iff
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      =
+      \alpha
+      \begin{bmatrix}
+        -2 \\
+        1 \\
+        2 \\
+      \end{bmatrix},
+      \quad \forall \alpha \in \R
+    \end{equation}
+    so we choose the following $\bm{v}_{2}$ as an eigenvector associated with $\lambda_{2}$:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{v}_{2} := 
+      \begin{bmatrix}
+        -2 \\
+        1 \\
+        2 \\
+      \end{bmatrix}
+    \end{equation}
+
+  \item Solving $\bm{A}\bm{v}=\lambda_{3}\bm{v}$ for $\bm{v}$ yields
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        1-3 & 0 & -1 \\
+        1 & 2-3 & 1 \\
+        2 & 2 & 3-3 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      = \bm{0}
+      \iff
+      \begin{matrix*}[l]
+        v_{2} = -v_{1} \\
+        v_{3} = -2v_{1} \\
+      \end{matrix*}
+      \iff
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      =
+      \alpha
+      \begin{bmatrix}
+        1 \\
+        -1 \\
+        -2 \\
+      \end{bmatrix},
+      \quad \forall \alpha \in \R
+    \end{equation}
+    so we choose the following $\bm{v}_{3}$ as an eigenvector associated with $\lambda_{3}$:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{v}_{3} := 
+      \begin{bmatrix}
+        1 \\
+        -1 \\
+        -2 \\
+      \end{bmatrix}
+    \end{equation}
+
+  \item Define
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{V}:=
+      \begin{bmatrix}
+        \bm{v}_{1} & \bm{v}_{2} & \bm{v}_{3}
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        1 & -2 & 1 \\
+        -1 & 1 & -1\\
+        0 & 2 & -2 \\
+      \end{bmatrix},
+      \quad
+      \bm{\Lambda}:=
+      \begin{bmatrix}
+        \lambda_{1} & 0 & 0 \\
+        0 & \lambda_{2} & 0 \\
+        0 & 0 & \lambda_{3} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        1 & 0 & 0 \\
+        0 & 2 & 0 \\
+        0 & 0 & 3 \\
+      \end{bmatrix}
+    \end{equation}
+
+  \item Then
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{V}^{-1}
+      =
+      \begin{bmatrix}
+        0 & -1 & 1/2 \\
+        -1 & -1 & 0 \\
+        -1 & -1 & -1/2 \\
+      \end{bmatrix}
+    \end{equation}
+    and therefore
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{V}\bm{\Lambda}\bm{V}^{-1}
+      = 
+      \begin{bmatrix}
+        1 & -2 & 1 \\
+        -1 & 1 & -1\\
+        0 & 2 & -2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        1 & 0 & 0 \\
+        0 & 2 & 0 \\
+        0 & 0 & 3 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        0 & -1 & 1/2 \\
+        -1 & -1 & 0 \\
+        -1 & -1 & -1/2 \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        1 & 0 & -1 \\
+        1 & 2 & 1 \\
+        2 & 2 & 3 \\
+      \end{bmatrix}
+      = \bm{A}
+    \end{equation}
+
+  \end{itemize}
+
+\clearpage
+\item \textbf{Example~3}
+  \begin{itemize}
+  \item Consider a square matrix
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} :=
+      \begin{bmatrix}
+        5 & 4 \\
+        -1 & 1 \\
+      \end{bmatrix}
+    \end{equation}
+  \item The characteristic polynomial is
+    \begin{equation}\nonumber%\label{eq:}%
+      \phi_{\bm{A}}(t) =
+      \begin{vmatrix}
+        5-t & 4 \\
+        -1 & 1-t \\
+      \end{vmatrix}
+      =
+      (3-t)^{2}
+    \end{equation}
+    which means that
+    $\lambda_{1}:=3$
+    is the unique eigenvalue of $\bm{A}$
+  \item Solving $\bm{A}\bm{v}=\lambda_{1}\bm{v}$ for $\bm{v}$ yields
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        5-3 & 4 \\
+        -1 & 1-3 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+      \end{bmatrix}
+      = \bm{0}
+      \iff
+      v_{1} = -2v_{2}
+      \iff
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+      \end{bmatrix}
+      =
+      \alpha
+      \begin{bmatrix}
+        2 \\
+        -1 \\
+      \end{bmatrix},
+      \quad \forall \alpha \in \R,
+    \end{equation}
+    meaning that 
+    we can only choose one linearly independent eigenvector
+
+  \item Matrix $\bm{A}$ is not diagonalizable
+
+  \end{itemize}
+
+\item \textbf{Example~4}
+  \begin{itemize}
+  \item Consider a square matrix
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} :=
+      \begin{bmatrix}
+        1 & 3 & 0 \\
+        0 & 1 & 0 \\
+        2 & 1 & 5 \\
+      \end{bmatrix}
+    \end{equation}
+  \item The characteristic polynomial is
+    \begin{equation}\nonumber%\label{eq:}%
+      \phi_{\bm{A}}(t) =
+      \begin{vmatrix}
+        1-t & 3 & 0 \\
+        0 & 1-t & 0 \\
+        2 & 1 & 5-t \\
+      \end{vmatrix}
+      =
+      (1-t)^{2}(5-t)
+    \end{equation}
+    which means that
+    $\lambda_{1}:=1$,
+    $\lambda_{2}:=5$
+    are the eigenvalues of $\bm{A}$
+  \item Solving $\bm{A}\bm{v}=\lambda_{1}\bm{v}$ for $\bm{v}$ yields
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        1-1 & 3 & 0 \\
+        0 & 1-1 & 0 \\
+        2 & 1 & 5-1 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      = \bm{0}
+      \iff
+      \begin{matrix*}[l]
+        v_{2} = 0 \\
+        v_{1} = -2v_{3} \\
+      \end{matrix*}
+      \iff
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      =
+      \alpha
+      \begin{bmatrix}
+        2 \\
+        0 \\
+        -1 \\
+      \end{bmatrix},
+      \quad \forall \alpha \in \R
+    \end{equation}
+    so we choose the following $\bm{v}_{1}$ as an eigenvector associated with $\lambda_{1}$:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{v}_{1} := 
+      \begin{bmatrix}
+        2 \\
+        0 \\
+        -1 \\
+      \end{bmatrix}
+    \end{equation}
+
+  \item Solving $\bm{A}\bm{v}=\lambda_{2}\bm{v}$ for $\bm{v}$ yields
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        1-5 & 3 & 0 \\
+        0 & 1-5 & 0 \\
+        2 & 1 & 5-5 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      = \bm{0}
+      \iff
+      \begin{matrix*}[l]
+        4v_{1} = 3v_{2} \\
+        v_{2} = 0 \\
+      \end{matrix*}
+      \iff
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      =
+      \alpha
+      \begin{bmatrix}
+        0 \\
+        0 \\
+        1 \\
+      \end{bmatrix},
+      \quad \forall \alpha \in \R
+    \end{equation}
+    so we choose the following $\bm{v}_{2}$ as an eigenvector associated with $\lambda_{1}$:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{v}_{2} := 
+      \begin{bmatrix}
+        0 \\
+        0 \\
+        1 \\
+      \end{bmatrix}
+    \end{equation}
+  \item Matrix $\bm{A}$ is not diagonalizable
+
+  \end{itemize}
+
+\clearpage
+\item \textbf{Example~5}
+  \begin{itemize}
+  \item Consider a square matrix
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} :=
+      \begin{bmatrix}
+        1 & 0 & 0 \\
+        6 & -2 & -6 \\
+        -2 & 1 & 3 \\
+      \end{bmatrix}
+    \end{equation}
+  \item The characteristic polynomial is
+    \begin{equation}\nonumber%\label{eq:}%
+      \phi_{\bm{A}}(t) =
+      \begin{vmatrix}
+        1-t & 0 & 0 \\
+        6 & -2-t & -6 \\
+        -2 & 1 & 3-t \\
+      \end{vmatrix}
+      =
+      -t(1-t)^{2}
+    \end{equation}
+    which means that
+    $\lambda_{1}:=0$,
+    $\lambda_{2}:=1$
+    are the eigenvalues of $\bm{A}$
+  \item Solving $\bm{A}\bm{v}=\lambda_{1}\bm{v}$ for $\bm{v}$ yields
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        1-0 & 0 & 0 \\
+        6 & -2-0 & -6 \\
+        -2 & 1 & 3-0 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      = \bm{0}
+      \iff
+      \begin{matrix*}[l]
+        v_{1} = 0 \\
+        v_{2} = -3v_{3} \\
+      \end{matrix*}
+      \iff
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      =
+      \alpha
+      \begin{bmatrix}
+        0 \\
+        -3 \\
+        1 \\
+      \end{bmatrix},
+      \quad \forall \alpha \in \R
+    \end{equation}
+    so we choose the following $\bm{v}_{1}$ as an eigenvector associated with $\lambda_{1}$:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{v}_{1} := 
+      \begin{bmatrix}
+        0 \\
+        -3 \\
+        1 \\
+      \end{bmatrix}
+    \end{equation}
+
+  \item Solving $\bm{A}\bm{v}=\lambda_{2}\bm{v}$ for $\bm{v}$ yields
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        1-1 & 0 & 0 \\
+        6 & -2-1 & -6 \\
+        -2 & 1 & 3-1 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      = \bm{0}
+      \iff
+      \begin{matrix*}[l]
+        v_{1} =  \frac{1}{2}v_{2} + v_{3} \\
+      \end{matrix*}
+      \iff
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      =
+      \alpha
+      \begin{bmatrix}
+        1 \\
+        2 \\
+        0 \\
+      \end{bmatrix}
+      +
+      \beta
+      \begin{bmatrix}
+        1 \\
+        0 \\
+        1 \\
+      \end{bmatrix},
+      \quad \forall \alpha, \beta
+    \end{equation}
+    so we choose the following as
+    two linearly independent eigenvectors associated with $\lambda_{2}$:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{v}_{2} := 
+      \begin{bmatrix}
+        1 \\
+        2 \\
+        0 \\
+      \end{bmatrix},
+      \quad
+      \bm{v}_{3} := 
+      \begin{bmatrix}
+        1 \\
+        0 \\
+        1 \\
+      \end{bmatrix}
+    \end{equation}
+
+  \item Note that
+    \begin{itemize}
+    \item $\bm{A}$ does not have $3$ distinct eigenvalues
+    \item yet $\bm{A}$ has $3$ linearly independent eigenvectors (one for $\lambda_{1}$, two for $\lambda_{2}$)
+    \item we say that $\lambda_{1}$ and $\lambda_{2}$ has \emph{geometric multiplicity} of $1$ and $2$, respectively
+    \end{itemize}
+
+  \item In fact, $\bm{A}$ is diagonalizable by defining
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{V}:=
+      \begin{bmatrix}
+        \bm{v}_{1} & \bm{v}_{2} & \bm{v}_{3}
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        0 & 1 & 1 \\
+        -3 & 2 & 0\\
+        1 & 0 & 1 \\
+      \end{bmatrix},
+      \quad
+      \bm{\Lambda}:=
+      \begin{bmatrix}
+        \lambda_{1} & 0 & 0 \\
+        0 & \lambda_{2} & 0 \\
+        0 & 0 & \lambda_{2} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        0 & 0 & 0 \\
+        0 & 1 & 0 \\
+        0 & 0 & 1 \\
+      \end{bmatrix}
+    \end{equation}
+
+  \item Then
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{V}^{-1}
+      =
+      \begin{bmatrix}
+        2 & -1 & -2 \\
+        3 & -1 & -3 \\
+        -2 & 1 & 3 \\
+      \end{bmatrix}
+    \end{equation}
+    and therefore
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{V}\bm{\Lambda}\bm{V}^{-1}
+      = 
+      \begin{bmatrix}
+        0 & 1 & 1 \\
+        -3 & 2 & 0\\
+        1 & 0 & 1 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        0 & 0 & 0 \\
+        0 & 1 & 0 \\
+        0 & 0 & 1 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        2 & -1 & -2 \\
+        3 & -1 & -3 \\
+        -2 & 1 & 3 \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        1 & 0 & 0 \\
+        6 & -2 & -6 \\
+        -2 & 1 & 3 \\
+      \end{bmatrix}
+      = \bm{A}
+    \end{equation}
+  \end{itemize}
+
+
+\end{itemize}
+
+
+
+\end{document}

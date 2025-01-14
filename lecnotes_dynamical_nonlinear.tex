@@ -1,0 +1,902 @@
+\documentclass[12pt,a4paper]{article} 
+\input{preambles/preamble_lecnotes.tex} 
+
+\title{Nonlinear models}
+\subtitle{Introduction to dynamical systems~\#8}
+\author{Hiroaki Sakamoto}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Nonlinear dynamical system}
+
+\subsection{Continuous-time model}
+
+\begin{itemize}
+
+\item \textbf{General Dynamical System}
+  \begin{itemize}
+  \item A (time-invariant) continuous-time \emph{dynamical system} is a system of differential equations of the form
+    \begin{equation}\nonumber%\label{eq:}%
+      \frac{d}{dt}\bm{x}(t) = \bm{f}(\bm{x}(t),\bm{u}(t)) \quad t \in \R_{+},
+    \end{equation} where
+    \begin{itemize}
+    \item $\bm{x}(t)\in \R^{m}$: state vector at time $t$
+    \item $\bm{u}(t)\in \R^{n}$: control (input) vector at time $t$
+    \item $\bm{f} \in \R^{m}\times \R^{n} \to \R^{m}$: vector-valued function
+    \end{itemize}
+  \item A linear dynamical system is a special case where
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{f}(\bm{x},\bm{u}) =\bm{A}\bm{x} + \bm{B}\bm{u}
+    \end{equation}
+  \item Starting with some \emph{initial state} $\bm{x}(0)$, we want to know how $\bm{x}(t)$ evolves over time depending on $\bm{f}$ and $\bm{u}$.
+  \end{itemize}
+\item \textbf{Equilibrium}
+  \begin{itemize}
+  \item Consider the case where the control input remains constant at $\bar{\bm{u}}$:
+    \begin{equation}\label{eq:DS}% 
+      \frac{d}{dt}\bm{x}(t) = \bm{f}(\bm{x}(t),\bar{\bm{u}}) \quad t\in \R_{+}
+    \end{equation}
+  \item An \emph{equilibrium point} $\bar{\bm{x}}$ of \eqref{eq:DS} is
+    defined as a solution to
+    \begin{equation}\nonumber%
+      \bm{0} =
+      \bm{f}(\bar{\bm{x}},\bar{\bm{u}}),
+    \end{equation} which depends on both the system dynamics $\bm{f}$ and the control input $\bar{\bm{u}}$
+  \end{itemize}
+
+\item \textbf{Stability}
+  \begin{itemize}
+  \item An equilibrium point $\bar{\bm{x}}$ of \eqref{eq:DS}
+    is said to be \emph{stable} if
+    for any $\epsilon >0$,
+    there exists $\delta>0$ such that
+    \begin{equation}\nonumber%\label{eq:}%
+      \lVert \bm{x}(0) - \bar{\bm{x}} \rVert < \delta
+      \implies 
+      \lVert \bm{x}(t) - \bar{\bm{x}} \rVert < \epsilon \quad \forall t> 0,
+    \end{equation}
+    namely, the state trajectory stays arbitrarily close to the equilibrium point
+    as long as the initial state is close enough to the equilibrium point
+  \item An equilibrium point $\bar{\bm{x}}$ of \eqref{eq:DS}
+    is said to be \emph{asymptotically stable} if
+    a) it is stable (as define above), and
+    b) there exists $\bar{\delta}>0$ such that
+    \begin{equation}\nonumber%\label{eq:}%
+      \lVert \bm{x}(0) - \bar{\bm{x}} \rVert < \bar{\delta}
+      \implies 
+      \lim_{t \to \infty}\bm{x}(t) =  \bar{\bm{x}},
+    \end{equation}
+    namely, the state trajectory actually converges to the equilibrium point
+    as long as the initial state is close enough to the equilibrium point
+  \end{itemize}
+
+\item \textbf{Example~1}
+  \begin{itemize}
+  \item Consider the following one-dimensional dynamical system:
+    \begin{equation}\label{eq:Bernoulli}%
+      \dot{x}(t) = ax(t) + b(x(t))^{\gamma},
+      \quad ab < 0, \, \gamma\in \R\setminus\{1\},
+    \end{equation}
+    which generalizes the linear dynamical system $\dot{x}(t)= ax(t) + b$ where $\gamma=0$
+  \item Observe:
+    \begin{itemize}
+    \item For $\gamma = 0$ (linear case),
+      the system has a unique equilibrium point:
+      \begin{equation}\nonumber%\label{eq:}%
+        a\bar{x} + b = 0
+        \iff
+        \bar{x} = - \frac{b}{a}
+      \end{equation}
+    \item For $\gamma \neq 0$, the system has two (trivial and non-trivial) equilibrium points:
+      \begin{equation}\nonumber%\label{eq:}%
+        a\bar{x} + b\bar{x}^{\gamma} = 0
+        \iff
+        \bar{x} = 0
+        \text{ or }
+        \bar{x} = \left(- \frac{b}{a}\right)^{\frac{1}{1-\gamma}}
+      \end{equation}
+    \item Since \eqref{eq:Bernoulli} is a Bernoulli differential equation,\footnote{
+        Notice that \eqref{eq:Bernoulli} may be rewritten as
+        \begin{equation}\nonumber%\label{eq:}%
+          (x(t))^{-\gamma}\dot{x}(t) = a(x(t))^{1-\gamma} + b
+          \quad\implies\quad
+          \frac{d}{dt}(x(t))^{1-\gamma} = (1-\gamma)a (x(t))^{1-\gamma} + (1-\gamma)b
+          \quad \forall t,
+        \end{equation}
+        which in turn implies
+        \begin{equation}\nonumber%\label{eq:}%
+          \frac{d}{dt}\left\{ (x(t))^{1-\gamma} - (\bar{x})^{1-\gamma} \right\}
+          = (1-\gamma)a\left((x(t))^{1-\gamma} - (\bar{x})^{1-\gamma}\right)
+          \quad \forall t,
+          \quad \bar{x}:= \left(- \frac{b}{a}\right)^{\frac{1}{1-\gamma}}
+        \end{equation}
+        or
+        \begin{equation}\nonumber%\label{eq:}%
+          \frac{d}{dt} \ln \left((x(t))^{1-\gamma} - (\bar{x})^{1-\gamma}\right)
+          = (1-\gamma)a
+          \quad \forall t.
+        \end{equation}
+        Therefore, integrating both sides over $[0,t]$ yields
+        \begin{equation}\nonumber%\label{eq:}%
+          \ln \left(\frac{(x(t))^{1-\gamma} - (\bar{x})^{1-\gamma}}{(x(0))^{1-\gamma} - (\bar{x})^{1-\gamma}}\right)
+          = (1-\gamma)at
+          \quad\implies\quad
+          (x(t))^{1-\gamma} - (\bar{x})^{1-\gamma}
+          = \left((x(0))^{1-\gamma} - (\bar{x})^{1-\gamma}\right)e^{(1-\gamma)at},
+        \end{equation}
+        which gives \eqref{eq:Bernoulli_solution}.
+      }
+      the exact solution can be derived as
+      \begin{equation}\label{eq:Bernoulli_solution}%
+        x(t) = \left(\left((x(0))^{1-\gamma} + \frac{b}{a}\right)e^{(1-\gamma)at} - \frac{b}{a}\right)^{\frac{1}{1-\gamma}}
+      \end{equation}
+    \item Trivial equilibrium, $\bar{x}=0$, is asymptotically stable if and only if $\gamma >1$ and $a<0$
+    \item Non-trivial equilibrium, $\bar{x}=(-b/a)^{\frac{1}{1-\gamma}}$, is asymptotically stable if and only if $(1-\gamma)a<0$
+    \end{itemize}
+  \end{itemize}
+
+\clearpage
+
+\item \textbf{Example~2}
+  \begin{itemize}
+  \item Consider the following two-dimensional dynamical system:
+    \begin{equation}\label{eq:ex2}%
+      \begin{bmatrix}
+        \dot{x}_{1}(t) \\
+        \dot{x}_{2}(t) \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+      a_{1}x_{1}(t) - b_{1}(x_{1}(t)+x_{2}(t))x_{1}(t) \\
+      a_{2}x_{2}(t) - b_{2}(x_{1}(t)+x_{2}(t))x_{2}(t) \\
+      \end{bmatrix},
+      \quad
+      a_{i}, b_{i}>0,
+      \quad
+      \frac{a_{1}}{b_{1}} \neq \frac{a_{2}}{b_{2}}
+    \end{equation}
+  \item Observe:
+    \begin{itemize}
+    \item The system has a trivial equilibrium point, $\bar{x}_{1}=\bar{x}_{2} = 0$
+    \item There is no equilibrium point where both $\bar{x}_{1}$ and $\bar{x}_{2}$ are non-zero,\footnote{
+        If $(\bar{x}_{1}, \bar{x}_{2})$ is an equilibrium point with $\bar{x}_{1}\neq 0$ and $x_{2}\neq 0$,
+        then \eqref{eq:ex2} implies
+        \begin{equation}\nonumber%\label{eq:}%
+          a_{1} + b_{1}(\bar{x}_{1}+\bar{x}_{2})
+          = \frac{\dot{\bar{x}}_{1}}{\bar{x}_{1}}
+          = 0
+          = \frac{\dot{\bar{x}}_{2}}{\bar{x}_{2}}
+          =
+          a_{2} + b_{2}(\bar{x}_{1}+\bar{x}_{2}),
+        \end{equation}
+        which is only possible when $\frac{a_{1}}{b_{1}} = \frac{a_{2}}{b_{2}}$, a contradiction.
+      } indicating that at least one of them must be zero
+    \item It follows that there are only two non-trivial equilibrium points:
+      \begin{equation}\nonumber%\label{eq:}%
+        \begin{bmatrix}
+          \bar{x}_{1} \\
+          \bar{x}_{2} \\
+        \end{bmatrix}
+        = 
+        \begin{bmatrix}
+          a_{1}/b_{1} \\
+          0 \\
+        \end{bmatrix}
+        \quad\text{and}\quad
+        \begin{bmatrix}
+          \bar{x}_{1} \\
+          \bar{x}_{2} \\
+        \end{bmatrix}
+        = 
+        \begin{bmatrix}
+          0 \\
+          a_{2}/b_{2} \\
+        \end{bmatrix}
+      \end{equation}
+    \item Are these equilibrium points stable? If so, in what condition?
+    \end{itemize}
+  \end{itemize}
+
+\end{itemize}
+
+\subsection{Discrete-time model}
+
+\begin{itemize}
+
+\item \textbf{General dynamical system}
+  \begin{itemize}
+  \item A (time-invariant) discrete-time \emph{dynamical system} is a system of difference equations of the form
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t+1} = \bm{f}(\bm{x}_{t},\bm{u}_{t})
+      \quad t = 0, 1, 2, \ldots,
+    \end{equation}
+    where
+    \begin{itemize}
+    \item $\bm{x}_{t}\in \R^{m}$: state vector at $t$
+    \item $\bm{u}_{t}\in \R^{n}$: control (input) vector at $t$
+    \item $\bm{f} \in \R^{m}\times \R^{n} \to \R^{m}$: vector-valued function
+    \end{itemize}
+  \item A linear dynamical system is a special case where
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{f}(\bm{x},\bm{u}) = \bm{A}\bm{x} + \bm{B}\bm{u}
+    \end{equation}
+  \item Starting with some \emph{initial state} $\bm{x}_{0}$,
+    we want to know how $\bm{x}_{t}$ evolves over time depending on $\bm{f}$ and $\bm{u}$
+  \end{itemize}
+
+\item \textbf{Equilibrium}
+  \begin{itemize}
+  \item Consider the case where the control is constant at $\bar{\bm{u}}$:
+    \begin{equation}\label{eq:DS_discrete}%
+      \bm{x}_{t+1} = \bm{f}(\bm{x}_{t},\bar{\bm{u}})
+      \quad t = 0, 1, 2, \ldots,
+    \end{equation}
+  \item We define an \emph{equilibrium point} of \eqref{eq:DS_discrete} as $\bar{\bm{x}}$ that solves
+    \begin{equation}\nonumber%\label{eq:}%
+      \bar{\bm{x}} = \bm{f}(\bar{\bm{x}},\bar{\bm{u}})
+    \end{equation}
+    which obviously depends on both $\bm{f}$ and $\bar{\bm{u}}$
+  \end{itemize}
+
+\item \textbf{Stability}
+  \begin{itemize}
+
+  \item An equilibrium point $\bar{\bm{x}}$ of \eqref{eq:DS_discrete}
+    is said to be \emph{stable} if
+    for any $\epsilon >0$,
+    there exists $\delta>0$ such that
+    \begin{equation}\nonumber%\label{eq:}%
+      \lVert \bm{x}_{0} - \bar{\bm{x}} \rVert < \delta
+      \implies 
+      \lVert \bm{x}_{t} - \bar{\bm{x}} \rVert < \epsilon \quad \forall t = 1, 2, \ldots
+    \end{equation}
+  \item An equilibrium point $\bar{\bm{x}}$ of \eqref{eq:DS_discrete}
+    is said to be \emph{asymptotically stable} if
+    a) it is stable, and b)
+    there exists $\bar{\delta}>0$ such that
+    \begin{equation}\nonumber%\label{eq:}%
+      \lVert \bm{x}_{0} - \bar{\bm{x}} \rVert < \bar{\delta}
+      \implies 
+      \lim_{t \to \infty}\bm{x}_{t} =  \bar{\bm{x}},
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Example~3}
+  \begin{itemize}
+  \item Consider the following one-dimensional dynamical system:
+    \begin{equation}\label{eq:ex3}%
+      x_{t+1} = \frac{ax_{t}+b}{cx_{t}+1},
+      \quad a \neq 1,
+    \end{equation}
+    which generalizes the linear dynamical system $x_{t+1} = ax_{t} + b$ where $c=0$
+
+  \item Observe:
+    \begin{itemize}
+    \item If $c = 0$, the system has a unique equilibrium point:
+      \begin{equation}\nonumber%\label{eq:}%
+        \bar{x} = a\bar{x} + b
+        \iff
+        \bar{x} = \frac{b}{1-a}
+      \end{equation}
+    \item If $c \neq 0$, the system has two equilibrium points:
+      \begin{equation}\nonumber%\label{eq:}%
+        \bar{x} = \frac{a\bar{x}+b}{c\bar{x}+1}
+        \iff
+        \bar{x} =
+        \begin{cases}
+          - \frac{1}{2}\frac{1-a}{c} + \sqrt{\left(\frac{1}{2}\frac{1-a}{c}\right)^{2} + \frac{b}{c}} =:\bar{x}_{+} > 0  \\
+          - \frac{1}{2}\frac{1-a}{c} - \sqrt{\left(\frac{1}{2}\frac{1-a}{c}\right)^{2} + \frac{b}{c}} =:\bar{x}_{-} < 0
+        \end{cases}
+      \end{equation}
+    \end{itemize}
+  \item One may rewrite \eqref{eq:ex3} as
+    \begin{equation}\nonumber%\label{eq:}%
+      \frac{1}{x_{t+1}-\bar{x}} = \underbrace{\frac{1+c\bar{x}}{a-c\bar{x}}}_{=:\alpha}\frac{1}{x_{t}-\bar{x}} + \frac{c}{a-c\bar{x}},
+      \quad \forall \bar{x} \in \{\bar{x}_{+}, \bar{x}_{-}\},
+    \end{equation}
+    which implies that the state trajectory satisfies
+    \begin{equation}\nonumber%\label{eq:}%
+      \frac{1}{x_{t}-\bar{x}} = \alpha^{t}\frac{1}{x_{0}-\bar{x}} + \frac{1-\alpha^{t}}{1-\alpha}\frac{c}{a-c\bar{x}},
+    \end{equation}
+    or
+    \begin{equation}\label{eq:xt1}%
+      x_{t} = \bar{x} + \left(\frac{1}{x_{0}-\bar{x}}\alpha^{t} + \frac{1-\alpha^{t}}{1-\alpha} \frac{c}{a-c\bar{x}} \right)^{-1},
+      \quad \bar{x} \in \{\bar{x}_{+}, \bar{x}_{-}\}
+    \end{equation}
+    where
+    \begin{equation}\nonumber%\label{eq:}%
+      \alpha
+      = \frac{1+c\bar{x}}{a-c\bar{x}}
+      =
+      \begin{cases}
+        \frac{1+c\bar{x}_{+}}{a-c\bar{x}_{+}}
+        =
+        \frac{\frac{1}{2}\frac{1+a}{c} + \sqrt{\left(\frac{1}{2}\frac{1-a}{c}\right)^{2} + \frac{b}{c}}}{\frac{1}{2}\frac{1+a}{c} - \sqrt{\left(\frac{1}{2}\frac{1-a}{c}\right)^{2} + \frac{b}{c}}} & \text{if $\bar{x}=\bar{x}_{+}$}\\
+        \frac{1+c\bar{x}_{-}}{a-c\bar{x}_{-}} = 
+        \frac{\frac{1}{2}\frac{1+a}{c} - \sqrt{\left(\frac{1}{2}\frac{1-a}{c}\right)^{2} + \frac{b}{c}}}{\frac{1}{2}\frac{1+a}{c} + \sqrt{\left(\frac{1}{2}\frac{1-a}{c}\right)^{2} + \frac{b}{c}}} & \text{if $\bar{x}=\bar{x}_{-}$}\\
+      \end{cases}
+    \end{equation}
+  \item It follows from \eqref{eq:xt1} that an equilibrium point $\bar{x}$ is asymptotically stable if and only if
+    \begin{equation}\nonumber%\label{eq:}%
+      \lim_{t\to\infty} \left(\frac{1}{x_{0}-\bar{x}}\alpha^{t} + \frac{1-\alpha^{t}}{1-\alpha} \frac{c}{a-c\bar{x}}\right) = \pm \infty
+      \text{ if $x_{0}$ is close enough to $\bar{x}$}
+      \iff
+      |\alpha|>1,
+    \end{equation}
+    from which we conclude that
+    $\bar{x}_{+}$ is asymptotically stable
+    whereas
+    $\bar{x}_{-}$ is not
+  \end{itemize}
+
+\item \textbf{Example~4}
+  \begin{itemize}
+  \item Consider the following two-dimensional dynamical system:
+    \begin{equation}\label{eq:ex4}%
+      \begin{bmatrix}
+        x_{1,t+1} \\
+        x_{2,t+1} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+      a_{1} x_{1,t} + b_{1}x_{2,t}^{2} \\
+      b_{2}x_{1,t} + a_{2} x_{2,t} \\
+      \end{bmatrix},
+      \quad a_{1},a_{2}\neq 1,
+      \quad b_{1},b_{2}\neq 0
+    \end{equation}
+  \item Observe:
+    \begin{itemize}
+    \item There are two equilibrium points:
+      \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        \bar{x}_{1} \\
+        \bar{x}_{2} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        a_{1}\bar{x}_{1} + b_{1}\bar{x}_{2}^{2} \\
+        b_{2}\bar{x}_{1} + a_{2}\bar{x}_{2} \\
+      \end{bmatrix}
+      \iff  
+      \begin{bmatrix}
+        \bar{x}_{1} \\
+        \bar{x}_{2} \\
+      \end{bmatrix}
+      = 
+      \begin{bmatrix}
+        0 \\
+        0 \\
+      \end{bmatrix}
+      \,\text{ or }\,
+      \begin{bmatrix}
+        \bar{x}_{1} \\
+        \bar{x}_{2} \\
+      \end{bmatrix}
+      = 
+      \begin{bmatrix}
+        \frac{1-a_{1}}{b_{1}}\left(\frac{1-a_{2}}{b_{2}}\right)^{2} \\
+        \frac{1-a_{1}}{b_{1}}\frac{1-a_{2}}{b_{2}} \\
+      \end{bmatrix}
+      \end{equation}
+    \item Are these equilibrium points stable? If so, in what condition?
+    \end{itemize}
+  \end{itemize}
+
+\end{itemize}
+
+\section{Linearization}
+
+\subsection{Continuous-time model}
+
+\begin{itemize}
+\item \textbf{Linearized dynamical system}
+  \begin{itemize}
+  \item Consider the following dynamical system
+    \begin{equation}\label{eq:nlds_continuous}%
+      \dot{\bm{x}}(t) = \bm{f}(\bm{x}(t),\bm{u}(t))
+      \quad\text{or}\quad
+      \begin{bmatrix}
+        \dot{x}_{1}(t) \\
+        \dot{x}_{2}(t) \\
+        \vdots \\
+        \dot{x}_{m}(t) \\
+      \end{bmatrix}
+      = 
+      \begin{bmatrix}
+        f_{1}(\bm{x}(t),\bm{u}(t)) \\
+        f_{2}(\bm{x}(t),\bm{u}(t)) \\
+        \vdots \\
+        f_{m}(\bm{x}(t),\bm{u}(t)) \\
+      \end{bmatrix}
+    \end{equation}
+  \item Let $(\bar{\bm{x}}, \bar{\bm{u}})$ be \emph{an} equilibrium point of the system
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{f}(\bar{\bm{x}},\bar{\bm{u}}) = \bm{0}
+    \end{equation}
+  \item If $(\bm{x}(t),\bm{u}(t))$ is close to $(\bar{\bm{x}},\bar{\bm{u}})$,
+    \begin{equation}
+      \bm{f}(\bm{x}(t),\bm{u}(t))
+      \approx
+        \underbrace{\bm{f}(\bar{\bm{x}},\bar{\bm{u}})}_{=\bm{0}}
+        +
+        \frac{d\bm{f}(\bar{\bm{x}},\bar{\bm{u}})}{d\bm{x}}(\bm{x}(t)-\bar{\bm{x}})
+        +
+        \frac{d\bm{f}(\bar{\bm{x}},\bar{\bm{u}})}{d\bm{u}}(\bm{u}(t)-\bar{\bm{u}})
+    \nonumber%\label{eq:}%
+    \end{equation}
+    where
+    \begin{equation}\nonumber%\label{eq:}%
+      \frac{d\bm{f}(\bar{\bm{x}},\bar{\bm{u}})}{d\bm{x}}
+      =
+      \begin{bmatrix}
+        \frac{\partial f_{1}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{1}} & \frac{\partial f_{1}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{2}}  & \ldots & \frac{\partial f_{1}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{m}} \\
+        \frac{\partial f_{2}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{1}} & \frac{\partial f_{2}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{2}}  & \ldots & \frac{\partial f_{2}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{m}} \\
+        \vdots & \vdots  & \ddots & \vdots \\
+        \frac{\partial f_{m}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{1}} & \frac{\partial f_{m}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{2}}  & \ldots & \frac{\partial f_{m}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{m}} \\
+      \end{bmatrix},
+      \quad
+      \frac{d\bm{f}(\bar{\bm{x}},\bar{\bm{u}})}{d\bm{u}}
+      =
+      \begin{bmatrix}
+        \frac{\partial f_{1}(\bar{\bm{x}},\bar{\bm{u}})}{\partial u_{1}} & \frac{\partial f_{1}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{2}}  & \ldots & \frac{\partial f_{1}(\bar{\bm{x}},\bar{\bm{u}})}{\partial u_{n}} \\
+        \frac{\partial f_{2}(\bar{\bm{x}},\bar{\bm{u}})}{\partial u_{1}} & \frac{\partial f_{2}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{2}}  & \ldots & \frac{\partial f_{2}(\bar{\bm{x}},\bar{\bm{u}})}{\partial u_{n}} \\
+        \vdots & \vdots  & \ddots & \vdots \\
+        \frac{\partial f_{m}(\bar{\bm{x}},\bar{\bm{u}})}{\partial u_{1}} & \frac{\partial f_{m}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{2}}  & \ldots & \frac{\partial f_{m}(\bar{\bm{x}},\bar{\bm{u}})}{\partial u_{n}} \\
+      \end{bmatrix}
+    \end{equation}
+  \item Hence, in a neighborhood of $(\bar{\bm{x}},\bar{\bm{u}})$,
+    dynamical system~\eqref{eq:nlds_continuous} can be approximated by the following \emph{linear} system
+    \begin{equation}\nonumber%\label{eq:}%
+      \frac{d}{dt}\left(\bm{x}(t)-\bar{\bm{x}}\right)
+      =
+      \bm{A}(\bm{x}(t)-\bar{\bm{x}})
+      +
+      \bm{B}(\bm{u}(t)-\bar{\bm{u}}),
+      \quad\text{where}\quad
+      \bm{A} := \frac{d\bm{f}(\bar{\bm{x}},\bar{\bm{u}})}{d\bm{x}},
+      \quad
+      \bm{B} := \frac{d\bm{f}(\bar{\bm{x}},\bar{\bm{u}})}{d\bm{u}}
+    \end{equation}
+  \item Stability of each equilibrium point
+    and the state trajectory around it can be characterized
+    based on the system matrix $\bm{A}$
+  \item Since $\bm{A}$ depends on $\bar{\bm{x}}$,
+    we need to use different $\bm{A}$ for analyzing stability of different equilibrium points $\bar{\bm{x}}$
+  \end{itemize}
+  \clearpage
+
+\item \textbf{Example~1}
+  \begin{itemize}
+  \item Let us revisit Example~1 and consider the following one-dimensional dynamical system:
+    \begin{equation}\nonumber%\label{eq:Bernoulli_rev}%
+      \dot{x}(t) = \underbrace{ax(t) + b(x(t))^{\gamma}}_{f(x(t))},
+      \quad ab < 0, \, \gamma\in \R\setminus\{1\}
+    \end{equation}
+  \item Linearly approximating the system around an equilibrium point $\bar{x}$ yields
+    \begin{equation}\nonumber%\label{eq:}%
+      \frac{d}{dt}(\bar{x}(t)-\bar{x})
+      = \underbrace{\left(a + \gamma b(\bar{x})^{\gamma-1}\right)}_{f'(\bar{x})}(x(t)-\bar{x}),
+    \end{equation}
+    which indicates that the equilibrium point is asymptotically stable
+    if and only if
+    \begin{equation}\nonumber%\label{eq:}%
+      f'(\bar{x}) = a + \gamma b(\bar{x})^{\gamma-1}< 0
+    \end{equation}
+  \item Assume $\gamma \neq 0$ so that 
+    the system has two equilibrium points:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bar{x} = 0
+      \quad
+      \text{ and }
+      \quad
+      \bar{x} = \left(- \frac{b}{a}\right)^{\frac{1}{1-\gamma}}
+    \end{equation}
+  \item Observe that
+    \begin{itemize}
+    \item $\bar{x}=0$ is asymptotically stable if and only if
+      \begin{equation}\nonumber%\label{eq:}%
+        a + \gamma b(\bar{x})^{\gamma-1}\big|_{\bar{x}=0} < 0
+        \iff a < 0 \text{ and } \gamma > 1
+      \end{equation}
+    \item $\bar{x}=(-b/a)^{\frac{1}{1-\gamma}}$ is asymptotically stable if and only if
+      \begin{equation}\nonumber%\label{eq:}%
+        a + \gamma b \left(\bar{x}\right)^{\gamma-1}\bigg|_{\bar{x}=(-b/a)^{\frac{1}{1-\gamma}}} < 0
+        \iff
+        (1 - \gamma)a < 0
+      \end{equation}
+    \end{itemize}
+  \item The linearized model allows us to reach the same conclusion
+    without explicitly solving for the state trajectory
+    
+  \end{itemize}
+
+\item \textbf{Example~2}
+  \begin{itemize}
+  \item Let us revisit Example~2 and consider the following two-dimensional dynamical system:
+    \begin{equation}\nonumber%\label{eq:ex2_rev}%
+      \begin{bmatrix}
+        \dot{x}_{1}(t) \\
+        \dot{x}_{2}(t) \\
+      \end{bmatrix}
+      =
+      \underbrace{
+      \begin{bmatrix}
+      a_{1}x_{1}(t) - b_{1}(x_{1}(t)+x_{2}(t))x_{1}(t) \\
+      a_{2}x_{2}(t) - b_{2}(x_{1}(t)+x_{2}(t))x_{2}(t) \\
+      \end{bmatrix}}_{\bm{f}(\bm{x}(t))},
+      \quad
+      a_{i}, b_{i}>0,
+      \quad
+      \frac{a_{1}}{b_{1}} \neq \frac{a_{2}}{b_{2}},
+    \end{equation}
+    which we know has three equilibrium points:
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        \bar{x}_{1} \\
+        \bar{x}_{2} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        0 \\
+        0 \\
+      \end{bmatrix},
+      \quad
+        \begin{bmatrix}
+          \bar{x}_{1} \\
+          \bar{x}_{2} \\
+        \end{bmatrix}
+        = 
+        \begin{bmatrix}
+          a_{1}/b_{1} \\
+          0 \\
+        \end{bmatrix},
+        \quad\text{and}\quad
+        \begin{bmatrix}
+          \bar{x}_{1} \\
+          \bar{x}_{2} \\
+        \end{bmatrix}
+        = 
+        \begin{bmatrix}
+          0 \\
+          a_{2}/b_{2} \\
+        \end{bmatrix}
+    \end{equation}
+  \item Linearly approximating the system around an equilibrium point $\bar{\bm{x}}$ yields
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        \dot{x}_{1}(t) \\
+        \dot{x}_{2}(t) \\
+      \end{bmatrix}
+      = \underbrace{
+        \begin{bmatrix}
+          a_{1} - 2b_{1}\bar{x}_{1} - b_{1}\bar{x}_{2} & -b_{1}\bar{x}_{1} \\
+          -b_{2}\bar{x}_{2} & a_{2} - 2b_{2}\bar{x}_{2} - b_{2}\bar{x}_{1} \\
+        \end{bmatrix}
+      }_{\frac{d\bm{f}(\bar{\bm{x}})}{d\bm{x}}}
+      \begin{bmatrix}
+        x_{1}(t)-\bar{x}_{1} \\
+        x_{2}(t)-\bar{x}_{2} \\
+      \end{bmatrix}
+    \end{equation}
+    which indicates that the equilibrium point is asymptotically stable
+    if and only if
+    \begin{equation}\nonumber%\label{eq:}%
+      \rho \left(e^{\frac{d\bm{f}(\bar{\bm{x}})}{d\bm{x}}}\right) < 1
+      \iff
+      \text{eigenvalues of $\frac{d\bm{f}(\bar{\bm{x}})}{d\bm{x}}$ are all negative}
+    \end{equation}
+
+  \item For $\bar{\bm{x}}=(0, 0)^{\top}$, we have
+    \begin{equation}\nonumber%\label{eq:}%
+      \frac{d\bm{f}(\bar{\bm{x}})}{d\bm{x}}\bigg|_{
+        \bar{\bm{x}}=
+        \begin{bmatrix}
+          0 \\
+          0 \\
+        \end{bmatrix}
+      }
+      =
+      \begin{bmatrix}
+        a_{1} & 0 \\
+        0 & a_{2} \\
+      \end{bmatrix}
+    \end{equation}
+    and therefore
+    the equilibrium point is not stable because both of the eigenvalues are positive ($a_{1}>0$ and $a_{2}>0$)
+    
+  \item For $\bar{\bm{x}}=(a_{1}/b_{1}, 0)^{\top}$, we have
+    \begin{equation}\nonumber%\label{eq:}%
+      \frac{d\bm{f}(\bar{\bm{x}})}{d\bm{x}}\bigg|_{
+        \bar{\bm{x}}=
+        \begin{bmatrix}
+          a_{1}/b_{1} \\
+          0 \\
+        \end{bmatrix}
+      }
+      =
+      \begin{bmatrix}
+        - a_{1} & -a_{1} \\
+        0 & -\left(\frac{a_{1}}{b_{1}}-\frac{a_{2}}{b_{2}}\right)b_{2} \\
+      \end{bmatrix}
+    \end{equation}
+    and therefore
+    the equilibrium point is asymptotically stable if and only if $\frac{a_{1}}{b_{1}} > \frac{a_{2}}{b_{2}}$
+    
+  \item For $\bar{\bm{x}}=(0, a_{2}/b_{2})^{\top}$, we have
+    \begin{equation}\nonumber%\label{eq:}%
+      \frac{d\bm{f}(\bar{\bm{x}})}{d\bm{x}}\bigg|_{
+        \bar{\bm{x}}=
+        \begin{bmatrix}
+          0 \\
+          a_{2}/b_{2} \\
+        \end{bmatrix}
+      }
+      =
+      \begin{bmatrix}
+        -\left(\frac{a_{2}}{b_{2}}-\frac{a_{1}}{b_{1}}\right)b_{1} & 0 \\
+        -a_{2} & - a_{2} \\
+      \end{bmatrix}
+    \end{equation}
+    and therefore
+    the equilibrium point is asymptotically stable if and only if $\frac{a_{2}}{b_{2}} > \frac{a_{1}}{b_{1}}$
+    
+  \end{itemize}
+
+\end{itemize}
+
+\subsection{Discrete-time model}
+
+\begin{itemize}
+\item \textbf{Linearized dynamical system}
+  \begin{itemize}
+  \item Consider the following dynamical system
+    \begin{equation}\label{eq:nlds_discrete}%
+      \bm{x}_{t+1} = \bm{f}(\bm{x}_{t},\bm{u}_{t})
+      \quad\text{or}\quad
+      \begin{bmatrix}
+        x_{1,t+1} \\
+        x_{2,t+1} \\
+        \vdots \\
+        x_{m,t+1} \\
+      \end{bmatrix}
+      = 
+      \begin{bmatrix}
+        f_{1}(\bm{x}_{t},\bm{u}_{t}) \\
+        f_{2}(\bm{x}_{t},\bm{u}_{t}) \\
+        \vdots \\
+        f_{m}(\bm{x}_{t},\bm{u}_{t}) \\
+      \end{bmatrix}
+    \end{equation}
+  \item Let $(\bar{\bm{x}},\bar{\bm{u}})$ be \emph{an} equilibrium point of the system:
+    $\bm{f}(\bar{\bm{x}},\bar{\bm{u}}) = \bar{\bm{x}}$
+  \item If $(\bm{x}_{t},\bm{u}_{t})$ is close to $(\bar{\bm{x}},\bar{\bm{u}})$,
+    \begin{equation}
+      \bm{f}(\bm{x}_{t},\bm{u}_{t})
+      \approx
+        \underbrace{\bm{f}(\bar{\bm{x}},\bar{\bm{u}})}_{=\bar{\bm{x}}}
+        +
+        \frac{d\bm{f}(\bar{\bm{x}},\bar{\bm{u}})}{d\bm{x}}(\bm{x}_{t}-\bar{\bm{x}})
+        +
+        \frac{d\bm{f}(\bar{\bm{x}},\bar{\bm{u}})}{d\bm{u}}(\bm{u}_{t}-\bar{\bm{u}})
+    \nonumber%\label{eq:}%
+    \end{equation}
+    where
+    \begin{equation}\nonumber%\label{eq:}%
+      \frac{d\bm{f}(\bar{\bm{x}},\bar{\bm{u}})}{d\bm{x}}
+      =
+      \begin{bmatrix}
+        \frac{\partial f_{1}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{1}} & \frac{\partial f_{1}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{2}}  & \ldots & \frac{\partial f_{1}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{m}} \\
+        \frac{\partial f_{2}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{1}} & \frac{\partial f_{2}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{2}}  & \ldots & \frac{\partial f_{2}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{m}} \\
+        \vdots & \vdots  & \ddots & \vdots \\
+        \frac{\partial f_{m}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{1}} & \frac{\partial f_{m}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{2}}  & \ldots & \frac{\partial f_{m}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{m}} \\
+      \end{bmatrix},
+      \quad
+      \frac{d\bm{f}(\bar{\bm{x}},\bar{\bm{u}})}{d\bm{u}}
+      =
+      \begin{bmatrix}
+        \frac{\partial f_{1}(\bar{\bm{x}},\bar{\bm{u}})}{\partial u_{1}} & \frac{\partial f_{1}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{2}}  & \ldots & \frac{\partial f_{1}(\bar{\bm{x}},\bar{\bm{u}})}{\partial u_{n}} \\
+        \frac{\partial f_{2}(\bar{\bm{x}},\bar{\bm{u}})}{\partial u_{1}} & \frac{\partial f_{2}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{2}}  & \ldots & \frac{\partial f_{2}(\bar{\bm{x}},\bar{\bm{u}})}{\partial u_{n}} \\
+        \vdots & \vdots  & \ddots & \vdots \\
+        \frac{\partial f_{m}(\bar{\bm{x}},\bar{\bm{u}})}{\partial u_{1}} & \frac{\partial f_{m}(\bar{\bm{x}},\bar{\bm{u}})}{\partial x_{2}}  & \ldots & \frac{\partial f_{m}(\bar{\bm{x}},\bar{\bm{u}})}{\partial u_{n}} \\
+      \end{bmatrix}
+    \end{equation}
+  \item Hence, in a neighborhood of $(\bar{\bm{x}},\bar{\bm{u}})$,
+    dynamical system~\eqref{eq:nlds_discrete} can be approximated by the following linear system
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t+1} - \bar{\bm{x}}
+      =
+      \bm{A}(\bm{x}_{t}-\bar{\bm{x}})
+      +
+      \bm{B}(\bm{u}_{t}-\bar{\bm{u}}),
+      \quad\text{where}\quad
+      \bm{A} := \frac{d\bm{f}(\bar{\bm{x}},\bar{\bm{u}})}{d\bm{x}},
+      \quad
+      \bm{B} := \frac{d\bm{f}(\bar{\bm{x}},\bar{\bm{u}})}{d\bm{u}}
+    \end{equation}
+  \item Stability of each equilibrium point
+    and the state trajectory around it can be characterized
+    based on the system matrix $\bm{A}$
+  \item Note that we need to use different $\bm{A}$ for different equilibrium point
+  \end{itemize}
+
+\clearpage
+\item \textbf{Example~3}
+  \begin{itemize}
+  \item Let us revisit Example~3 and consider the following one-dimensional dynamical system:
+    \begin{equation}\nonumber%\label{eq:ex3_rev}%
+      x_{t+1} = \underbrace{\frac{ax_{t}+b}{cx_{t}+1}}_{f(x_{t})},
+      \quad a \neq 1, \quad c\neq 0,
+    \end{equation}
+    which we know has two equilibrium points:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bar{x} = \frac{a\bar{x}+b}{c\bar{x}+1}
+      \iff
+      \bar{x} =
+      \begin{cases}
+        - \frac{1}{2}\frac{1-a}{c} + \sqrt{\left(\frac{1}{2}\frac{1-a}{c}\right)^{2} + \frac{b}{c}} =:\bar{x}_{+} > 0  \\
+        - \frac{1}{2}\frac{1-a}{c} - \sqrt{\left(\frac{1}{2}\frac{1-a}{c}\right)^{2} + \frac{b}{c}} =:\bar{x}_{-} < 0
+      \end{cases}
+    \end{equation}
+  \item Linearly approximating the system around an equilibrium point $\bar{x}$ yields
+    \begin{equation}\nonumber%\label{eq:}%
+      x_{t+1} - \bar{x} =
+      \underbrace{
+        \frac{a-c\bar{x}}{c\bar{x}+1}
+        }_{f'(\bar{x})}
+        (x_{t}-\bar{x}),
+      \end{equation}
+      which indicates that the equilibrium point is asymptotically stable if and only if
+      \begin{equation}\nonumber%\label{eq:}%
+        \left|f'(\bar{x})\right| < 1
+        \iff
+        \left|\frac{a-c\bar{x}}{c\bar{x}+1}\right| < 1
+        \iff
+        \left|\frac{1+c\bar{x}}{a-c\bar{x}}\right| > 1,
+      \end{equation}
+    \item Since
+      \begin{equation}\nonumber%\label{eq:}%
+        \left|\frac{1+c\bar{x}}{a-c\bar{x}}\right|
+        =
+        \begin{cases}
+          \left|\frac{\frac{1}{2}\frac{1+a}{c} + \sqrt{\left(\frac{1}{2}\frac{1-a}{c}\right)^{2} +
+          \frac{b}{c}}}{\frac{1}{2}\frac{1+a}{c} - \sqrt{\left(\frac{1}{2}\frac{1-a}{c}\right)^{2} +
+          \frac{b}{c}}}\right| > 1 & \text{if $\bar{x}=\bar{x}_{+}$}\\[15pt] 
+          \left|\frac{\frac{1}{2}\frac{1+a}{c} - \sqrt{\left(\frac{1}{2}\frac{1-a}{c}\right)^{2} +
+          \frac{b}{c}}}{\frac{1}{2}\frac{1+a}{c} + \sqrt{\left(\frac{1}{2}\frac{1-a}{c}\right)^{2} +
+          \frac{b}{c}}}\right| < 1 & \text{if $\bar{x}=\bar{x}_{-}$}\\
+        \end{cases}
+      \end{equation}
+      we conclude that
+      $\bar{x}_{+}$ is asymptotically stable
+      whereas
+      $\bar{x}_{-}$ is not stable
+      
+  \item The linearized model allows us to reach the same conclusion
+    without explicitly solving for the state trajectory
+  \end{itemize}
+
+\item \textbf{Example~4}
+  \begin{itemize}
+  \item Let us revisit Example~4 and consider the following two-dimensional dynamical system:
+    \begin{equation}\nonumber%\label{eq:ex4}%
+      \begin{bmatrix}
+        x_{1,t+1} \\
+        x_{2,t+1} \\
+      \end{bmatrix}
+      =
+      \underbrace{
+      \begin{bmatrix}
+      a_{1} x_{1,t} + b_{1}x_{2,t}^{2} \\
+      b_{2}x_{1,t} + a_{2} x_{2,t} \\
+      \end{bmatrix}}_{\bm{f}(\bm{x}_{t})},
+      \quad a_{1},a_{2}\neq 1,
+      \quad b_{1},b_{2}\neq 0,
+    \end{equation}
+    which we know has two equilibrium points
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        \bar{x}_{1} \\
+        \bar{x}_{2} \\
+      \end{bmatrix}
+      = 
+      \begin{bmatrix}
+        0 \\
+        0 \\
+      \end{bmatrix}
+      \,\text{ or }\,
+      \begin{bmatrix}
+        \bar{x}_{1} \\
+        \bar{x}_{2} \\
+      \end{bmatrix}
+      = 
+      \begin{bmatrix}
+        \frac{1-a_{1}}{b_{1}}\left(\frac{1-a_{2}}{b_{2}}\right)^{2} \\
+        \frac{1-a_{1}}{b_{1}}\frac{1-a_{2}}{b_{2}} \\
+      \end{bmatrix}
+    \end{equation}
+  \item We are not able to explicitly solve for the state trajectory here
+    so we turn to linearization
+  \item To fix context, assume $|a_{1}|<1$ and $|a_{2}|<1$
+  \item Linearly approximating the system around an equilibrium point $\bar{\bm{x}}$ yields
+    \begin{equation}\nonumber%\label{eq:ex4}%
+      \begin{bmatrix}
+        x_{1,t+1} - \bar{x}_{1} \\
+        x_{2,t+1} - \bar{x}_{2} \\
+      \end{bmatrix}
+      =
+      \underbrace{
+      \begin{bmatrix}
+      a_{1} & 2b_{1}\bar{x}_{2} \\
+      b_{2} & a_{2} \\
+      \end{bmatrix}}_{\frac{d\bm{f}(\bar{\bm{x}})}{d\bm{x}}}
+      \begin{bmatrix}
+      x_{1,t} - \bar{x}_{1} \\
+      x_{2,t} - \bar{x}_{2} \\
+      \end{bmatrix},
+    \end{equation}
+    which indicates that the equilibrium point is asymptotically stable
+    if and only if
+    \begin{equation}\nonumber%\label{eq:}%
+      \rho \left(\frac{d\bm{f}(\bar{\bm{x}})}{d\bm{x}}\right) < 1
+      \iff
+      \text{eigenvalues of $\frac{d\bm{f}(\bar{\bm{x}})}{d\bm{x}}$ are within unit circle}
+    \end{equation}
+
+  \item For $\bar{\bm{x}}=(0, 0)^{\top}$, we have
+    \begin{equation}\nonumber%\label{eq:}%
+      \frac{d\bm{f}(\bar{\bm{x}})}{d\bm{x}}\bigg|_{
+        \bar{\bm{x}}=
+        \begin{bmatrix}
+          0 \\
+          0 \\
+        \end{bmatrix}
+      }
+      =
+      \begin{bmatrix}
+        a_{1} & 0 \\
+        b_{2} & a_{2} \\
+      \end{bmatrix}
+    \end{equation}
+    and therefore
+    the equilibrium point is asymptotically stable (since $|a_{1}|<1$ and $|a_{2}|<1$)
+
+  \item For $\bar{\bm{x}}=\left(\frac{1-a_{1}}{b_{1}}\left(\frac{1-a_{2}}{b_{2}}\right)^{2}, \frac{1-a_{1}}{b_{1}}\frac{1-a_{2}}{b_{2}}\right)^{\top}$, we have
+    \begin{equation}\nonumber%\label{eq:}%
+      \frac{d\bm{f}(\bar{\bm{x}})}{d\bm{x}}\Bigg|_{
+        \bar{\bm{x}}=
+        \begin{bmatrix}
+          \frac{1-a_{1}}{b_{1}}\left(\frac{1-a_{2}}{b_{2}}\right)^{2} \\
+          \frac{1-a_{1}}{b_{1}}\frac{1-a_{2}}{b_{2}} \\
+        \end{bmatrix}
+      }
+      =
+      \begin{bmatrix}
+        a_{1} & 2\frac{(1-a_{1})(1-a_{2})}{b_{2}} \\
+        b_{2} & a_{2} \\
+      \end{bmatrix}
+    \end{equation}
+    and observe
+    \begin{itemize}
+    \item The characteristic polynomial is
+      \begin{equation}\nonumber%\label{eq:}%
+        \phi_{\frac{d\bm{f}(\bar{\bm{x}})}{d\bm{x}}}(t)
+        = (a_{1}-t)(a_{2}-t) - 2(1-a_{1})(1-a_{2})
+      \end{equation}
+      and in particular
+      \begin{equation}\nonumber%\label{eq:}%
+        \phi_{\frac{d\bm{f}(\bar{\bm{x}})}{d\bm{x}}}(1)
+        = -(1-a_{1})(1-a_{2}) < 0
+      \end{equation}
+    \item Hence, one of the eigenvalue is strictly greater than $1$,
+      implying that the equilibrium point is not stable
+    \end{itemize}
+
+  \end{itemize}
+
+\end{itemize}
+
+\end{document}

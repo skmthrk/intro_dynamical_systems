@@ -1,0 +1,211 @@
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{makeidx}
+
+\usepackage[sc, noBBpl]{mathpazo}
+\usepackage{dsfont} % for indicator function
+\usepackage[deluxe]{otf}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+
+\usepackage{listings} % for programming codes
+
+\usepackage{bm}
+\usepackage[dvipdfmx]{color}
+\pagestyle{plain} 
+\usepackage{float}
+\usepackage[dvipdfmx]{graphicx}
+
+\usepackage[left=15mm, right=18mm, top=20mm, bottom=20mm]{geometry}
+
+\setlength{\footskip}{40pt} 
+\setlength{\abovecaptionskip}{0pt}
+\setlength{\belowcaptionskip}{0pt}
+\renewcommand{\baselinestretch}{1.05}
+
+\newcommand{\argmax}{\mathop{\rm arg max}\limits}
+\newcommand{\argmin}{\mathop{\rm arg min}\limits}
+\newcommand{\st}{\mathop{\rm s.t.}\limits}
+\newcommand{\fsize}[1]{\fontsize{#1}{#1}\selectfont}
+
+% custom color
+\usepackage[dvipdfmx]{xcolor}
+
+% colors
+\definecolor{darkred}{rgb}{.40,.00,.00}
+\definecolor{navy}{rgb}{.00,.00,.40}
+\definecolor{darknavy}{rgb}{.00,.00,.30}
+\definecolor{lightnavy}{rgb}{.10,.10,.40}
+
+\newcommand{\navy}{\color{navy}}
+\newcommand{\deepred}{\color{darkred}}
+\newcommand{\emred}[1]{\textbf{\deepred #1}}
+\newcommand{\emblue}[1]{\textbf{\navy #1}}
+
+% title and tableofcontents
+\usepackage[titles]{tocloft}
+\setlength{\cftbeforesecskip}{2pt}
+\setlength{\cftbeforesubsecskip}{0pt}
+\renewcommand{\cftsecfont}{\normalsize\mcfamily}
+\renewcommand{\cftsubsecfont}{\normalsize\mcfamily}
+\renewcommand{\cftsubsecfont}{\normalsize\mcfamily}
+\renewcommand{\contentsname}{\large\mcfamily\bfseries \S\hspace{0.5\baselineskip}Contents\\[-\baselineskip]}
+\cftsetindents{section}{10.0pt}{15.0pt}
+\cftsetindents{subsection}{20.0pt}{30.0pt}
+\cftpagenumbersoff{section}
+\cftpagenumbersoff{subsection}
+\cftpagenumbersoff{subsubsection}
+
+\makeatletter
+\def\vhrulefill#1{\leavevmode\leaders\hrule\@height#1\hfill \kern\z@}
+\makeatother
+
+\makeatletter
+\def\maketitle{%
+	\begin{center}\leavevmode
+	\normalfont
+	{\normalsize\raggedleft \@date\par}%
+	\vskip -0.7\baselineskip
+	\vhrulefill{0.2pt}\par
+	\vskip 0.3\baselineskip
+	\renewcommand{\baselinestretch}{0.80}
+	{\color{darknavy}\bfseries\Large\raggedright \@title\par}%
+	\renewcommand{\baselinestretch}{1.00}
+	\vskip 0.2\baselineskip
+	\ifx\@subtitle\@empty\else%
+	{\normalsize\raggedright \@subtitle\par}%
+	\fi
+	\ifx\@author\@empty\else%
+	\vskip 0.5\baselineskip
+	{\normalsize\raggedleft \@author\par}%
+	\fi
+	\end{center}%
+	\vskip 1.0\baselineskip
+}
+\def\subtitle#1{\gdef\@subtitle{#1}}
+\let\@subtitle\@empty
+\makeatother
+
+% section
+\newcommand{\Secindent}{0.0\baselineskip}
+\newcommand{\Subsecindent}{0.0\baselineskip}
+\newcommand{\lmargini}{1.3\baselineskip}
+\newcommand{\lmarginii}{0.5\baselineskip}
+\newcommand{\lmarginiii}{0.2\baselineskip}
+\def\theenumi{\arabic{enumi}}
+\def\theenumii{\alph{enumii}}
+\renewcommand{\labelenumi}{\hfill\hspace{60pt}\theenumi.}
+\renewcommand{\labelenumii}{\hspace{30pt}\theenumii.}
+\renewcommand{\labelitemi}{\small\textbullet\hspace{2pt}}
+\renewcommand{\labelitemii}{\color{gray}\small$\circ$\hspace{2pt}}
+\renewcommand{\labelitemiii}{\textendash\hspace{1pt}}
+\makeatletter
+\renewcommand{\section}{\@startsection%
+	{section}{1}{\Secindent}% name, depth, indent \z@=0pt
+	{-1.0\baselineskip \@plus1.5\baselineskip \@minus0.5\baselineskip}% beforeskip (no indent if negative)
+	{0.5\baselineskip \@plus0.8\baselineskip \@minus0.3\baselineskip}% afterskip (no line break if negative)
+	{\reset@font\large\bfseries\scshape\color{darknavy}}% font
+}
+\renewcommand{\subsection}{\@startsection%
+	{subsection}{2}{\Subsecindent}%
+	{-0.5\baselineskip \@plus0.7\baselineskip \@minus0.4\baselineskip}%
+	{0.3\baselineskip \@plus0.5\baselineskip \@minus0.2\baselineskip}%
+	{\reset@font\normalsize\bfseries\scshape\color{darknavy}}% 
+}
+\renewcommand{\thesection}{\@arabic\c@section} % arabic, roman, Roman, alph, Alph, fnsymbol
+\renewcommand{\thesubsection}{\thesection\hspace{0pt}.\hspace{0pt}\@arabic\c@subsection}
+\makeatother
+
+\makeatletter
+\def\@listi{%
+	\topsep = 0.2\baselineskip
+	\partopsep = 0.0\baselineskip
+	\parsep = 0.0\baselineskip
+	\itemsep = 0.5\baselineskip
+	\leftmargin = 1.5zw
+	\labelsep = 0.5zw
+	\itemindent = 0pt
+	\labelwidth\leftmargin \advance\labelwidth-\labelsep
+	\listparindent = 0zw
+	\rightmargin = 0pt
+	\reset@font\normalsize\normalfont
+}
+\let\@listI\@listi
+\@listi
+\def\@listii{%
+	\topsep = 0.25\baselineskip
+	\partopsep = 0.0\baselineskip
+	\parsep = 0.0\baselineskip
+	\itemsep = 0.3\baselineskip
+	\leftmargin = 0.5zw
+	\labelsep = .5zw
+	\itemindent = 0pt
+	\labelwidth\leftmargin \advance\labelwidth-\labelsep
+	\listparindent = 0zw
+	\rightmargin = 0pt
+	\reset@font\normalsize\normalfont%
+}
+\def\@listiii{%
+	\topsep = 0.30\baselineskip
+	\partopsep = 0.0\baselineskip
+	\parsep = 0.1\baselineskip
+	\itemsep = 0.05\baselineskip
+	\leftmargin = 1.1zw
+	\labelsep = .5zw
+	\itemindent = 0pt
+	\labelwidth\leftmargin \advance\labelwidth-\labelsep
+	\listparindent = 0zw
+	\rightmargin = 0pt
+	\reset@font\normalsize\normalfont%
+}
+\def\@listiv{%
+	\topsep = 0.0\baselineskip
+	\partopsep = 0.0\baselineskip
+	\parsep = 0.0\baselineskip
+	\itemsep = 0.0\baselineskip
+	\leftmargin = 0.9zw
+	\labelsep = .5zw
+	\itemindent = 0pt
+	\labelwidth\leftmargin \advance\labelwidth-\labelsep
+	\listparindent = 0zw
+	\rightmargin = 0pt
+	\reset@font\normalsize\normalfont%
+}
+\makeatother
+
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\E}{\ensuremath{\mathbb{E}}}
+\newcommand{\V}{\ensuremath{\mathbb{V}}}
+\newcommand{\Cov}{\ensuremath{\text{Cov}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
+\let\epsilon\varepsilon
+
+\let\origitem\item
+\renewcommand{\item}{\normalfont\origitem}
+
+\usepackage[%
+backref=page,
+dvipdfmx,
+bookmarks=true,bookmarksnumbered=true,bookmarkstype=toc,
+colorlinks=true,
+linkcolor=navy,
+citecolor=navy,
+filecolor=blue,
+pagecolor=blue,
+urlcolor=blue
+]{hyperref}
+\AtBeginDvi{\special{pdf:tounicode EUC-UCS2}}
+
+\renewcommand*{\backref}[1]{}
+\renewcommand*{\backrefalt}[4]{%
+  \ifcase #1 (Not cited.)%
+  \or        [#2]%
+  \else      [#2]%
+  \fi}

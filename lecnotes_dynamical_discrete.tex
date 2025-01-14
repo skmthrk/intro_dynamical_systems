@@ -1,0 +1,1528 @@
+\documentclass[12pt,a4paper]{article} 
+\input{preambles/preamble_lecnotes.tex} 
+
+\title{Discrete-time models} 
+\subtitle{Introduction to dynamical systems~\#6}
+\author{Hiroaki Sakamoto}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Discrete-time linear dynamical system}
+
+\subsection{Definitions}
+
+\begin{itemize}
+
+\item \textbf{Linear dynamical system}
+  \begin{itemize}
+  \item A discrete-time \emph{linear dynamical system} is a system of difference equations of the form
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t+1} = \bm{A}\bm{x}_{t} + \bm{B}\bm{u}_{t}
+      \quad t = 0, 1, \ldots,
+    \end{equation}
+    where
+    \begin{itemize}
+    \item $\bm{x}_{t}\in \R^{m}$: state vector at $t$
+    \item $\bm{A}\in \R^{m\times m}$: system matrix
+    \item $\bm{u}_{t}\in \R^{n}$: control (input) vector at $t$
+    \item $\bm{B} \in \R^{m\times n}$: diffusion matrix
+    \end{itemize}
+  \item Starting with some \emph{initial state} $\bm{x}_{0}$,
+    the state at any $t$ is given by
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t}
+      = \bm{A}\bm{x}_{t-1} + \bm{B}\bm{u}_{t-1}
+      = \bm{A}(\bm{A}\bm{x}_{t-2} + \bm{B}\bm{u}_{t-2}) + \bm{B}\bm{u}_{t-1}
+      =
+      \ldots
+      = \bm{A}^{t}\bm{x}_{0} + \sum_{k=0}^{t-1}\bm{A}^{t-1-k}\bm{B}\bm{u}_{k}
+    \end{equation}
+  \item We want to know how $\bm{x}_{t}$ evolves over time depending on $\bm{A}$
+  \item In particular, a linear dynamical system is said to be \emph{homogeneous} if $\bm{B}=\bm{O}$, i.e.,
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t+1} = \bm{A}\bm{x}_{t}
+      \quad t = 0, 1, \ldots,
+    \end{equation}
+    where the behavior of $\bm{x}_{t}$ is completely characterized by $\bm{A}$ and $\bm{x}_{0}$
+  \end{itemize}
+
+\item \textbf{Equilibrium}
+  \begin{itemize}
+  \item Consider the case where the control is constant at $\bm{u}$:
+    \begin{equation}\label{eq:LDS}%
+      \bm{x}_{t+1} = \bm{A}\bm{x}_{t} + \bm{b},
+      \quad t = 0, 1, \ldots,
+      \quad\text{where}\quad
+      \bm{b}:=\bm{B}\bm{u}
+    \end{equation}
+  \item The homogeneous system is a special case of this with $\bm{u}=\bm{0}$
+  \item We define an \emph{equilibrium point} of \eqref{eq:LDS} as $\bar{\bm{x}}$ that solves
+    \begin{equation}\nonumber%\label{eq:}%
+      \bar{\bm{x}} = \bm{A}\bar{\bm{x}} + \bm{b},
+    \end{equation}
+    which obviously depends on both $\bm{A}$ and $\bm{b}$
+  \end{itemize}
+
+\item \textbf{Stability}
+  \begin{itemize}
+
+  \item An equilibrium point $\bar{\bm{x}}$ of \eqref{eq:LDS}
+    is said to be \emph{asymptotically stable} if,
+    starting from \textbf{any initial state} $\bm{x}_{0}$,
+    the state trajectory satisfies
+    \begin{equation}\nonumber%\label{eq:}%
+      \lim_{t\to\infty}\bm{x}_{t}=\bar{\bm{x}}
+    \end{equation}
+  \item Notice that, for any initial state $\bm{x}_{0}$ and for any constant input $\bm{b}$,
+    the state trajectory $\{\bm{x}_{t}\}$ satisfies
+    \begin{equation}\nonumber%\label{eq:}%
+      (\bm{x}_{t+1} - \bar{\bm{x}}) = \bm{A}(\bm{x}_{t} - \bar{\bm{x}}) \quad \forall t = 0, 1, \ldots,
+    \end{equation}
+    implying the stability of an equilibrium point is determined by $\bm{A}$ alone (irrespective of $\bm{b}$)%, being independent of $\bm{b}$
+  \item More generally,
+    the state trajectory $\{\bm{x}_{t}\}$ may or may not converge to the equilibrium point,
+    depending on the initial state $\bm{x}_{0}$
+    
+  \item We define the \emph{stable manifold} of an equilibrium point $\bar{\bm{x}}\in \R^{m}$
+    as the set of initial state from which the state trajectory converges to the equilibrium point:
+    \begin{equation}\nonumber%\label{eq:}%
+      W(\bar{\bm{x}}) := \left\{ \bm{x}_{0}\in \R^{m} \,\bigg|\, \lim_{t\to \infty}\bm{x}_{t} = \bar{\bm{x}} \right\}
+    \end{equation}
+  \item An equilibrium point $\bar{\bm{x}}$ is asymptotically stable
+    if and only if $W(\bar{\bm{x}}) = \R^{m}$
+  \end{itemize}
+
+\end{itemize}
+
+\subsection{Examples}
+
+\begin{itemize}
+
+\item \textbf{Example~1}
+  \begin{itemize}
+  \item Consider the following homogeneous one-dimensional linear dynamical system:
+    \begin{equation}\nonumber%\label{eq:}%
+      x_{t+1} = a x_{t}%, \quad a \neq 1
+    \end{equation}
+  \item Observe:
+    \begin{itemize}
+    \item the unique equilibrium point of the system is $\bar{x}=0$ unless $a=1$%
+    \item the state trajectory is given by $x_{t} = a^{t} x_{0}$
+    \item $\bar{x}=0$ is asymptotically stable if and only if $|a|<1$
+    \end{itemize}
+  \item The stable manifold of $\bar{x}=0$ is
+    \begin{equation}\nonumber%\label{eq:}%
+      W(\bar{x}) =
+      \begin{cases}
+        \R \quad\text{(i.e., asymptotically stable)} & \text{if $|a|<1$} \\
+        \{0\} & \text{if $|a|\geq 1$} \\
+      \end{cases}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Example~2}
+  \begin{itemize}
+  \item Consider the following one-dimensional linear dynamical system:
+    \begin{equation}\nonumber%\label{eq:}%
+      x_{t+1} = a x_{t} + b, \quad a \neq 1
+    \end{equation}
+  \item Observe:
+    \begin{itemize}
+    \item the unique equilibrium point of the system is $\bar{x}= \frac{b}{1-a}$
+    \item the state trajectory is given by $x_{t} = a^{t} x_{0} + \frac{1-a^{t}}{1-a}b$
+    \item the equilibrium point is asymptotically stable if and only if $|a|<1$
+    \end{itemize}
+  \item The stable manifold is
+    \begin{equation}\nonumber%\label{eq:}%
+      W(\bar{x}) =
+      \begin{cases}
+        \R & \text{if $|a|<1$} \\
+        \{\frac{1}{1-a}b\} & \text{if $|a|\geq 1$} \\
+      \end{cases}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Example~3}
+  \begin{itemize}
+  \item Consider the following two-dimensional linear dynamical system:
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        x_{1,t+1} \\
+        x_{2,t+1}
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        a_{1} & 0 \\
+        0 & a_{2} \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        x_{1,t} \\
+        x_{2,t}
+      \end{bmatrix}
+    \end{equation}
+  \item Notice that, in this case, the evolution of
+    $x_{1,t}$ and $x_{2,t}$ are independent:
+    \begin{equation}\nonumber%\label{eq:}%
+      x_{i,t+1} = a_{i}x_{i,t} \quad i = 1, 2
+    \end{equation}
+  \item Observe:
+    \begin{itemize}
+    \item if $a_{1} \neq 1$ and $a_{2} \neq 1$, the unique equilibrium point of the system is
+      $\bar{\bm{x}}=\bm{0}$
+    \item the state trajectory is given by
+      \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        x_{1,t} \\
+        x_{2,t}
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        a_{1}^{t} & 0 \\
+        0 & a_{2}^{t} \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        x_{1,0} \\
+        x_{2,0} \\
+      \end{bmatrix}
+      = 
+      \begin{bmatrix}
+        a_{1}^{t}x_{1,0} \\
+        a_{2}^{t}x_{2,0} \\
+      \end{bmatrix}
+      \end{equation}
+    \item the equilibrium point is asymptotically stable if and only if $\max\{|a_{1}|, |a_{2}|\}<1$
+    \end{itemize}
+  \item The stable manifold is
+    \begin{equation}\nonumber%\label{eq:}%
+      W(\bar{\bm{x}}) =
+      \begin{cases}
+        \R^{2} & \text{if $|a_{1}|<1$ and $|a_{2}|<1$} \\
+        \{0\}\times \R & \text{if $|a_{1}|\geq 1$ and $|a_{2}|<1$} \\
+        \R\times \{0\} & \text{if $|a_{1}|< 1$ and $|a_{2}|\geq 1$} \\
+        \{0\}\times \{0\} & \text{if $|a_{1}|\geq 1$ and $|a_{2}|\geq 1$} \\
+      \end{cases}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Example~4}
+  \begin{itemize}
+  \item Consider the following $m$-dimensional linear dynamical system:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t+1}
+      =
+      \bm{A}
+      \bm{x}_{t},
+      \quad
+      \bm{A}:=
+      \begin{bmatrix}
+        a_{1} & 0 & \ldots & 0 \\
+        0 & a_{2} & \ldots & 0 \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \ldots & a_{m} \\
+      \end{bmatrix},
+      \quad a_{i} \neq 1 \,\, \forall i = 1, \ldots, m
+    \end{equation}
+
+  \item Observe:
+    \begin{itemize}
+    \item the unique equilibrium point of the system is $\bar{\bm{x}}=\bm{0}$
+    \item the state trajectory is given by
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{x}_{t}
+        =
+        \bm{A}^{t}\bm{x}_{0}
+        =
+      \begin{bmatrix}
+        a_{1}^{t} & 0 & \ldots & 0 \\
+        0 & a_{2}^{t} & \ldots & 0 \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \ldots & a_{m}^{t} \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        x_{1,0} \\
+        x_{2,0} \\
+        \vdots \\
+        x_{m,0} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        a_{1}^{t}x_{1,0} \\
+        a_{2}^{t}x_{2,0} \\
+        \vdots \\
+        a_{m}^{t}x_{m,0} \\
+      \end{bmatrix}
+      \end{equation}
+    \item the equilibrium point is asymptotically stable if and only if
+      \begin{equation}\nonumber%\label{eq:}%
+        \max\{|a_{1}|, |a_{2}|, \ldots, |a_{m}|\}<1
+      \end{equation}
+    \end{itemize}
+
+  \item The stable manifold is
+    \begin{equation}\nonumber%\label{eq:}%
+      W(\bar{\bm{x}}) =
+      \left\{ \bm{x}_{0} \in \R^{m}
+        \,\big|\,
+        \text{$x_{i,0} = 0$ for $i$ such that $|a_{i}|\geq 1$}
+      \right\}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Example~5}
+  \begin{itemize}
+  \item Consider the following $m$-dimensional linear dynamical system:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t+1}
+      =
+      \bm{A}
+      \bm{x}_{t} + \bm{b},
+      \quad
+      \bm{A}:=
+      \begin{bmatrix}
+        a_{1} & 0 & \ldots & 0 \\
+        0 & a_{2} & \ldots & 0 \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \ldots & a_{m} \\
+      \end{bmatrix}
+    \end{equation}
+
+  \item Assume $a_{i}\neq 1$ for all $i=1,\ldots, m$
+    (otherwise there would be no stable equilibrium point)
+
+  \item Observe:
+    \begin{itemize}
+    \item the unique equilibrium point of the system is
+      \begin{equation}\nonumber%\label{eq:}%
+        \bar{\bm{x}}
+        =
+        (\bm{I}-\bm{A})^{-1}\bm{b}
+        =
+      \begin{bmatrix}
+        \frac{1}{1-a_{1}} & 0 & \ldots & 0 \\
+        0 & \frac{1}{1-a_{2}} & \ldots & 0 \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \ldots & \frac{1}{1-a_{2}} \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        b_{1} \\
+        b_{2} \\
+        \vdots \\
+        b_{m} \\
+      \end{bmatrix}
+        =
+      \begin{bmatrix}
+        \frac{1}{1-a_{1}}b_{1} \\
+        \frac{1}{1-a_{2}}b_{2} \\
+        \vdots \\
+        \frac{1}{1-a_{m}}b_{m} \\
+      \end{bmatrix}
+      \end{equation}
+    \item the state trajectory is given by
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{x}_{t} - \bar{\bm{x}}
+        =
+        \bm{A}^{t}(\bm{x}_{0} - \bar{\bm{x}})
+    \end{equation}
+    or
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{x}_{t}
+        =
+        \bar{\bm{x}}
+        +
+        \bm{A}^{t}(\bm{x}_{0} - \bar{\bm{x}})
+        =
+      \begin{bmatrix}
+        a_{1}^{t}x_{1,0} + \frac{1-a_{1}^{t}}{1-a_{1}}b \\
+        a_{2}^{t}x_{2,0} + \frac{1-a_{2}^{t}}{1-a_{2}}b \\
+        \vdots \\
+        a_{m}^{t}x_{m,0} + \frac{1-a_{m}^{t}}{1-a_{m}}b \\
+      \end{bmatrix}
+      \end{equation}
+    \item the equilibrium point is asymptotically stable if and only if
+      \begin{equation}\nonumber%\label{eq:}%
+        \max\{|a_{1}|, |a_{2}|, \ldots, |a_{m}|\}<1
+      \end{equation}
+    \end{itemize}
+
+  \item The stable manifold is
+    \begin{equation}\nonumber%\label{eq:}%
+      W(\bar{\bm{x}}) =
+      \left\{ \bm{x}_{0} \in \R^{m}
+        \,\bigg|\,
+        \text{$x_{i,0} = \frac{1}{1-a_{i}}b_{i}$ for $i$ such that $|a_{i}|\geq 1$}
+      \right\}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Example~6}
+  \begin{itemize}
+  \item Consider the following two-dimensional linear dynamical system:
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        x_{1,t+1} \\
+        x_{2,t+1}
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        5/4 & -3/2 \\
+        -3/8 & 5/4 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        x_{1,t} \\
+        x_{2,t}
+      \end{bmatrix}
+    \end{equation}
+
+  \item The unique equilibrium point of the system is
+      \begin{equation}\nonumber%\label{eq:}%
+        \begin{bmatrix}
+        \bar{x}_{1} \\
+        \bar{x}_{2}
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+          5/4 & -3/2 \\
+          -3/8 & 5/4 \\
+        \end{bmatrix}
+        \begin{bmatrix}
+          \bar{x}_{1} \\
+          \bar{x}_{2}
+        \end{bmatrix}
+        \iff
+        \begin{bmatrix}
+          \bar{x}_{1} \\
+          \bar{x}_{2}
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+          0 \\
+          0
+        \end{bmatrix}
+      \end{equation}
+    \item Is this equilibrium point asymptotically stable?
+    \item How does $\bm{x}_{t}$ evolve over time?
+
+  \end{itemize}
+
+\end{itemize}
+
+\section{Characterization}
+
+\subsection{General method}
+
+\begin{itemize}
+
+\item \textbf{Trajectory and stability}
+  \begin{itemize}
+  \item Consider the linear dynamical system
+    \begin{equation}\label{eq:LDSgeneral}\nonumber%
+      \bm{x}_{t+1} = \bm{A}\bm{x}_{t} + \bm{b}
+      \quad t = 0, 1, \ldots,
+    \end{equation}
+  \item Assume $\bm{A}$ does not have $1$ as its eigenvalue
+    (otherwise no stable equilibrium point)
+  \item Since $\lambda=1$ is not an eigenvalue of $\bm{A}$,
+    we know that $(\bm{I}-\bm{A})$ is non-singular (why?), and 
+    the unique equilibrium point is
+    \begin{equation}\nonumber%\label{eq:}%
+      \bar{\bm{x}} := (\bm{I}-\bm{A})^{-1}\bm{b}
+    \end{equation}
+    and we may write
+    \begin{equation}\label{eq:xt1}%
+      \bm{x}_{t} = \bar{\bm{x}} +  \bm{A}^{t}(\bm{x}_{0}-\bar{\bm{x}}),
+      \quad t = 0, 1, \ldots
+    \end{equation}
+  \item Hence,
+    \begin{equation}\nonumber%\label{eq:}%
+      \text{$\bar{\bm{x}}$ is asymptotically stable}
+      \iff
+      \lim_{t\to\infty}\bm{A}^{t} = \bm{O}
+      \iff
+      \rho(\bm{A}) < 1
+    \end{equation}
+  \item Using the Jordan decomposition $\bm{A}=\bm{V}\bm{J}\bm{V}^{-1}$,
+    one can rewrite \eqref{eq:xt1} as
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t}
+      = \bar{\bm{x}}
+      + \bm{V}\bm{J}^{t}\bm{V}^{-1}(\bm{x}_{0}-\bar{\bm{x}}),
+      \quad t = 0, 1, \ldots
+    \end{equation}
+  \item In particular, if $\bm{A}$ is diagonalizable,
+    we have $\bm{J}=\bm{\Lambda}:=\text{diag}(\lambda_{1},\ldots,\lambda_{m})$ and
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t+1} = \bar{\bm{x}} +  \bm{V}\bm{\Lambda}^{t}\bm{V}^{-1}(\bm{x}_{0}-\bar{\bm{x}})
+      \quad t = 0, 1, \ldots,
+    \end{equation}
+    in which case the stable manifold can be expressed as
+    \begin{equation}\nonumber%\label{eq:}%
+      W(\bar{\bm{x}}) =
+      \left\{ \bm{x}_{0} \in \R^{m}
+        \,\bigg|\,
+        \text{$\bm{e}_{i}^{\top}\bm{V}^{-1}(\bm{x}_{0}-\bar{\bm{x}}) = 0$ for $i$ such that $|\lambda_{i}|\geq 1$}
+      \right\}
+    \end{equation}
+
+  \end{itemize}
+
+\item \textbf{Eigenvectors of the system matrix}
+
+  \begin{itemize}
+  \item Let $\bm{A}\in \R^{m\times m}$ be a square matrix and consider the linear system of difference equations
+    \begin{equation}\label{eq:DE}%
+      \bm{x}_{t+1} = \bm{A}\bm{x}_{t} \quad \forall t= 0, 1, 2, 3, \ldots
+    \end{equation}
+  \item If $(\lambda, \bm{v})$ is an eigenpair of $\bm{A}$,
+    then 
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t} := \lambda^{t}\bm{v} \quad \forall t
+    \end{equation}
+    solves \eqref{eq:DE} with $\bm{x}_{0}=\bm{v}$ because
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t} := \lambda^{t}\bm{v}
+      \implies
+      \bm{x}_{t+1}
+      = \lambda^{t+1}\bm{v}
+      = \lambda^{t}\lambda \bm{v}
+      = \lambda^{t}\bm{A} \bm{v}
+      = \bm{A} \lambda^{t}\bm{v}
+      = \bm{A} \bm{x}_{t}
+    \end{equation}
+    
+  \item If $(\lambda_{1}, \bm{v}_{1}), (\lambda_{2}, \bm{v}_{2})$ are eigenpairs of $\bm{A}$,
+    then for any $z_{1}, z_{2}\in \R$,
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t} := z_{1}\lambda_{1}^{t}\bm{v}_{1} + z_{2}\lambda_{2}^{t}\bm{v}_{2} \quad \forall t
+    \end{equation}
+    solves \eqref{eq:DE} with $\bm{x}_{0}=z_{1}\bm{v}_{1} + z_{2}\bm{v}_{2}$
+
+  \item If $(\lambda_{1}, \bm{v}_{1}), (\lambda_{2}, \bm{v}_{2}), \ldots, (\lambda_{m}, \bm{v}_{m})$ are eigenpairs of $\bm{A}$,
+    then for any $z_{1}, z_{2},\ldots, z_{m}\in \R$,
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t} := z_{1}\lambda_{1}^{t}\bm{v}_{1} + z_{2}\lambda_{2}^{t}\bm{v}_{2} + \ldots + z_{m}\lambda_{m}^{t}\bm{v}_{m} \quad \forall t
+    \end{equation}
+    solves \eqref{eq:DE} with $\bm{x}_{0}=z_{1}\bm{v}_{1} + z_{2}\bm{v}_{2} + \ldots + z_{m}\bm{v}_{m}$
+
+  \item Hence, if $(\lambda_{1}, \bm{v}_{1}), (\lambda_{2}, \bm{v}_{2}), \ldots, (\lambda_{m}, \bm{v}_{m})$ are \textbf{linearly independent} eigenpairs of $\bm{A}$,
+    then for any arbitrary initial state $\bm{x}_{0}\in \R^{m}$,
+    one can find $z_{1}, z_{2},\ldots, z_{m}\in \R$ such that
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{0}
+      = z_{1}\bm{v}_{1} + z_{2}\bm{v}_{2} + \ldots + z_{m}\bm{v}_{m}
+    \end{equation}
+    and the state trajectory from $\bm{x}_{0}$ can be written as
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t}
+      = z_{1}\lambda_{1}^{t}\bm{v}_{1} + z_{2}\lambda_{2}^{t}\bm{v}_{2} + \ldots + z_{m}\lambda_{m}^{t}\bm{v}_{m}
+      =
+      \begin{bmatrix}
+        \bm{v}_{1} & \bm{v}_{2} & \cdots & \bm{v}_{m}
+      \end{bmatrix}
+      \begin{bmatrix}
+        \lambda_{1}^{t} & 0 & \ldots & 0 \\
+        0 & \lambda_{2}^{t} & \ldots & 0 \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \ldots & \lambda_{m}^{t} \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        z_{1} \\
+        z_{2} \\
+        \vdots \\
+        z_{m} \\
+      \end{bmatrix}
+      =
+      \bm{V}\Lambda^{t}\bm{z}
+      \quad \forall t
+    \end{equation}
+    
+    
+  \end{itemize}
+
+\item \textbf{Long-run behavior and dominant mode}
+  \begin{itemize}
+  \item Consider the following $m$-dimensional linear dynamical system:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t+1}
+      =
+      \bm{A}
+      \bm{x}_{t} + \bm{b}
+      \quad \forall t\quad
+      \text{with some initial state $\bm{x}_{0}\in \R^{m}$}
+    \end{equation}
+   
+  \item Suppose that $\bm{A}\in \R^{m\times m}$ is diagonalizable
+    and let
+    $(\lambda_{1}, \bm{v}_{1}), (\lambda_{2}, \bm{v}_{2}), \ldots, (\lambda_{m}, \bm{v}_{m})$
+    be linearly independent eigenpairs of $\bm{A}$
+  \item Then, 
+    there exist $z_{1}, z_{2}, \ldots, z_{m}\in \R$ such that
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{0} - \bar{\bm{x}}
+      = z_{1}\bm{v}_{1} + z_{2}\bm{v}_{2}+ \ldots z_{m}\bm{v}_{m}
+      =
+      \underbrace{\begin{bmatrix}
+        \bm{v}_{1} & \bm{v}_{2} & \cdots & \bm{v}_{m}
+      \end{bmatrix}}_{\bm{V}}
+    \underbrace{
+      \begin{bmatrix}
+        z_{1} \\
+        z_{2} \\
+        \vdots \\
+        z_{m} \\
+      \end{bmatrix}}_{\bm{z}}
+    \end{equation}
+    and thus
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t} - \bar{\bm{x}}
+      = \bm{A}^{t}(\bm{x}_{0}-\bar{\bm{x}})
+%      = \bm{A}^{t}\bm{V}\bm{z}_{0}
+      = z_{1}\lambda_{1}^{t}\bm{v}_{1} + z_{2}\lambda_{2}^{t}\bm{v}_{2} + \cdots + z_{m}\lambda_{m}^{t}\bm{v}_{m}
+      \quad \forall t
+    \end{equation}
+  \item Let $\lambda_{i}$ be the \emph{dominant eigenvalue} of $\bm{A}$, i.e., 
+    $|\lambda_{i}|> |\lambda_{j}|$ for all $j\neq i$
+  \item Then, for sufficiently large $t$, 
+    \begin{equation}\nonumber%\label{eq:}%
+      \frac{1}{\lambda_{i}^{t}}(\bm{x}_{t} - \bar{\bm{x}})
+      = z_{1}\left(\frac{\lambda_{1}}{\lambda_{i}}\right)^{t}\bm{v}_{1}
+      + \cdots
+      + z_{i}\left(\frac{\lambda_{i}}{\lambda_{i}}\right)^{t}\bm{v}_{i}
+      + \cdots
+      + z_{m}\left(\frac{\lambda_{m}}{\lambda_{i}}\right)^{t}\bm{v}_{m}
+      \approx
+      z_{i}\bm{v}_{i},
+    \end{equation}
+    or
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t} \approx \bar{\bm{x}} + \lambda_{i}^{t}z_{i}\bm{v}_{i},
+      \quad\text{where}\quad
+      z_{i} = \bm{e}_{i}^{\top}\bm{V}^{-1}(\bm{x}_{0}-\bar{\bm{x}})
+    \end{equation}
+  \item Observe:
+    \begin{itemize}
+      \item the long-term state is essentially determined by the eigenvector associated with the dominant eigenvalue of $\bm{A}$
+      \item if $\rho(\bm{A})<1$, the rate at which the state converges to the equilibrium point
+        is ultimately governed by the dominant eigenvalue
+      \item if $\rho(\bm{A})=1$ (i.e, the dominant eigenvalue has magnitude of $1$),
+        \begin{equation}\nonumber%\label{eq:}%
+          \lim_{t\to \infty}\bm{x}_{t} = \bar{\bm{x}} + z_{i}\bm{v}_{i},
+        \end{equation}
+        in which case $\bm{x}_{t}$ neither diverges to infinity nor converges to $\bar{\bm{x}}$
+        (we call such situation as \emph{marginally stable})
+        and the limit depends on the initial state (through $z_{i}$)
+        
+    \end{itemize}
+    
+  \end{itemize}
+
+\end{itemize}
+
+\subsection{Examples}
+
+  \begin{figure}[t]\centering%
+    \includegraphics[width=480pt]%
+    {figures/fig_dynamical_discrete.pdf}
+    \caption{%
+      Phase diagrams for
+      example~1 (top left),
+      example~2 (top right),
+      example~4 (bottom left), and
+      example~5 (bottom right)
+    }
+    \label{fig:dynamical_discrete}
+  \end{figure} 
+
+\begin{itemize}
+
+\item \textbf{Example~1}
+  \begin{itemize}
+  \item Consider the following two-dimensional linear dynamical system:
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        x_{1,t+1} \\
+        x_{2,t+1}
+      \end{bmatrix}
+      =
+      \underbrace{
+      \begin{bmatrix}
+        5/8 & -1/4 \\
+        -1/16 & 5/8 \\
+      \end{bmatrix}%
+      }_{\bm{A}}
+      \begin{bmatrix}
+        x_{1,t} \\
+        x_{2,t}
+      \end{bmatrix}
+    \end{equation}
+    \item The state trajectory $\{\bm{x}_{t}\}$ from arbitrary $\bm{x}_{0}\in \R^{2}$ is
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{x}_{t}
+        =
+        \bm{A}^{t}\bm{x}_{0}
+        =
+      \begin{bmatrix}
+        5/8 & -1/4 \\
+        -1/16 & 5/8 \\
+      \end{bmatrix}^{t}
+      \bm{x}_{0},
+    \end{equation}
+    which is not easy to characterize
+
+  \item So we look at the characteristic polynomial
+    \begin{equation}\nonumber%\label{eq:}%
+      \phi_{\bm{A}}(t) = 
+      \begin{vmatrix}
+        5/8 - t & -1/4 \\
+        -1/16 & 5/8 - t \\
+      \end{vmatrix}
+      = (3/4-t)(1/2-t),
+    \end{equation}
+    implying that
+    the eigenvalues of $\bm{A}$ are $\lambda_{1}:=3/4$ and $\lambda_{2}:=1/2$
+  \item We already see that
+    the unique equilibrium point
+    $\bar{\bm{x}}:=\bm{0}$ is asymptotically stable
+  \item To characterize the behavior of $\{\bm{x}_{t}\}$ more explicitly,
+    we derive eigenvectors:
+    \begin{equation}\nonumber%\label{eq:}%
+      (\bm{A}-\lambda_{1}\bm{I})\bm{v}
+      = \bm{0}
+      \iff
+      \begin{bmatrix}
+        5/8 - 3/4 & - 1/4 \\
+        -1/16 & 5/8 - 3/4 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        0 \\
+        0 \\
+      \end{bmatrix}
+      \iff
+      \bm{v} = \alpha
+      \begin{bmatrix}
+        1 \\
+        -\frac{1}{2}
+      \end{bmatrix}
+      \quad \forall \alpha
+    \end{equation}
+    and
+    \begin{equation}\nonumber%\label{eq:}%
+      (\bm{A}-\lambda_{2}\bm{I})\bm{v}
+      = \bm{0}
+      \iff
+      \begin{bmatrix}
+        5/8 - 1/2 & - 1/4 \\
+        -1/16 & 5/8 - 1/2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        0 \\
+        0 \\
+      \end{bmatrix}
+      \iff
+      \bm{v} = \alpha
+      \begin{bmatrix}
+        1 \\
+        \frac{1}{2}
+      \end{bmatrix}
+      \quad \forall \alpha
+    \end{equation}
+    so we choose
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{\Lambda}:=
+      \begin{bmatrix}
+       \lambda_{1} & 0\\
+       0 & \lambda_{2}
+      \end{bmatrix},
+      \quad
+      \bm{v}_{1} :=
+      \begin{bmatrix}
+        1 \\
+        - \frac{1}{2}
+      \end{bmatrix},
+      \quad
+      \bm{v}_{2} :=
+      \begin{bmatrix}
+        1 \\
+        \frac{1}{2}
+      \end{bmatrix}
+    \end{equation}
+    and
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{V}:=
+      \begin{bmatrix}
+        \bm{v}_{1} & \bm{v}_{2}
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        1 & 1 \\
+        -1/2 & 1/2 \\
+      \end{bmatrix}
+      \implies
+      \bm{V}^{-1} =
+      \begin{bmatrix}
+        1/2 & -1 \\
+        1/2 & 1 \\
+      \end{bmatrix}
+      \end{equation}
+    \item Now we can express the state trajectory $\{\bm{x}_{t}\}$ from arbitrary $\bm{x}_{0}\in \R^{2}$ as
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{x}_{t} =
+        \bm{A}^{t}\bm{x}_{0}
+        =
+        \bm{V}\bm{\Lambda}^{t}\bm{V}^{-1}\bm{x}_{0}
+        =
+      \begin{bmatrix}
+        1 & 1 \\
+        -1/2 & 1/2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        (3/4)^{t} & 0 \\
+        0 & (1/2)^{t} \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        1/2 & -1 \\
+        1/2 & 1 \\
+      \end{bmatrix}
+      \bm{x}_{0}
+      \end{equation}
+    \item The trajectory converges to $\bar{\bm{x}}=\bm{0}$
+      regardless of $\bm{x}_{0}$
+    \item Given an initial state $\bm{x}_{0}$,
+      defining $\bm{z}$ as
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{z} := \bm{V}^{-1}\bm{x}_{0},
+        \quad\text{or}\quad
+        z_{i} := \bm{e}_{i}^{\top}\bm{V}^{-1}\bm{x}_{0},
+        \quad i = 1, 2
+      \end{equation}
+      allows us to write
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t}
+      =
+      \lambda_{1}^{t}z_{1}\bm{v}_{1}
+      +
+      \lambda_{2}^{t}z_{2}\bm{v}_{2}
+      \quad \forall t
+    \end{equation}
+    \item Since $\lambda_{1}$ is the dominant eigenvalue,
+      the long-term behavior is characterized by
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t}
+      \approx
+      \lambda_{1}^{t}z_{1}\bm{v}_{1}
+      =
+      \left(\frac{3}{4}\right)^{t}z_{1}
+      \begin{bmatrix}
+        1 \\ -1/2
+      \end{bmatrix},
+      \quad\text{where}\quad
+      z_{1}:=\bm{e}_{1}^{\top}\bm{V}^{-1}\bm{x}_{0}
+      = \frac{1}{2}x_{1,0} - x_{2,0}
+    \end{equation}
+    for sufficiently large $t$
+  \end{itemize}
+
+\item \textbf{Example~2}
+  \begin{itemize}
+  \item Consider another two-dimensional linear dynamical system:
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        x_{1,t+1} \\
+        x_{2,t+1}
+      \end{bmatrix}
+      =
+      \underbrace{
+      \begin{bmatrix}
+        5/4 & -3/2 \\
+        -3/8 & 5/4 \\
+      \end{bmatrix}}_{\bm{A}}
+      \begin{bmatrix}
+        x_{1,t} \\
+        x_{2,t}
+      \end{bmatrix}
+    \end{equation}
+    \item The state trajectory $\{\bm{x}_{t}\}$ from arbitrary $\bm{x}_{0}\in \R^{2}$ is
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{x}_{t}
+        =
+        \bm{A}^{t}\bm{x}_{0}
+        =
+      \begin{bmatrix}
+        5/4 & -3/2 \\
+        -3/8 & 5/4 \\
+      \end{bmatrix}^{t}        
+      \bm{x}_{0},
+    \end{equation}
+    which is not easy to characterize
+  \item So we look at the characteristic polynomial
+    \begin{equation}\nonumber%\label{eq:}%
+      \phi_{\bm{A}}(t) = 
+      \begin{vmatrix}
+        5/4 - t & -3/2 \\
+        -3/8 & 5/4 - t \\
+      \end{vmatrix}
+      = (2-t)(1/2-t),
+    \end{equation}
+    implying that
+    the eigenvalues of $\bm{A}$ are $\lambda_{1}:=2$ and $\lambda_{2}:=1/2$
+  \item We already see that
+    the unique equilibrium point
+    $\bar{\bm{x}}:=\bm{0}$ is NOT asymptotically stable
+  \item To characterize the behavior of $\{\bm{x}_{t}\}$ more explicitly,
+    we derive eigenvectors:
+    \begin{equation}\nonumber%\label{eq:}%
+      (\bm{A}-\lambda_{1}\bm{I})\bm{v}
+      = \bm{0}
+      \iff
+      \begin{bmatrix}
+        5/4 - 2 & - 3/2 \\
+        -3/8 & 5/4 - 2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        0 \\
+        0 \\
+      \end{bmatrix}
+      \iff
+      \bm{v} = \alpha
+      \begin{bmatrix}
+        1 \\
+        -\frac{1}{2}
+      \end{bmatrix}
+      \quad \forall \alpha
+    \end{equation}
+    and
+    \begin{equation}\nonumber%\label{eq:}%
+      (\bm{A}-\lambda_{2}\bm{I})\bm{v}
+      = \bm{0}
+      \iff
+      \begin{bmatrix}
+        5/4 - 1/2 & - 3/2 \\
+        -3/8 & 5/4 - 1/2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        0 \\
+        0 \\
+      \end{bmatrix}
+      \iff
+      \bm{v} = \alpha
+      \begin{bmatrix}
+        1 \\
+        \frac{1}{2}
+      \end{bmatrix}
+      \quad \forall \alpha
+    \end{equation}
+    so we choose
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{\Lambda}:=
+      \begin{bmatrix}
+       \lambda_{1} & 0\\
+       0 & \lambda_{2}
+      \end{bmatrix},
+      \quad
+      \bm{v}_{1} :=
+      \begin{bmatrix}
+        1 \\
+        - \frac{1}{2}
+      \end{bmatrix},
+      \quad
+      \bm{v}_{2} :=
+      \begin{bmatrix}
+        1 \\
+        \frac{1}{2}
+      \end{bmatrix}
+    \end{equation}
+    and
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{V}:=
+      \begin{bmatrix}
+        \bm{v}_{1} & \bm{v}_{2}
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        1 & 1 \\
+        -1/2 & 1/2 \\
+      \end{bmatrix}
+      \implies
+      \bm{V}^{-1} =
+      \begin{bmatrix}
+        1/2 & -1 \\
+        1/2 & 1 \\
+      \end{bmatrix}
+      \end{equation}
+    \item Now we can express the state trajectory $\{\bm{x}_{t}\}$ from arbitrary $\bm{x}_{0}\in \R^{2}$ as
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{x}_{t} =
+        \bm{A}^{t}\bm{x}_{0}
+        =
+        \bm{V}\bm{\Lambda}^{t}\bm{V}^{-1}\bm{x}_{0}
+        =
+      \begin{bmatrix}
+        1 & 1 \\
+        -1/2 & 1/2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        2^{t} & 0 \\
+        0 & (1/2)^{t} \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        1/2 & -1 \\
+        1/2 & 1 \\
+      \end{bmatrix}
+      \bm{x}_{0}
+      \end{equation}
+    \item
+      The trajectory converges to $\bar{\bm{x}}=\bm{0}$
+      only if we choose $\bm{x}_{0}$
+      to nullify the impact of $2^{t}$
+    \item More specifically, we need to choose $\bm{x}_{0}$
+      in such a way that
+      \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        1/2 & -1 \\
+        1/2 & 1 \\
+      \end{bmatrix}
+      \bm{x}_{0}
+      = 
+      \begin{bmatrix}
+        0 \\
+        \ldots \\
+      \end{bmatrix}
+      \iff
+      \bm{e}_{1}^{\top}
+      \underbrace{\begin{bmatrix}
+        1/2 & -1 \\
+        1/2 & 1 \\
+      \end{bmatrix}}_{\bm{V}^{-1}}
+      \bm{x}_{0} = 0
+      \iff
+      \frac{1}{2}x_{1,0} - x_{2,0} = 0
+      \end{equation}
+    \item Hence, the stable manifold is
+      \begin{equation}\nonumber%\label{eq:}%
+        W(\bar{\bm{x}}) = \left\{\bm{x}_{0}=(x_{1,0},x_{2,0})\in \R^{2}\,\bigg|\, \frac{1}{2}x_{1,0} - x_{2,0} = 0\right\}
+      \end{equation}
+    \item Given an initial state $\bm{x}_{0}$,
+      defining $\bm{z}$ as
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{z} := \bm{V}^{-1}\bm{x}_{0},
+        \quad\text{or}\quad
+        z_{i} := \bm{e}_{i}^{\top}\bm{V}^{-1}\bm{x}_{0},
+        \quad i = 1, 2
+      \end{equation}
+      allows us to write
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t}
+      =
+      \lambda_{1}^{t}z_{1}\bm{v}_{1}
+      +
+      \lambda_{2}^{t}z_{2}\bm{v}_{2}
+      \quad \forall t
+    \end{equation}
+    \item Since $\lambda_{1}$ is the dominant eigenvalue,
+      the long-term behavior is characterized by
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t}
+      \approx
+      \lambda_{1}^{t}z_{1}\bm{v}_{1}
+      =
+      2^{t}z_{1}
+      \begin{bmatrix}
+        1 \\ -1/2
+      \end{bmatrix},
+      \quad\text{where}\quad
+      z_{1}:=\bm{e}_{1}^{\top}\bm{V}^{-1}\bm{x}_{0}
+      = \frac{1}{2}x_{1,0} - x_{2,0}
+    \end{equation}
+    for sufficiently large $t$
+  \end{itemize}
+
+\item \textbf{Example~3}
+  \begin{itemize}
+  \item Consider a slightly modified version of the example above:
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        x_{1,t+1} \\
+        x_{2,t+1}
+      \end{bmatrix}
+      =
+      \underbrace{
+      \begin{bmatrix}
+        5/4 & -3/2 \\
+        -3/8 & 5/4 \\
+      \end{bmatrix}}_{\bm{A}}
+      \begin{bmatrix}
+        x_{1,t} \\
+        x_{2,t}
+      \end{bmatrix}
+      +
+      \underbrace{
+      \begin{bmatrix}
+        2 \\
+        1
+      \end{bmatrix}}_{\bm{b}}
+    \end{equation}
+  \item Since $1$ is not an eigenvalue of $\bm{A}$,
+    we know that $\bm{I}-\bm{A}$ is non-singular and
+    \begin{equation}\nonumber%\label{eq:}%
+      (\bm{I}-\bm{A})^{-1} = 
+      \begin{bmatrix}
+        1-5/4 & 3/2 \\
+        3/8 & 1-5/4 \\
+      \end{bmatrix}^{-1}
+      = 
+      \begin{bmatrix}
+        1/2 & 3 \\
+        3/4 & 1/2 \\
+      \end{bmatrix}
+    \end{equation}
+  \item The unique equilibrium point is
+    \begin{equation}\nonumber%\label{eq:}%
+      \bar{\bm{x}} =
+      (\bm{I}-\bm{A})^{-1}\bm{b} =
+      \begin{bmatrix}
+        1/2 & 3 \\
+        3/4 & 1/2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        2 \\
+        1
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        4 \\
+        2
+      \end{bmatrix}
+    \end{equation}
+  \item The state trajectory $\{\bm{x}_{t}\}$ from arbitrary $\bm{x}_{0}\in \R^{2}$ is
+    \begin{align}
+      \bm{x}_{t}
+      & = \bar{\bm{x}} + \bm{A}^{t}(\bm{x}_{0}-\bar{\bm{x}})
+        = \bar{\bm{x}} +
+        \begin{bmatrix}
+          5/4 & -3/2 \\
+          -3/8 & 5/4 \\
+        \end{bmatrix}^{t}        
+        (\bm{x}_{0}-\bar{\bm{x}}),
+        \nonumber \\
+        & =
+        \bar{\bm{x}}
+        +
+        \bm{V}\bm{\Lambda}^{t}\bm{V}^{-1}(\bm{x}_{0}-\bar{\bm{x}})
+        =
+        \begin{bmatrix} 4 \\ 2 \end{bmatrix}
+        +
+      \begin{bmatrix}
+        1 & 1 \\
+        -1/2 & 1/2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        2^{t} & 0 \\
+        0 & (1/2)^{t} \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        1/2 & -1 \\
+        1/2 & 1 \\
+      \end{bmatrix}
+      \left(\bm{x}_{0} - \begin{bmatrix} 4 \\ 2 \end{bmatrix}\right)
+    \nonumber%\label{eq:}%
+    \end{align}
+    \item
+      The trajectory converges to $\bar{\bm{x}}=(4, 2)^{\top}$
+      only if we choose $\bm{x}_{0}$
+      to nullify the impact of $2^{t}$
+    \item More specifically, we need to choose $\bm{x}_{0}$
+      in such a way that
+      \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        1/2 & -1 \\
+        1/2 & 1 \\
+      \end{bmatrix}
+      (\bm{x}_{0}-\bar{\bm{x}})
+      = 
+      \begin{bmatrix}
+        0 \\
+        \ldots \\
+      \end{bmatrix}
+      \iff
+      \bm{e}_{1}^{\top}
+      \underbrace{\begin{bmatrix}
+        1/2 & -1 \\
+        1/2 & 1 \\
+      \end{bmatrix}}_{\bm{V}^{-1}}
+      (\bm{x}_{0}-\bar{\bm{x}})
+      = 0
+      \iff
+      \frac{1}{2}(x_{1,0}-4) - (x_{2,0}-2) = 0
+      \end{equation}
+    \item Hence, the stable manifold is
+      \begin{equation}\nonumber%\label{eq:}%
+        W(\bar{\bm{x}}) = \left\{\bm{x}_{0}=(x_{1,0},x_{2,0})\in \R^{2}\,\bigg|\, \frac{1}{2}(x_{1,0}-4) - (x_{2,0}-2) = 0 \right\}
+      \end{equation}
+    \item Given an initial state $\bm{x}_{0}$,
+      defining $\bm{z}$ as
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{z} := \bm{V}^{-1}(\bm{x}_{0}-\bar{\bm{x}}),
+        \quad\text{or}\quad
+        z_{i} := \bm{e}_{i}^{\top}\bm{V}^{-1}(\bm{x}_{0}-\bar{\bm{x}}),
+        \quad i = 1, 2
+      \end{equation}
+      allows us to write
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t}
+      =
+      \bar{\bm{x}} + 
+      \lambda_{1}^{t}z_{1}\bm{v}_{1}
+      +
+      \lambda_{2}^{t}z_{2}\bm{v}_{2}
+      \quad \forall t
+    \end{equation}
+    \item Since $\lambda_{1}$ is the dominant eigenvalue,
+      the long-term behavior is characterized by
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t}
+      \approx
+      \bar{\bm{x}} +
+      \lambda_{1}^{t}z_{1}\bm{v}_{1}
+      =
+      2^{t}z_{1}
+      \begin{bmatrix}
+        1 \\ -1/2
+      \end{bmatrix},
+      \quad\text{where}\quad
+      z_{1}:=\bm{e}_{1}^{\top}\bm{V}^{-1}(\bm{x}_{0}-\bar{\bm{x}})
+      = \frac{1}{2}(x_{1,0}-4) - (x_{2,0}-2)
+    \end{equation}
+    for sufficiently large $t$
+  \item The phase diagram looks exactly the same as in example~2,
+    except that now the center of the graph is replaced by $\bar{\bm{x}}=(4,2)^{\top}$
+  \end{itemize}
+
+\item \textbf{Example~4}
+  \begin{itemize}
+  \item Consider the following two-dimensional linear dynamical system:
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        x_{1,t+1} \\
+        x_{2,t+1}
+      \end{bmatrix}
+      =
+      \underbrace{
+      \begin{bmatrix}
+        3/4 & -1/2 \\
+        -1/8 & 3/4 \\
+      \end{bmatrix}}_{\bm{A}}
+      \begin{bmatrix}
+        x_{1,t} \\
+        x_{2,t}
+      \end{bmatrix}
+    \end{equation}
+  \item The characteristic polynomial of $\bm{A}$ is
+    \begin{equation}\nonumber%\label{eq:}%
+      \phi_{\bm{A}}(t) = 
+      \begin{vmatrix}
+        3/4 - t & -1/2 \\
+        -1/8 & 3/4 - t \\
+      \end{vmatrix}
+      = (1-t)(1/2-t),
+    \end{equation}
+    implying that
+    the eigenvalues of $\bm{A}$ are $\lambda_{1}:=1$ and $\lambda_{2}:=1/2$
+
+  \item Note that $\bm{I}-\bm{A}$ is singular
+    because $\bm{A}$'s eigenvalues include $1$:
+    \begin{itemize}
+    \item obviously, $\bm{0}$ is \emph{an} equilibrium point of the system
+    \item there are many other equilibrium points, and in fact,
+      any eigenvector associated with the unit eigenvalue is an equilibrium point because
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{A}(\alpha\bm{v}_{1}) = \lambda_{1}(\alpha\bm{v}_{1}) = \alpha\bm{v}_{1}
+        \quad \forall \alpha\in \R
+      \end{equation}
+    \item none of these equilibrium points is asymptotically stable
+    \end{itemize}
+    
+  \item To characterize the behavior of $\{\bm{x}_{t}\}$ more explicitly,
+    we derive eigenvectors:
+    \begin{equation}\nonumber%\label{eq:}%
+      (\bm{A}-\lambda_{1}\bm{I})\bm{v}
+      = \bm{0}
+      \iff
+      \begin{bmatrix}
+        3/4 - 1 & - 1/2 \\
+        -1/8 & 3/4 - 1 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        0 \\
+        0 \\
+      \end{bmatrix}
+      \iff
+      \bm{v} = \alpha
+      \begin{bmatrix}
+        1 \\
+        -\frac{1}{2}
+      \end{bmatrix}
+      \quad \forall \alpha
+    \end{equation}
+    and
+    \begin{equation}\nonumber%\label{eq:}%
+      (\bm{A}-\lambda_{2}\bm{I})\bm{v}
+      = \bm{0}
+      \iff
+      \begin{bmatrix}
+        3/4 - 1/2 & - 1/2 \\
+        -1/8 & 3/4 - 1/2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        0 \\
+        0 \\
+      \end{bmatrix}
+      \iff
+      \bm{v} = \alpha
+      \begin{bmatrix}
+        1 \\
+        \frac{1}{2}
+      \end{bmatrix}
+      \quad \forall \alpha
+    \end{equation}
+    so we choose
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{\Lambda}:=
+      \begin{bmatrix}
+       \lambda_{1} & 0\\
+       0 & \lambda_{2}
+      \end{bmatrix},
+      \quad
+      \bm{v}_{1} :=
+      \begin{bmatrix}
+        1 \\
+        - \frac{1}{2}
+      \end{bmatrix},
+      \quad
+      \bm{v}_{2} :=
+      \begin{bmatrix}
+        1 \\
+        \frac{1}{2}
+      \end{bmatrix}
+    \end{equation}
+    and
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{V}:=
+      \begin{bmatrix}
+        \bm{v}_{1} & \bm{v}_{2}
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        1 & 1 \\
+        -1/2 & 1/2 \\
+      \end{bmatrix}
+      \implies
+      \bm{V}^{-1} =
+      \begin{bmatrix}
+        1/2 & -1 \\
+        1/2 & 1 \\
+      \end{bmatrix}
+      \end{equation}
+    \item Now we can express the state trajectory $\{\bm{x}_{t}\}$ from arbitrary $\bm{x}_{0}\in \R^{2}$ as
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{x}_{t} =
+        \bm{A}^{t}\bm{x}_{0}
+        =
+        \bm{V}\bm{\Lambda}^{t}\bm{V}^{-1}\bm{x}_{0}
+        =
+      \begin{bmatrix}
+        1 & 1 \\
+        -1/2 & 1/2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        1 & 0 \\
+        0 & (1/2)^{t} \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        1/2 & -1 \\
+        1/2 & 1 \\
+      \end{bmatrix}
+      \bm{x}_{0}
+      \end{equation}
+    \item Given an initial state $\bm{x}_{0}$,
+      defining $\bm{z}$ as
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{z} := \bm{V}^{-1}\bm{x}_{0},
+        \quad\text{or}\quad
+        z_{i} := \bm{e}_{i}^{\top}\bm{V}^{-1}\bm{x}_{0},
+        \quad i = 1, 2
+      \end{equation}
+      allows us to write
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t}
+      =
+      \lambda_{1}^{t}z_{1}\bm{v}_{1}
+      +
+      \lambda_{2}^{t}z_{2}\bm{v}_{2}
+      =
+      z_{1}\bm{v}_{1}
+      +
+      \lambda_{2}^{t}z_{2}\bm{v}_{2}
+      \to
+      z_{1}\bm{v}_{1}
+      =
+      \left(\frac{1}{2}x_{1,0} - x_{2,0}\right)\bm{v}_{1}
+      \quad t \to \infty
+    \end{equation}
+    meaning that the state trajectory
+    \begin{itemize}
+    \item moves in parallel with $\bm{v}_{2}$
+    \item converges to a particular point on the set $\{\bm{x}\in \R^{2}\,|\, \bm{x}=\alpha \bm{v}_{1}, \alpha \in \R\}$
+    \end{itemize}
+    
+  \end{itemize}
+
+\clearpage
+\item \textbf{Example~5}
+  \begin{itemize}
+  \item Consider the following two-dimensional linear dynamical system:
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        x_{1,t+1} \\
+        x_{2,t+1}
+      \end{bmatrix}
+      =
+      \underbrace{
+      \begin{bmatrix}
+        3 & -2 \\
+        -1/2 & 3 \\
+      \end{bmatrix}}_{\bm{A}}
+      \begin{bmatrix}
+        x_{1,t} \\
+        x_{2,t}
+      \end{bmatrix}
+    \end{equation}
+  \item The characteristic polynomial of $\bm{A}$ is
+    \begin{equation}\nonumber%\label{eq:}%
+      \phi_{\bm{A}}(t) = 
+      \begin{vmatrix}
+        3 - t & -2 \\
+        -1/2 & 3 - t \\
+      \end{vmatrix}
+      = (4-t)(2-t),
+    \end{equation}
+    implying that
+    the eigenvalues of $\bm{A}$ are $\lambda_{1}:=4$ and $\lambda_{2}:=2$
+
+  \item The unique equilibrium point of the system is $\bar{\bm{x}}=\bm{0}$,
+    which is not asymptotically stable because $\rho(\bm{A})\geq 1$
+
+  \item We can express the state trajectory $\{\bm{x}_{t}\}$ from arbitrary $\bm{x}_{0}\in \R^{2}$ as
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{x}_{t} =
+        \bm{A}^{t}\bm{x}_{0}
+        =
+        \bm{V}\bm{\Lambda}^{t}\bm{V}^{-1}\bm{x}_{0}
+        =
+      \begin{bmatrix}
+        1 & 1 \\
+        -1/2 & 1/2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        4^{t} & 0 \\
+        0 & 2^{t} \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        1/2 & -1 \\
+        1/2 & 1 \\
+      \end{bmatrix}
+      \bm{x}_{0}
+    \end{equation}
+  \item Obviously,
+    \begin{equation}\nonumber%\label{eq:}%
+      \lim_{t\to \infty}\bm{x}_{t} =
+      \begin{bmatrix}
+        1 & 1 \\
+        -1/2 & 1/2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        \lim_{t\to\infty}4^{t} & 0 \\
+        0 & \lim_{t\to\infty}2^{t} \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        1/2 & -1 \\
+        1/2 & 1 \\
+      \end{bmatrix}
+      \bm{x}_{0}
+      =
+      \begin{bmatrix}
+        \infty \\
+        \infty \\
+      \end{bmatrix}
+    \end{equation}
+    unless $\bm{x}_{0} = \bar{\bm{x}}=\bm{0}$
+    \item Given an initial state $\bm{x}_{0}$,
+      defining $\bm{z}$ as
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{z} := \bm{V}^{-1}\bm{x}_{0},
+        \quad\text{or}\quad
+        z_{i} := \bm{e}_{i}^{\top}\bm{V}^{-1}\bm{x}_{0},
+        \quad i = 1, 2
+      \end{equation}
+      allows us to write
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t}
+      =
+      \lambda_{1}^{t}z_{1}\bm{v}_{1}
+      +
+      \lambda_{2}^{t}z_{2}\bm{v}_{2}
+      \quad \forall t
+    \end{equation}
+    \item Since $\lambda_{1}=4$ is the dominant eigenvalue,
+      the long-term behavior is characterized by
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{t}
+      \approx
+      \lambda_{1}^{t}z_{1}\bm{v}_{1}
+      =
+      4^{t}z_{1}
+      \begin{bmatrix}
+        1 \\ -1/2
+      \end{bmatrix},
+      \quad\text{where}\quad
+      z_{1}:=\bm{e}_{1}^{\top}\bm{V}^{-1}\bm{x}_{0}
+      = \frac{1}{2}x_{1,0} - x_{2,0}
+    \end{equation}
+    for sufficiently large $t$
+  \end{itemize}
+
+\end{itemize}
+
+
+\end{document}

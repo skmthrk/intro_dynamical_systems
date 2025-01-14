@@ -1,0 +1,626 @@
+\documentclass[12pt,a4paper]{article} 
+\input{preambles/preamble_lecnotes.tex} 
+
+\title{Preliminaries}
+\subtitle{Introduction to dynamical systems~\#1}
+\author{Hiroaki Sakamoto}
+\date{\today}
+
+\DeclareMathOperator{\vect}{vec}
+ 
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Notations and definitions}
+
+\begin{itemize}
+\item \textbf{Vector}
+  \begin{itemize}
+  \item An $m$-dimensional vector is denoted as
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{v} =
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        \vdots \\
+        v_{m} \\
+      \end{bmatrix},
+      \quad\text{where}\quad
+      v_{i}\in \R
+    \end{equation}
+  \item The set of all $m$-dimensional vectors is denoted by $\R^{m}$
+  \item For $\bm{v}, \bm{u}\in \R^{m}$ and $\alpha \in \R$,
+    we define scalar multiplication $\alpha\bm{v}$ and addition $\bm{v}+\bm{u}$ as
+    \begin{equation}\nonumber%\label{eq:}%
+      \alpha \bm{v}
+      := 
+      \begin{bmatrix}
+        \alpha v_{1} \\
+        \alpha v_{2} \\
+        \vdots \\
+        \alpha v_{m} \\
+      \end{bmatrix},
+      \quad
+      \bm{v} + \bm{u}
+      := 
+      \begin{bmatrix}
+        v_{1} + u_{1} \\
+        v_{2} + u_{2} \\
+        \vdots \\
+        v_{m} + u_{m} \\
+      \end{bmatrix}
+    \end{equation}
+  \end{itemize}
+
+
+\item \textbf{Matrix}
+  \begin{itemize}
+  \item A real matrix of dimension $m\times n$ is denoted as
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} =
+      \begin{bmatrix}
+        a_{11} & a_{12} & \ldots & a_{1n} \\
+        a_{21} & a_{22} & \ldots & a_{2n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        a_{m1} & a_{m2} & \ldots & a_{mn} \\
+      \end{bmatrix}
+      = 
+      \begin{bmatrix}
+        \bm{a}_{1} & \bm{a}_{2} & \ldots & \bm{a}_{n} \\
+      \end{bmatrix},
+      \quad\text{where}\quad
+      \bm{a}_{j} :=
+      \begin{bmatrix}
+        a_{1j} \\
+        a_{2j} \\
+        \vdots \\
+        a_{mj} \\
+      \end{bmatrix}\in \R^{m}
+    \end{equation}
+  \item The set of all $m\times n$ real matrices is denoted as $\R^{m\times n}$
+  \item $\bm{A}^{\top}$ denotes the transpose of $\bm{A}$
+  \item If $\bm{A}$ has an inverse, we denote it by $\bm{A}^{-1}$
+  \item The determinant of $\bm{A}$ is denoted by $|\bm{A}|$ 
+  \item We use $\bm{I}$ for an identity matrix
+    and $\bm{O}$ for a null matrix
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{I} :=
+      \begin{bmatrix}
+        1 & 0 & \ldots & 0 \\
+        0 & 1 & \ldots & 0 \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \ldots & 1 \\
+      \end{bmatrix},
+      \quad
+      \bm{O} :=
+      \begin{bmatrix}
+        0 & 0 & \ldots & 0 \\
+        0 & 0 & \ldots & 0 \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \ldots & 0 \\
+      \end{bmatrix}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Some definitions}
+  \begin{itemize}
+  \item For $\bm{A}\in \R^{m\times n}$ and $\bm{v}\in \R^{n}$,
+    we define $\bm{A}\bm{v}\in \R^{m}$ as
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A}\bm{v} := \sum_{j=1}^{n}v_{j}\bm{a}_{j}
+      =
+      v_{1}
+      \begin{bmatrix}
+        a_{11}\\
+        a_{21}\\
+        \vdots \\
+        a_{m1}\\
+      \end{bmatrix}
+      +
+      v_{2}
+      \begin{bmatrix}
+        a_{12}\\
+        a_{22}\\
+        \vdots \\
+        a_{m2}\\
+      \end{bmatrix}
+      + \cdots +
+      v_{n}
+      \begin{bmatrix}
+        a_{1n}\\
+        a_{2n}\\
+        \vdots \\
+        a_{mn}\\
+      \end{bmatrix}
+    \end{equation}
+  \item For $\bm{A}\in \R^{m\times n}$ and $\alpha \in \R$, we define $\alpha\bm{A}\in \R^{m\times n}$ as
+    \begin{equation}\nonumber%\label{eq:}%
+      \alpha\bm{A} := 
+      \begin{bmatrix}
+        \alpha\bm{a}_{1} & \alpha\bm{a}_{2} & \ldots & \alpha\bm{a}_{n} \\
+      \end{bmatrix}
+    \end{equation}
+  \item For $\bm{A}\in \R^{m\times n}$ and $\bm{B}\in \R^{m\times n}$,
+    we define $\bm{A}+\bm{B}\in \R^{m\times n}$ as
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} + \bm{B} :=
+      \begin{bmatrix}
+        \bm{a}_{1}+\bm{b}_{1} & \bm{a}_{2}+\bm{b}_{2} & \ldots & \bm{a}_{n}+\bm{b}_{n} \\
+      \end{bmatrix}
+    \end{equation}
+  \item For $\bm{A} \in \R^{m\times n}$ and $\bm{B}\in \R^{l\times m}$
+    we define $\bm{B}\bm{A}\in \R^{l\times n}$ as
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{B}\bm{A} :=
+      \begin{bmatrix}
+        \bm{B}\bm{a}_{1} & \bm{B}\bm{a}_{2} & \ldots & \bm{B}\bm{a}_{n}
+      \end{bmatrix}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Some facts}
+  \begin{itemize}
+  \item $\bm{C}(\bm{B}\bm{A}) = (\bm{C}\bm{B})\bm{A}$
+  \item $\bm{C}(\bm{B}+\bm{A}) = \bm{C}\bm{B} + \bm{C}\bm{A}$
+  \item $(\bm{C}+\bm{B})\bm{A} = \bm{C}\bm{A} + \bm{B}\bm{A}$
+  \item $(\bm{A}\bm{B})^{\top} = \bm{B}^{\top}\bm{A}^{\top}$
+  \item $(\bm{A}\bm{B})^{-1} = \bm{B}^{-1}\bm{A}^{-1}$
+  \item $|\bm{A}\bm{B}| = |\bm{A}||\bm{B}|$
+  \item $|\bm{A}^{-1}| = |\bm{A}|^{-1}$
+  \item $|\bm{A}| \neq 0$ if and only if $\bm{A}$ is non-singular (i.e., $\bm{A}^{-1}$ exists)
+  \item For any $\bm{A}\in\R^{n\times n}$,
+    \begin{equation}\nonumber%\label{eq:}%
+      |\bm{A}| = \sum_{i=1}^{n}a_{ij}\tilde{a}_{ij} \quad \forall j,
+      \qquad
+      |\bm{A}| = \sum_{j=1}^{n}a_{ij}\tilde{a}_{ij} \quad \forall i,
+    \end{equation}
+    where $\tilde{a}_{ij}$ is the cofactor of $a_{ij}$, defined by
+    \begin{equation}\nonumber%\label{eq:}%
+      \tilde{a}_{ij}:=
+      (-1)^{i+j}
+      \begin{vmatrix}
+        a_{11} & \cdots & a_{1j-1} &  a_{1j+1} & \cdots & a_{1n} \\
+        \vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\
+        a_{i-1\, 1} & \cdots & a_{i-1j-1} & a_{i-1j+1} & \cdots & a_{i-1n} \\
+        a_{i+1\, 1} & \cdots & a_{i+1j-1} & a_{i+1j+1} & \cdots & a_{i+1n} \\
+        \vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\
+        a_{m1} & \cdots & a_{mj-1} & a_{mj+1} & \cdots & a_{mn} \\
+      \end{vmatrix}\nonumber
+    \end{equation}
+  \item If $\bm{A}\in \R^{n\times n}$ is nonsingular,
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A}^{-1} = \frac{1}{|\bm{A}|}\tilde{\bm{A}},
+      \quad\text{where}\quad
+      \tilde{\bm{A}}:=
+      \underbrace{
+      \begin{bmatrix}
+        \tilde{a}_{11} & \tilde{a}_{21} & \cdots & \tilde{a}_{n1} \\
+        \tilde{a}_{12} & \tilde{a}_{22} & \cdots & \tilde{a}_{n2} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \tilde{a}_{1n} & \tilde{a}_{2n} & \cdots & \tilde{a}_{nn} \\
+      \end{bmatrix}}_{\text{cofactor matrix}}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Partitioned matrices}
+  
+  \begin{itemize}
+
+  \item Consider a matrix of the form
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} = 
+      \begin{bmatrix}
+        \bm{A}_{11}&\bm{A}_{12}\\
+        \bm{A}_{21}&\bm{A}_{22}
+      \end{bmatrix}
+    \end{equation}
+
+  \item Then,
+    the determinant of $\bm{A}$ is
+    \begin{equation}\nonumber%\label{eq:}%
+      |\bm{A}|
+      =
+      \begin{vmatrix}
+        \bm{A}_{11}&\bm{A}_{12}\\
+        \bm{A}_{21}&\bm{A}_{22}\end{vmatrix}
+      = |\bm{A}_{11}||\bm{A}_{2|1}|
+      = |\bm{A}_{22}||\bm{A}_{1|2}|
+    \end{equation}
+    and the inverse of $\bm{A}$ is
+    \begin{align}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        \bm{A}_{11}&\bm{A}_{12}\\
+        \bm{A}_{21}&\bm{A}_{22}
+      \end{bmatrix}^{-1}
+      & =
+      \begin{bmatrix}
+        \bm{A}_{1|2}^{-1} & -\bm{A}_{1|2}^{-1}\bm{A}_{12}\bm{A}_{22}^{-1} \\
+        - \bm{A}_{22}^{-1}\bm{A}_{21}\bm{A}_{1|2}^{-1} & \bm{A}_{22}^{-1} + \bm{A}_{22}^{-1}\bm{A}_{21}\bm{A}_{1|2}^{-1}\bm{A}_{12}\bm{A}_{22}^{-1} \\
+      \end{bmatrix}\\
+      & =
+      \begin{bmatrix}
+        \bm{A}_{11}^{-1} + \bm{A}_{11}^{-1}\bm{A}_{12}\bm{A}_{2|1}^{-1}\bm{A}_{21}\bm{A}_{11}^{-1} & - \bm{A}_{11}^{-1}\bm{A}_{12}\bm{A}_{2|1}^{-1} \\
+        -\bm{A}_{2|1}^{-1}\bm{A}_{21}\bm{A}_{11}^{-1} & \bm{A}_{2|1}^{-1} \\
+      \end{bmatrix}
+      \nonumber
+    \end{align}
+    where
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A}_{1|2}:=\bm{A}_{11}- \bm{A}_{12}\bm{A}_{22}^{-1}\bm{A}_{21},
+      \quad
+      \bm{A}_{2|1}:=\bm{A}_{22}- \bm{A}_{21}\bm{A}_{11}^{-1}\bm{A}_{12}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Linear independence and determinant}
+  \begin{itemize}
+  \item We say that $\bm{v}_{1}, \ldots, \bm{v}_{k}\in \R^{n}$ are linearly independent if
+    \begin{equation}\nonumber%\label{eq:}%
+      c_{1}\bm{v}_{1} + \cdots + c_{k}\bm{v}_{k} = 0
+      \implies
+      c_{1} = \cdots = c_{k} = 0
+    \end{equation}
+  \item For a function $f(\bm{x}):=\bm{A}\bm{x}$ with a matrix $\bm{A}\in\R^{n\times k}$,    
+    \begin{itemize}
+    \item the following are equivalent:
+      \begin{itemize}
+      \item $f$ is an injective function ($f(\bm{x})= f(\bm{x}')$ implies $\bm{x}=\bm{x}'$)
+      \item the column vectors of $\bm{A}$ are linearly independent
+      \end{itemize}
+    \item the following are equivalent:
+      \begin{itemize}
+      \item $f$ is a surjective function ($f(\R^{k})= \R^{n}$)
+      \item the column vectors of $\bm{A}$ spans $\R^{n}$
+      \end{itemize}
+    \end{itemize}
+  \item For a function $f(\bm{x}):=\bm{A}\bm{x}$ with a square matrix $\bm{A}\in\R^{n\times n}$,
+    the following are equivalent:
+    \begin{itemize}
+    \item $f$ is an injective function
+    \item $f$ is a surjective function
+    \item $f$ is a bijective function (one-to-one)
+    \end{itemize}
+  \item For a square matrix $\bm{A}\in\R^{n\times n}$,
+    the following are equivalent:
+    \begin{itemize}
+    \item column vectors of $\bm{A}$ are linearly independent
+    \item $\bm{A}$ is non-singular
+    \item $|\bm{A}|\neq 0$
+    \end{itemize}
+  \end{itemize}
+
+\item \textbf{Sign of matrices}
+  \begin{itemize}
+  \item For a square matrix $\bm{A}\in \R^{n\times n}$,
+    \begin{itemize}
+    \item $\bm{A}$ is positive definite if $\bm{x}^{\top}\bm{A}\bm{x}>0$ for any $\bm{x}\neq \bm{0}$
+    \item $\bm{A}$ is positive semidefinite if $\bm{x}^{\top}\bm{A}\bm{x}\geq 0$ for any $\bm{x}$
+    \item $\bm{A}$ is negative definite if $\bm{x}^{\top}\bm{A}\bm{x}<0$ for any $\bm{x}\neq \bm{0}$
+    \item $\bm{A}$ is negative semidefinite if $\bm{x}^{\top}\bm{A}\bm{x}\leq 0$ for any $\bm{x}$
+    \end{itemize}
+  \end{itemize}
+
+\item \textbf{Symmetric matrices}
+  \begin{itemize}
+  \item A matrix $\bm{A}\in \R^{n\times n}$ is called a symmetric matrix if $\bm{A}^{\top} = \bm{A}$
+  \item A matrix $\bm{P}\in \R^{n\times n}$ is called an orthogonal matrix if $\bm{P}^{\top} = \bm{P}^{-1}$
+  \item For a  matrix $\bm{A}\in \R^{n\times n}$, the following are equivalent:
+    \begin{itemize}
+    \item $\bm{A}$ is a symmetric matrix
+    \item $\bm{A}$ is decomposed as $\bm{A}=\bm{P}\bm{\Lambda}\bm{P}^{-1}$
+      where $\bm{\Lambda}$ is a diagonal matrix and $\bm{P}$ is an orthogonal matrix
+    \end{itemize}
+  \item For a symmetric matrix $\bm{A}=\bm{P}\bm{\Lambda}\bm{P}^{-1}$,
+    \begin{itemize}
+    \item $\bm{A}$ is positive definite if and only if every diagonal element of $\bm{\Lambda}$ is positive
+    \item $\bm{A}$ is positive semidefinite if and only if every diagonal element of $\bm{\Lambda}$ is nonnegative
+    \item $\bm{A}$ is negative definite if and only if every diagonal element of $\bm{\Lambda}$ is negative
+    \item $\bm{A}$ is negative semidefinite if and only if every diagonal element of $\bm{\Lambda}$ is nonpositive
+    \end{itemize}
+  \end{itemize}
+
+\end{itemize}
+
+\section{Matrix differentiation and integration}
+
+\begin{itemize}
+
+\item \textbf{Differentiation}
+  \begin{itemize}
+  \item For a function $f:\R^{n}\to \R$, we define
+    \begin{equation}\nonumber%\label{eq:}%
+      \frac{df(\bm{x})}{d\bm{x}} :=
+      \begin{bmatrix}
+        \frac{\partial f(\bm{x})}{\partial x_{1}}
+        & \frac{\partial f(\bm{x})}{\partial x_{2}}
+        & \cdots
+        & \frac{\partial f(\bm{x})}{\partial x_{n}}
+      \end{bmatrix}\in \R^{1\times n}
+    \end{equation}
+  \item For a function $\bm{f}:\R^{n}\to \R^{m}$, we define
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{f}(\bm{x})
+      =
+      \begin{bmatrix}
+        f_{1}(\bm{x}) \\
+        f_{2}(\bm{x}) \\
+        \vdots \\
+        f_{m}(\bm{x}) \\
+      \end{bmatrix}
+      \implies
+      \frac{d\bm{f}(\bm{x})}{d\bm{x}} :=
+      \begin{bmatrix}
+        \frac{\partial f_{1}(\bm{x})}{\partial x_{1}}
+        & \frac{\partial f_{1}(\bm{x})}{\partial x_{2}}
+        & \cdots 
+        & \frac{\partial f_{1}(\bm{x})}{\partial x_{n}} \\
+        \frac{\partial f_{2}(\bm{x})}{\partial x_{1}}
+        & \frac{\partial f_{2}(\bm{x})}{\partial x_{2}}
+        & \cdots 
+        & \frac{\partial f_{2}(\bm{x})}{\partial x_{n}} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \frac{\partial f_{m}(\bm{x})}{\partial x_{1}}
+        & \frac{\partial f_{m}(\bm{x})}{\partial x_{2}}
+        & \cdots 
+        & \frac{\partial f_{m}(\bm{x})}{\partial x_{n}} \\
+      \end{bmatrix}
+      \in \R^{m\times n},
+    \end{equation}
+    which is often called the Jacobian matrix of $\bm{f}$
+  \item For a function $\bm{F}:\R \to \R^{m\times n}$, we define
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{F}(x) =
+      \begin{bmatrix}
+        f_{11}(x) & f_{12}(x) & \cdots & f_{1n}(x) \\
+        f_{21}(x) & f_{22}(x) & \cdots & f_{2n}(x) \\
+        \vdots & \vdots & \ddots & \vdots \\
+        f_{m1}(x) & f_{m2}(x) & \cdots & f_{mn}(x) \\
+      \end{bmatrix}
+      \implies
+      \frac{d\bm{F}(x)}{dx} :=
+      \begin{bmatrix}
+        \frac{df_{11}(x)}{dx} & \frac{df_{12}(x)}{dx} & \cdots & \frac{df_{1n}(x)}{dx} \\
+        \frac{df_{21}(x)}{dx} & \frac{df_{22}(x)}{dx} & \cdots & \frac{df_{2n}(x)}{dx} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \frac{df_{m1}(x)}{dx} & \frac{df_{m2}(x)}{dx} & \cdots & \frac{df_{mn}(x)}{dx} \\
+      \end{bmatrix}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Some facts}
+  \begin{itemize}
+  \item For $\bm{A}\in \R^{m\times n}$,
+    \begin{equation}\nonumber%\label{eq:}%
+      \frac{d\bm{A}\bm{x}}{d\bm{x}} = \bm{A}
+    \end{equation}
+  \item For $\bm{A}\in \R^{m\times l}$ and $\bm{g}:\R^{n}\to \R^{l}$,
+    \begin{equation}\nonumber%\label{eq:}%
+      \frac{d\bm{A}\bm{g}(\bm{x})}{d\bm{x}} = \bm{A} \frac{d\bm{g}(\bm{x})}{d\bm{x}}
+    \end{equation}
+  \item For $\bm{F}:\R \to \R^{m\times l}$ and  $\bm{G}:\R \to \R^{l\times n}$,
+    \begin{equation}\nonumber%\label{eq:}%
+      \frac{d\bm{F}(x)\bm{G}(x)}{dx} =
+      \frac{d \bm{F}(x)}{dx}\bm{G}(x)
+      +
+      \bm{F}(x)\frac{d\bm{G}(x)}{dx}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Integration}
+  \begin{itemize}
+  \item For a function $\bm{F}:\R \to \R^{m\times n}$, we define
+    \begin{align}
+      & \bm{F}(x) =
+      \begin{bmatrix}
+        f_{11}(x) & f_{12}(x) & \cdots & f_{1n}(x) \\
+        f_{21}(x) & f_{22}(x) & \cdots & f_{2n}(x) \\
+        \vdots & \vdots & \ddots & \vdots \\
+        f_{m1}(x) & f_{m2}(x) & \cdots & f_{mn}(x) \\
+      \end{bmatrix} \nonumber \\
+      & \implies
+      \int\bm{F}(x)dx :=
+      \begin{bmatrix}
+        \int f_{11}(x)dx & \int f_{12}(x)dx & \cdots & \int f_{1n}(x)dx \\
+        \int f_{21}(x)dx & \int f_{22}(x)dx & \cdots & \int f_{2n}(x)dx \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \int f_{m1}(x)dx & \int f_{m2}(x)dx & \cdots & \int f_{mn}(x)dx \\
+      \end{bmatrix}
+    \nonumber%\label{eq:}%
+    \end{align}
+  \end{itemize}
+
+\end{itemize}
+
+\section{Kronecker product and vectorization}
+\label{sec:Kronecker_product}
+
+\begin{itemize}
+
+\item \textbf{Kronecker product}
+  
+  \begin{itemize}
+
+  \item For any pair of matrices $\bm{A}\in \R^{m\times n}$ and $\bm{B}\in \R^{p\times q}$,
+    we define their \emph{Kronecker product} $\bm{A}\otimes \bm{B} \in \R^{mp\times nq}$ by
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A}\otimes \bm{B}
+      :=
+      \begin{bmatrix}
+        a_{11}\bm{B} & a_{12}\bm{B} & \ldots & a_{1n}\bm{B} \\
+        a_{21}\bm{B} & a_{22}\bm{B} & \ldots & a_{2n}\bm{B} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        a_{m1}\bm{B} & a_{m2}\bm{B} & \ldots & a_{mn}\bm{B} \\
+      \end{bmatrix}
+    \end{equation}
+
+  \item Example:
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        a_{11} & a_{12} \\
+        a_{21} & a_{22} \\
+      \end{bmatrix}
+      \otimes
+      \begin{bmatrix}
+        b_{11} & b_{12} & b_{13} \\
+        b_{21} & b_{22} & b_{23} \\
+        b_{31} & b_{32} & b_{33} \\
+      \end{bmatrix}
+      = 
+%      \begin{bmatrix}
+%        a_{11}\bm{B} & a_{12}\bm{B} \\
+%        a_{21}\bm{B} & a_{22}\bm{B} \\
+%      \end{bmatrix}
+%      =
+      \begin{bmatrix}
+        a_{11}b_{11} & a_{11}b_{12} & a_{11}b_{13} & a_{12}b_{11} & a_{12}b_{12} & a_{12}b_{13} \\
+        a_{11}b_{21} & a_{11}b_{22} & a_{11}b_{23} & a_{12}b_{21} & a_{12}b_{22} & a_{12}b_{23} \\
+        a_{11}b_{31} & a_{11}b_{32} & a_{11}b_{33} & a_{12}b_{31} & a_{12}b_{32} & a_{12}b_{33} \\
+        a_{21}b_{11} & a_{21}b_{12} & a_{21}b_{13} & a_{22}b_{11} & a_{22}b_{12} & a_{22}b_{13} \\
+        a_{21}b_{21} & a_{21}b_{22} & a_{21}b_{23} & a_{22}b_{21} & a_{22}b_{22} & a_{22}b_{23} \\
+        a_{21}b_{31} & a_{21}b_{32} & a_{21}b_{33} & a_{22}b_{31} & a_{22}b_{32} & a_{22}b_{33} \\
+      \end{bmatrix}
+    \end{equation}
+
+  \item Properties
+
+    \begin{itemize}
+    \item $(\bm{A}\otimes \bm{B}) (\bm{C}\otimes \bm{D}) = (\bm{A}\bm{C})\otimes (\bm{B}\bm{D})$
+    \item $\bm{A}^{k}\otimes \bm{B}^{k} = (\bm{A}\otimes \bm{B})^{k}$ for any $k\in \N$
+    \item $(\alpha \bm{A}\otimes \beta \bm{B}) = \alpha \beta (\bm{A}\otimes \bm{B})$ for any $\alpha, \beta \in \R$
+    \end{itemize}
+
+  \end{itemize}
+
+\end{itemize}
+
+\begin{itemize}
+\item \textbf{Vectorization}
+  
+  \begin{itemize}
+
+  \item We define $\vect(\bm{A})$ as the column vector created by stacking the column vectors of $\bm{A}$,
+    namely,
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} =
+      \begin{bmatrix}
+        \bm{a}_{1} & \bm{a}_{2} & \cdots & \bm{a}_{n}
+      \end{bmatrix}
+      \implies 
+      \vect(\bm{A}) :=
+      \begin{bmatrix}
+        \bm{a}_{1}\\
+        \bm{a}_{2}\\
+        \vdots\\
+        \bm{a}_{n}\\
+      \end{bmatrix}
+      \in \R^{mn}
+    \end{equation}
+  \item Example:
+    \begin{equation}\nonumber%\label{eq:}%
+      \vect
+      \left(
+      \begin{bmatrix}
+        a_{11} & a_{12} & a_{13} \\
+        a_{21} & a_{22} & a_{23} \\
+        a_{31} & a_{32} & a_{33} \\
+        a_{41} & a_{42} & a_{43} \\
+      \end{bmatrix}
+    \right)
+    = 
+      \begin{bmatrix}
+        a_{11} \\
+        a_{21} \\
+        a_{31} \\
+        a_{41} \\
+        a_{12} \\
+        a_{22} \\
+        a_{32} \\
+        a_{42} \\
+        a_{13} \\
+        a_{23} \\
+        a_{33} \\
+        a_{43} \\
+      \end{bmatrix}
+    \end{equation}
+  \item Properties:
+    \begin{itemize}
+    \item $\vect(\bm{A} + \bm{B}) = \vect(\bm{A}) + \vect(\bm{B})$ (by definition)
+    \item $\vect(\bm{A}\bm{B}\bm{C}) = (\bm{C}^{\top}\otimes \bm{A})\vect(\bm{B})$ %(See the textbook) %, for example, \cite{Abadir2005-aa})
+    \item $\vect(\sum_{k=0}^{t}\bm{A}\bm{B}\bm{A}^{\top}) = \sum_{k=0}^{t}(\bm{A}\otimes \bm{A})^{k}\vect(\bm{B})$ %(See the textbook) %, for example, \cite{Abadir2005-aa})
+    \end{itemize}
+  \item Example:
+    \begin{align}
+      & \vect \left(
+        \begin{bmatrix}
+          a_{11} & a_{12} \\
+          a_{21} & a_{22} \\
+          a_{31} & a_{32} \\
+        \end{bmatrix}
+        \begin{bmatrix}
+          b_{11} & b_{12} \\
+          b_{21} & b_{22} \\
+        \end{bmatrix}
+        \begin{bmatrix}
+          c_{11} & c_{12} & c_{13} \\
+          c_{21} & c_{22} & c_{23}\\
+        \end{bmatrix}
+        \right)
+     = 
+     \begin{bmatrix}
+        a_{11}b_{11}c_{11} + a_{12}b_{21}c_{11} + a_{11}b_{12}c_{21} + a_{12}b_{22}c_{21} \\
+        a_{21}b_{11}c_{11} + a_{22}b_{21}c_{11} + a_{21}b_{12}c_{21} + a_{22}b_{22}c_{21} \\
+        a_{31}b_{11}c_{11} + a_{32}b_{21}c_{11} + a_{31}b_{12}c_{21} + a_{32}b_{22}c_{21} \\
+        a_{11}b_{11}c_{12} + a_{12}b_{21}c_{12} + a_{11}b_{12}c_{22} + a_{12}b_{22}c_{22} \\
+        a_{21}b_{11}c_{12} + a_{22}b_{21}c_{12} + a_{21}b_{12}c_{22} + a_{22}b_{22}c_{22} \\
+        a_{31}b_{11}c_{12} + a_{32}b_{21}c_{12} + a_{31}b_{12}c_{22} + a_{32}b_{22}c_{22} \\
+        a_{11}b_{11}c_{13} + a_{12}b_{21}c_{13} + a_{11}b_{12}c_{23} + a_{12}b_{22}c_{23} \\
+        a_{21}b_{11}c_{13} + a_{22}b_{21}c_{13} + a_{21}b_{12}c_{23} + a_{22}b_{22}c_{23} \\
+        a_{31}b_{11}c_{13} + a_{32}b_{21}c_{13} + a_{31}b_{12}c_{23} + a_{32}b_{22}c_{23} \\
+     \end{bmatrix} \nonumber \\
+      & \qquad
+        =   
+     \begin{bmatrix}
+       c_{11}a_{11} & c_{11}a_{12} & c_{21}a_{11} & c_{21}a_{12} \\
+       c_{11}a_{21} & c_{11}a_{22} & c_{21}a_{21} & c_{21}a_{22} \\
+       c_{11}a_{31} & c_{11}a_{32} & c_{21}a_{31} & c_{21}a_{32} \\
+       c_{12}a_{11} & c_{12}a_{12} & c_{22}a_{11} & c_{22}a_{12} \\
+       c_{12}a_{21} & c_{12}a_{22} & c_{22}a_{21} & c_{22}a_{22} \\
+       c_{12}a_{31} & c_{12}a_{32} & c_{22}a_{31} & c_{22}a_{32} \\
+       c_{13}a_{11} & c_{13}a_{12} & c_{23}a_{11} & c_{23}a_{12} \\
+       c_{13}a_{21} & c_{13}a_{22} & c_{23}a_{21} & c_{23}a_{22} \\
+       c_{13}a_{31} & c_{13}a_{32} & c_{23}a_{31} & c_{23}a_{32} \\
+     \end{bmatrix} 
+     \begin{bmatrix}
+       b_{11} \\
+       b_{21} \\
+       b_{12} \\
+       b_{22} \\
+     \end{bmatrix}
+       =
+       \left(
+     \begin{bmatrix}
+       c_{11} & c_{21} \\
+       c_{12} & c_{22} \\
+       c_{13} & c_{23} \\
+     \end{bmatrix}
+     \otimes
+     \begin{bmatrix}
+       a_{11} & a_{12} \\
+       a_{21} & a_{22} \\
+       a_{31} & a_{32} \\
+     \end{bmatrix}
+       \right)       
+     \begin{bmatrix}
+       b_{11} \\
+       b_{21} \\
+       b_{12} \\
+       b_{22} \\
+     \end{bmatrix}
+    \nonumber%\label{eq:}%
+    \end{align}
+  \end{itemize}
+
+\end{itemize}
+
+\end{document}

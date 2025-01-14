@@ -1,0 +1,559 @@
+\documentclass[12pt,a4paper]{article} 
+\input{preambles/preamble_lecnotes.tex} 
+
+\title{Matrix exponential}
+\subtitle{Introduction to dynamical systems~\#5}
+\author{Hiroaki Sakamoto}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Exponential function}
+
+\subsection{Real exponential function}
+
+\begin{itemize}
+\item \textbf{Definition}
+  \begin{itemize}
+  \item Recall that the real exponential function $e^{a}$ can be defined as
+    \begin{equation}\nonumber%\label{eq:}%
+      e^{a} := \sum_{k=0}^{\infty} \frac{1}{k!}a^{k} = 1 + a + \frac{1}{2!}a^{2} + \frac{1}{3!}a^{3} + \ldots,
+    \end{equation}
+    which is well defined for every $a\in \R$ (why?)
+  \end{itemize}
+
+\item \textbf{Properties}
+  \begin{itemize}
+  \item $e^{0} = 1$
+  \item $e^{a} >0$
+  \item $e^{a+b} = e^{a}e^{b}$
+  \item $(e^{a})^{k} = e^{ka}$
+  \item $\frac{d}{dt}e^{at} = ae^{at}$
+  \item $\lim_{t\to\infty}e^{at} = 0$ if and only if $a<0$
+  \end{itemize}
+
+\end{itemize}
+
+\subsection{Matrix exponential function}
+
+\begin{itemize}
+\item \textbf{Definition}
+  \begin{itemize}
+  \item Similar to the real exponential function, we define the matrix exponential function as
+    \begin{equation}\nonumber%\label{eq:}%
+      e^{\bm{A}} := 
+      \sum_{k=0}^{\infty} \frac{1}{k!}\bm{A}^{k}
+      = \bm{I} + \bm{A} + \frac{1}{2!}\bm{A}^{2} + \frac{1}{3!}\bm{A}^{3} + \ldots,
+    \end{equation}
+    which is also well defined for every square matrix $\bm{A}$ (why?)
+  \item Given $\bm{A}$, if there exists a matrix $\bm{B}$ such that
+    \begin{equation}\nonumber%\label{eq:}%
+      e^{\bm{B}} = \bm{A},
+    \end{equation}
+    we call it the logarithm of $\bm{A}$ and write $\ln(\bm{A}):=\bm{B}$
+  \end{itemize}
+
+  \clearpage
+\item \textbf{Properties}
+  \begin{enumerate}
+  \item $e^{\bm{O}} = \bm{I}$ where $\bm{O}$ is the zero matrix
+  \item $e^{\bm{A}^{\top}} = \left(e^{\bm{A}}\right)^{\top}$
+  \item If $\bm{A}$ and $\bm{B}$ commute\footnote{%
+        We say that two matrices
+        $\bm{A}, \bm{B}$ commute if $\bm{A}\bm{B} = \bm{B}\bm{A}$.
+        Obviously, $\bm{A}^{k}$ and $\bm{A}^{l}$
+        commute for any $k, l\in \N$.  Also, if $\bm{A}$ and $\bm{B}$ commute,
+        so do $(\bm{A}+\bm{B})$ and $\bm{A}$.
+        Moreover, if $\bm{A}$ and $\bm{B}$ commute, so do $\bm{A}$ and $\bm{B}^{k}$ for any $k$.
+      },
+      then $\bm{B}e^{\bm{A}t} = e^{\bm{A}t}\bm{B}$ for any $t\in\R$
+    \item If $\bm{A}$ is non-singular, then $e^{\bm{A}\bm{B}\bm{A}^{-1}} = \bm{A}e^{\bm{B}}\bm{A}^{-1}$
+    \item For any $s, t \in \R$, we have $e^{\bm{A}s}e^{\bm{A}t} = e^{\bm{A}(s+t)}$
+    \item For any $\bm{A}$, $e^{\bm{A}}$ is non-singular and $(e^{\bm{A}})^{-1}=e^{-\bm{A}}$
+    \item $\frac{d}{dt}e^{\bm{A}t} = \bm{A}e^{\bm{A}t}$
+    \item If $\bm{A}$ and $\bm{B}$ commute, then $e^{\bm{A}}e^{\bm{B}} = e^{\bm{A}+\bm{B}}$
+    \item For any $k\in \N$, $(e^{\bm{A}})^{k} = e^{\bm{A}k}$
+    \item If $\bm{A}$ and $\bm{B}$ commute, so do $e^{\bm{A}}$ and $e^{\bm{B}}$
+    \item If $(\lambda, \bm{v})$ is an eigenpair of $\bm{A}$, then
+      $(e^{\lambda t}, \bm{v})$ is an eigenpair of $e^{\bm{A}t}$ for all $t\in \R$
+    \item $\lim_{t\to\infty}e^{\bm{A}t}=\bm{O}$ if and only if the eigenvalues of $\bm{A}$ are all negative
+    \item If $\bm{A}$ is a diagonal matrix, so is $e^{\bm{A}}$ and
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{A}
+        =
+        \begin{bmatrix}
+          a_{1} & 0 & \cdots & 0 \\
+          0 & a_{2} & \cdots & 0 \\
+          \vdots & \vdots & \ddots & \vdots \\
+          0 & 0 & \cdots & a_{m} \\
+        \end{bmatrix}
+        \implies
+        e^{\bm{A}} = 
+        \begin{bmatrix}
+          e^{a_{1}} & 0 & \cdots & 0 \\
+          0 & e^{a_{2}} & \cdots & 0 \\
+          \vdots & \vdots & \ddots & \vdots \\
+          0 & 0 & \cdots & e^{a_{m}} \\
+        \end{bmatrix}
+      \end{equation}
+    \item If $\bm{J}_{m}(\lambda)$ is a Jordan block of size $m$, then
+      \begin{equation}\nonumber%\label{eq:}%
+        e^{\bm{J}_{m}(\lambda)t}
+        =
+        \begin{bmatrix}
+          e^{\lambda t} & \frac{t}{1!}e^{\lambda t} & \frac{t^{2}}{2!}e^{\lambda t} & \cdots & \frac{t^{m-1}}{(m-1)!}e^{\lambda t} \\
+          0 & e^{\lambda t} & \frac{t}{1!}e^{\lambda t} & \cdots & \frac{t^{m-2}}{(m-2)!}e^{\lambda t} \\
+          0 & 0 & e^{\lambda t} & \ddots & \vdots \\
+          \vdots & \vdots & \vdots & \ddots & \vdots \\
+          0 & 0 & 0  & 0 & e^{\lambda t} \\
+        \end{bmatrix}
+        \quad \forall t \in \R
+      \end{equation}
+    \item For a Jordan matrix $\bm{J}\in \R^{n\times n}$,
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{J} =
+      \begin{bmatrix}
+        \bm{J}_{n_{1}}(\lambda_{1}) & \bm{O} & \cdots & \bm{O} \\
+        \bm{O} & \bm{J}_{n_{2}}(\lambda_{2}) & \cdots & \bm{O} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \bm{O} & \bm{O} & \cdots & \bm{J}_{n_{d}}(\lambda_{d}) \\
+      \end{bmatrix}
+      \implies
+      e^{\bm{J}t}
+      =
+      \begin{bmatrix}
+        e^{\bm{J}_{n_{1}}(\lambda_{1})t} & \bm{O} & \cdots & \bm{O} \\
+        \bm{O} & e^{\bm{J}_{n_{2}}(\lambda_{2})t} & \cdots & \bm{O} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \bm{O} & \bm{O} & \cdots & e^{\bm{J}_{n_{d}}(\lambda_{d})t} \\
+      \end{bmatrix}
+      \quad \forall t \in \R
+    \end{equation}
+
+    \item If $\mu$ is an eigenvalue of $e^{\bm{A}}$,
+      then $\mu>0$ and $\lambda:=\ln(\mu)$ is an eigenvalue of $\bm{A}$
+
+    \item The eigenvalues of $\bm{A}$ are all negative if and only if $\rho(e^{\bm{A}})< 1$
+
+    \end{enumerate}
+
+    \clearpage
+
+\item \textbf{Proof}
+  \begin{enumerate}
+    \item $e^{\bm{O}} = \bm{I}$ where $\bm{O}$ is the zero matrix (by definition)
+    \item $e^{\bm{A}^{\top}} = \left(e^{\bm{A}}\right)^{\top}$ because
+      \begin{align}
+        e^{\bm{A}^{\top}}
+        & := I + \bm{A}^{\top} + \frac{1}{2!}(\bm{A}^{\top})^{2} + \frac{1}{3!}(\bm{A}^{\top})^{3} + \cdots  \nonumber \\
+        & = I^{\top} + \bm{A}^{\top} + \frac{1}{2!}(\bm{A}^{2})^{\top} + \frac{1}{3!}(\bm{A}^{3})^{\top} + \cdots \nonumber \\
+        & = \left(I + \bm{A} + \frac{1}{2!}\bm{A}^{2} + \frac{1}{3!}\bm{A}^{3} + \cdots\right)^{\top} = (e^{\bm{A}})^{\top}
+          \nonumber%\label{eq:}%
+      \end{align}
+    \item If $\bm{A}$ and $\bm{B}$ commute,
+      then $\bm{B}e^{\bm{A}t} = e^{\bm{A}t}\bm{B}$ for any $t\in\R$ because
+      \begin{align}
+       \bm{B}e^{\bm{A}t} 
+       & = \bm{B} + \bm{B}\bm{A}t + \frac{t^{2}}{2!}\bm{B}\bm{A}^{2} + \frac{t^{3}}{3!}\bm{B}\bm{A}^{3} + \cdots \nonumber \\
+       & = \bm{B} + \bm{A}\bm{B}t + \frac{t^{2}}{2!}\bm{A}^{2}\bm{B} + \frac{t^{3}}{3!}\bm{A}^{3}\bm{B} + \cdots = e^{\bm{A}t}\bm{B}
+         \nonumber%\label{eq:}%
+      \end{align}
+    \item If $\bm{A}$ is non-singular, then $e^{\bm{A}\bm{B}\bm{A}^{-1}} = \bm{A}e^{\bm{B}}\bm{A}^{-1}$
+      because
+      \begin{align}
+        e^{\bm{A}\bm{B}\bm{A}^{-1}}
+        & := \bm{I} + \bm{A}\bm{B}\bm{A}^{-1} + \frac{1}{2!}(\bm{A}\bm{B}\bm{A}^{-1})^{2} + \frac{1}{3!}(\bm{A}\bm{B}\bm{A}^{-1})^{3} + \cdots  \nonumber \\
+        & = \bm{A}\bm{A}^{-1} + \bm{A}\bm{B}\bm{A}^{-1} + \frac{1}{2!}\bm{A}\bm{B}^{2}\bm{A}^{-1} + \frac{1}{3!}\bm{A}\bm{B}^{3}\bm{A}^{-1} + \cdots  \nonumber \\
+        & = \bm{A} \left(\bm{I} + \bm{B} + \frac{1}{2!}\bm{B}^{2} + \frac{1}{3!}\bm{B}^{3} + \cdots \right)\bm{A}^{-1} = \bm{A}e^{\bm{B}}\bm{A}^{-1}
+          \nonumber%\label{eq:}%
+      \end{align}
+    \item For any $s, t \in \R$, we have $e^{\bm{A}s}e^{\bm{A}t} = e^{\bm{A}(s+t)}$
+      because
+      \begin{align}
+        e^{\bm{A}s}e^{\bm{A}t}
+        & 
+          = \left(\sum_{j=0}^{\infty} \frac{\bm{A}^{j}s^{j}}{j!}\right)\left(\sum_{k=0}^{\infty}\frac{\bm{A}^{k}t^{k}}{k!}\right)
+          = \sum_{j=0}^{\infty}\sum_{k=0}^{\infty}\frac{\bm{A}^{j}s^{j}}{j!}\frac{\bm{A}^{k}t^{k}}{k!} \nonumber \\
+        &
+          = \sum_{j=0}^{\infty}\sum_{l=j}^{\infty}\frac{\bm{A}^{j}s^{j}}{j!}\frac{\bm{A}^{l-j}t^{l-j}}{(l-j)!}
+          = \sum_{l=0}^{\infty}\sum_{j=0}^{l}\frac{\bm{A}^{j}s^{j}}{j!}\frac{\bm{A}^{l-j}t^{l-j}}{(l-j)!} \nonumber \\
+        &
+          = \sum_{l=0}^{\infty}\frac{\bm{A}^{l}}{l!}\underbrace{\sum_{j=0}^{l}\frac{l!}{j!(l-j)!}s^{j}t^{l-j}}_{=(s+t)^{l} \text{ binomial theorem}}
+          = \sum_{j=0}^{\infty}\frac{(\bm{A}(s+t))^{l}}{l!}
+          = e^{\bm{A}(s+t)}
+          \nonumber%\label{eq:}%
+      \end{align}
+      where the fourth equality uses the fact that
+      \begin{align}
+        \sum_{j=0}^{\infty}\sum_{l=j}^{\infty}x_{j,l}
+          & = x_{0,0} + x_{0,1} + x_{0,2} + x_{0,3} + \cdots  \nonumber \\[-13pt]
+          & \qquad\quad\hspace{-1pt} + x_{1,1} + x_{1,2} + x_{1,3} + x_{1,4} + \cdots  \nonumber \\
+          & \qquad\qquad\quad\hspace{8pt} + x_{2,2} + x_{2,3} + x_{2,4} + x_{2,5} + \cdots  \nonumber \\
+          & = \sum_{j=0}^{0}x_{j,0} + \sum_{j=0}^{1}x_{j,1} + \sum_{j=0}^{2}x_{j,2} + \sum_{j=0}^{3}x_{j,3} + \cdots = \sum_{l=0}^{\infty}\sum_{j=0}^{l}x_{j,l} %\nonumber \\
+      \nonumber%\label{eq:}%
+      \end{align}
+    \item $e^{\bm{A}}$ is invertible for any $\bm{A}$
+      and $(e^{\bm{A}})^{-1}=e^{-\bm{A}}$ because
+      \begin{equation}\nonumber%\label{eq:}%
+        e^{\bm{A}}e^{-\bm{A}} = e^{\bm{A}\times 1}e^{\bm{A}\times -1} = e^{\bm{A}\times(1-1)} = e^{\bm{A}\times 0} = e^{\bm{O}} = \bm{I}
+      \end{equation}
+    \item $\frac{d}{dt}e^{\bm{A}t} = \bm{A}e^{\bm{A}t}$
+      because defining $\bm{F}:\R\to\R^{n\times n}$ by $\bm{F}(t):=e^{\bm{A}t}$ gives
+      \begin{align}
+        \frac{d \bm{F}(t)}{dt}
+        & := \lim_{h\to 0}\frac{\bm{F}(t+h)-\bm{F}(t)}{h}
+        = \lim_{h\to 0}\frac{e^{\bm{A}(t+h)} - e^{\bm{A}t}}{h}
+        = \lim_{h\to 0}\frac{e^{\bm{A}t}e^{\bm{A}h} - e^{\bm{A}t}}{h}
+        = e^{\bm{A}t}\lim_{h\to 0}\frac{e^{\bm{A}h} - I}{h}  \nonumber \\
+        & = e^{\bm{A}t}\lim_{h\to 0}\frac{\frac{1}{1!}\bm{A}h + \frac{1}{2!}\bm{A}^{2}h^{2} + \frac{1}{3!}\bm{A}^{3}h^{3}+\cdots }{h}  \nonumber \\
+        & = e^{\bm{A}t}\lim_{h\to 0}\left(\frac{1}{1!}\bm{A} + \frac{1}{2!}\bm{A}^{2}h + \frac{1}{3!}\bm{A}^{3}h^{2} + \cdots \right) = e^{\bm{A}t}\bm{A} = \bm{A} e^{\bm{A}t}
+        \nonumber%\label{eq:}%
+      \end{align}
+    \item If $\bm{A}\in \R^{n\times n}$ and $\bm{B}\in \R^{n\times n}$ commute, then $e^{\bm{A}}e^{\bm{B}} = e^{\bm{A}+\bm{B}}$ because
+      defining $\bm{F}:\R \to \R^{n\times n}$ by
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{F}(t) := e^{(\bm{A}+\bm{B})t}e^{-\bm{B}t}e^{-\bm{A}t} \quad \forall t \in \R
+      \end{equation}
+      yields
+      \begin{align}
+        \frac{d \bm{F}(t)}{dt}
+          & = (\bm{A}+\bm{B})e^{(\bm{A}+\bm{B})t}e^{-\bm{A}t}e^{-\bm{B}t} + e^{(\bm{A}+\bm{B})t}e^{-\bm{A}t}(-\bm{B})e^{-\bm{B}t} + e^{(\bm{A}+\bm{B})t}(-\bm{A})e^{-\bm{A}t}e^{-\bm{B}t} \nonumber \\
+          & = (\bm{A}+\bm{B})e^{(\bm{A}+\bm{B})t}e^{-\bm{A}t}e^{-\bm{B}t} -\bm{B}e^{(\bm{A}+\bm{B})t}e^{-\bm{A}t}e^{-\bm{B}t} -\bm{A}e^{(\bm{A}+\bm{B})t}e^{-\bm{A}t}e^{-\bm{B}t} \nonumber \\
+          & = (\bm{A}+\bm{B}-\bm{B}-\bm{A})e^{(\bm{A}+\bm{B})t}e^{-\bm{A}t}e^{-\bm{B}t} = \bm{O},
+      \nonumber%\label{eq:}%
+      \end{align}
+      which means $\bm{F}(t)$ is independent of $t$ and in particular
+      \begin{equation}\nonumber%\label{eq:}%
+        e^{\bm{A}+\bm{B}}e^{-\bm{B}}e^{-\bm{A}} = \bm{F}(1) = \bm{F}(0) = e^{(\bm{A}+\bm{B})0}e^{-\bm{B}0}e^{-\bm{A}0} = \bm{I}.
+      \end{equation}
+    \item For any $k\in \N$, $(e^{\bm{A}})^{k} = e^{\bm{A}k}$ because
+      $\bm{A}$ and $\bm{A}$ commute and thus
+      \begin{equation}\nonumber%\label{eq:}%
+        (e^{\bm{A}})^{2} = e^{\bm{A}}e^{\bm{A}} = e^{\bm{A}+\bm{A}} = e^{\bm{A}2}
+      \end{equation}
+      
+    \item If $\bm{A}$ and $\bm{B}$ commute, so do $e^{\bm{A}}$ and $e^{\bm{B}}$ because
+      \begin{equation}\nonumber%\label{eq:}%
+        e^{\bm{A}}e^{\bm{B}} = e^{\bm{A}+\bm{B}} = e^{\bm{B}+\bm{A}} = e^{\bm{B}}e^{\bm{A}}
+      \end{equation}
+
+    \item If $(\lambda, \bm{v})$ is an eigenpair of $\bm{A}$, then
+      $e^{\bm{A}t}\bm{v} = e^{\lambda t}\bm{v}$ because
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{A}^{k}\bm{v}
+        = \lambda \bm{A}^{k-1}\bm{v}
+        = \lambda^{2} \bm{A}^{k-2}\bm{v}
+        = \lambda^{k}\bm{v}
+        \quad \forall k \in \N
+      \end{equation}
+      and therefore
+      \begin{align}
+        e^{\bm{A}t}\bm{v}
+          & = \left(I + \frac{1}{1!}\bm{A}t + \frac{1}{2!}\bm{A}^{2}t^{2} + \frac{1}{3!}\bm{A}^{3}t^{3} + \cdots \right)\bm{v}  \nonumber \\
+          & = \left(\bm{v} + \frac{1}{1!}\bm{A}\bm{v}t + \frac{1}{2!}\bm{A}^{2}\bm{v}t^{2} + \frac{1}{3!}\bm{A}^{3}\bm{v}t^{3} + \cdots \right)  \nonumber \\
+          & = \left(\bm{v} + \frac{1}{1!}\lambda \bm{v} t + \frac{1}{2!}\lambda^{2}\bm{v}t^{2} + \frac{1}{3!}\lambda^{3}\bm{v}t^{3} + \cdots \right)  \nonumber \\
+          & = \left(1 + \frac{1}{1!}(\lambda t) + \frac{1}{2!}(\lambda t)^{2} + \frac{1}{3!}(\lambda t)^{3} + \cdots \right)\bm{v} = e^{\lambda t}\bm{v}
+      \nonumber%\label{eq:}%
+      \end{align}
+
+    \item $\lim_{t\to\infty}e^{\bm{A}t}=\bm{O}$ if and only if the eigenvalues of $\bm{A}$ are all negative because
+      \begin{equation}\nonumber%\label{eq:}%
+        \lim_{k\to\infty} (e^{\bm{A}})^{k}
+        = \bm{O}
+        \iff
+        \rho(e^{\bm{A}})<1
+        \iff
+        \max\{e^{\lambda_{1}},\ldots, e^{\lambda_{n}}\} <1
+        \iff
+        \max\{\lambda_{1},\ldots, \lambda_{n}\} < 0
+      \end{equation}
+
+    \item If $\bm{A}$ is a diagonal matrix, so is $e^{\bm{A}}$ and
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{A}
+        =
+        \begin{bmatrix}
+          a_{1} & 0 & \cdots & 0 \\
+          0 & a_{2} & \cdots & 0 \\
+          \vdots & \vdots & \ddots & \vdots \\
+          0 & 0 & \cdots & a_{m} \\
+        \end{bmatrix}
+        \implies
+        e^{\bm{A}} = 
+        \begin{bmatrix}
+          e^{a_{1}} & 0 & \cdots & 0 \\
+          0 & e^{a_{2}} & \cdots & 0 \\
+          \vdots & \vdots & \ddots & \vdots \\
+          0 & 0 & \cdots & e^{a_{m}} \\
+        \end{bmatrix}
+      \end{equation}
+      because
+      \begin{equation}\nonumber%\label{eq:}%
+        e^{\bm{A}} =
+        \sum_{k=0}^{\infty} \frac{1}{k!}\bm{A}^{k}
+        =
+        \begin{bmatrix}
+          \sum_{k=0}^{\infty} \frac{1}{k!}a_{1}^{k} & 0 & \cdots & 0 \\
+          0 & \sum_{k=0}^{\infty} \frac{1}{k!}a_{2}^{k} & \cdots & 0 \\
+          \vdots & \vdots & \ddots & \vdots \\
+          0 & 0 & \cdots & \sum_{k=0}^{\infty} \frac{1}{k!}a_{m}^{k} \\
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+          e^{a_{1}} & 0 & \cdots & 0 \\
+          0 & e^{a_{2}} & \cdots & 0 \\
+          \vdots & \vdots & \ddots & \vdots \\
+          0 & 0 & \cdots & e^{a_{m}} \\
+        \end{bmatrix}
+      \end{equation}
+
+    \item If $\bm{J}_{m}(\lambda)$ is a Jordan block of size $m$, then
+      \begin{equation}\nonumber%\label{eq:}%
+        e^{\bm{J}_{m}(\lambda)t}
+        =
+        \begin{bmatrix}
+          e^{\lambda t} & \frac{t}{1!}e^{\lambda t} & \frac{t^{2}}{2!}e^{\lambda t} & \cdots & \frac{t^{m-1}}{(m-1)!}e^{\lambda t} \\
+          0 & e^{\lambda t} & \frac{t}{1!}e^{\lambda t} & \cdots & \frac{t^{m-2}}{(m-2)!}e^{\lambda t} \\
+          0 & 0 & e^{\lambda t} & \ddots & \vdots \\
+          \vdots & \vdots & \vdots & \ddots & \vdots \\
+          0 & 0 & 0  & 0 & e^{\lambda t} \\
+        \end{bmatrix}
+        \quad \forall t \in \R
+      \end{equation}
+      because
+    \begin{equation}\nonumber%\label{eq:Jnit}%
+      (\bm{J}_{m}(\lambda)t)^{k}
+      =
+      t^{k}
+      \begin{bmatrix}
+        c_{0}(k) & c_{1}(k) & c_{2}(k) & \cdots & c_{m-1}(k) \\
+        0 & c_{0}(k) & c_{1}(k) & \cdots & c_{m-2}(k) \\
+        0 & 0 & c_{0}(k) & \ddots & \vdots \\
+        \vdots & \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & 0  & 0 & c_{0}(k) \\
+      \end{bmatrix},
+      \quad
+      c_{l}(k) :=
+      \begin{cases}
+        \frac{k!}{l!(k-l)!}\lambda^{k-l} & k\geq l \\
+        0 & k < l \\
+      \end{cases}
+    \end{equation}
+    and
+    \begin{equation}\nonumber%\label{eq:}%
+      e^{\bm{J}_{m}(\lambda)t}
+      := \sum_{k=0}^{\infty}\frac{1}{k!}(\bm{J}_{m}(\lambda)t)^{k}
+      =
+      \begin{bmatrix}
+        \sum_{k=0}^{\infty}\frac{t^{k}}{k!}c_{0}(k) & \sum_{k=0}^{\infty}\frac{t^{k}}{k!}c_{1}(k) & \sum_{k=0}^{\infty}\frac{t^{k}}{k!}c_{2}(k) & \cdots & \sum_{k=0}^{\infty}\frac{t^{k}}{k!}c_{m-1}(k) \\
+        0 & \sum_{k=0}^{\infty}\frac{t^{k}}{k!}c_{0}(k) & \sum_{k=0}^{\infty}\frac{t^{k}}{k!}c_{1}(k) & \cdots & \sum_{k=0}^{\infty}\frac{t^{k}}{k!}c_{m-2}(k) \\
+        0 & 0 & \sum_{k=0}^{\infty}\frac{t^{k}}{k!}c_{0}(k) & \ddots & \vdots \\
+        \vdots & \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & 0  & 0 & \sum_{k=0}^{\infty}\frac{t^{k}}{k!}c_{0}(k) \\
+      \end{bmatrix}
+    \end{equation}
+    where
+    \begin{equation}\nonumber%\label{eq:}%
+      \sum_{k=0}^{\infty}\frac{t^{k}}{k!}c_{l}(k)
+      = 
+      \sum_{k=l}^{\infty}\frac{t^{k}}{k!}c_{l}(k)
+      = 
+      \sum_{k=l}^{\infty}\frac{t^{l}t^{k-l}}{k!}\frac{k!}{l!(t-l)!}\lambda_{i}^{k-l}
+      = 
+      \frac{t^{l}}{l!}\sum_{k=l}^{\infty}\frac{1}{(k-l)!}(\lambda_{i}t)^{k-l}
+      = 
+      \frac{t^{l}}{l!}e^{\lambda_{i}t}
+    \end{equation}
+
+    \item For a Jordan matrix $\bm{J}\in \R^{n\times n}$,
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{J} =
+      \begin{bmatrix}
+        \bm{J}_{n_{1}}(\lambda_{1}) & \bm{O} & \cdots & \bm{O} \\
+        \bm{O} & \bm{J}_{n_{2}}(\lambda_{2}) & \cdots & \bm{O} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \bm{O} & \bm{O} & \cdots & \bm{J}_{n_{d}}(\lambda_{d}) \\
+      \end{bmatrix}
+      \implies
+      e^{\bm{J}t}
+      =
+      \begin{bmatrix}
+        e^{\bm{J}_{n_{1}}(\lambda_{1})t} & \bm{O} & \cdots & \bm{O} \\
+        \bm{O} & e^{\bm{J}_{n_{2}}(\lambda_{2})t} & \cdots & \bm{O} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \bm{O} & \bm{O} & \cdots & e^{\bm{J}_{n_{d}}(\lambda_{d})t} \\
+      \end{bmatrix}
+    \end{equation}
+    because
+    \begin{equation}\nonumber%\label{eq:}%
+      e^{\bm{J}t}
+      := \sum_{k=0}^{\infty}\frac{t^{k}}{k!}\bm{J}^{k}
+      =      
+      \begin{bmatrix}
+        \sum_{k=0}^{\infty}\frac{1}{k!}(\bm{J}_{n_{1}}(\lambda_{1})t)^{k} & \bm{O} & \cdots & \bm{O} \\
+        \bm{O} & \sum_{k=0}^{\infty}\frac{1}{k!}(\bm{J}_{n_{2}}(\lambda_{2})t)^{k} & \cdots & \bm{O} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \bm{O} & \bm{O} & \cdots & \sum_{k=0}^{\infty}\frac{1}{k!}(\bm{J}_{n_{d}}(\lambda_{d})t)^{k} \\
+      \end{bmatrix}
+    \end{equation}
+    
+  \item Decompose $\bm{A}$ as $\bm{V}\bm{J}\bm{V}^{-1}$
+    where $\bm{J}$ is the Jordan normal form of $\bm{A}$.
+    Since $e^{\bm{A}} = \bm{V}e^{\bm{J}}\bm{V}^{-1}$,
+    we know that $e^{\bm{A}}$ and $e^{\bm{J}}$ are similar.
+    Because $e^{\bm{J}}$ is a triangle matrix,
+    it follows that eigenvalues of $e^{\bm{A}}$ are diagonal elements of $e^{\bm{J}}$,
+    which is $e^{\lambda_{1}}, e^{\lambda_{2}}, \ldots, e^{\lambda_{n}}$
+    where $\lambda_{1}, \lambda_{2}, \ldots, \lambda_{n}$ are eigenvalues of $\bm{A}$.
+    Therefore, if $\mu$ is an eigenvalue of $e^{\bm{A}}$,
+    there must exist an eigenvalue $\lambda$ of $\bm{A}$ such that $\mu = e^{\lambda}>0$.
+
+  \item Immediate from the results (11 and 16) above
+
+  \end{enumerate}
+\end{itemize}
+
+\subsection{Examples}
+
+\begin{itemize}
+
+\item \textbf{Example~1}
+  \begin{itemize}
+  \item Consider a square matrix
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} :=
+      \begin{bmatrix}
+        1 & 0 & 0 \\
+        6 & -2 & -6 \\
+        -2 & 1 & 3 \\
+      \end{bmatrix}
+    \end{equation}
+  \item Let us say we want to compute the exponential of $\bm{A}$:
+    \begin{equation}\nonumber%\label{eq:}%
+      e^{\bm{A}} := \bm{I} + \bm{A} + \frac{1}{2!}\bm{A}^{2} + \frac{1}{3!}\bm{A}^{3} + \ldots,
+    \end{equation}
+    the right-hand side of which is not easy to deal with
+  \item Notice that $\bm{A}$ is decomposed as
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        1 & 0 & 0 \\
+        6 & -2 & -6 \\
+        -2 & 1 & 3 \\
+      \end{bmatrix}
+      =
+      \underbrace{
+      \begin{bmatrix}
+        0 & 1 & 1 \\
+        -3 & 2 & 0\\
+        1 & 0 & 1 \\
+      \end{bmatrix}}_{\bm{V}}
+    \underbrace{
+      \begin{bmatrix}
+        0 & 0 & 0 \\
+        0 & 1 & 0 \\
+        0 & 0 & 1 \\
+      \end{bmatrix}}_{\bm{\Lambda}}
+    \underbrace{
+      \begin{bmatrix}
+        2 & -1 & -2 \\
+        3 & -1 & -3 \\
+        -2 & 1 & 3 \\
+      \end{bmatrix}}_{\bm{V}^{-1}}
+    \end{equation}
+    so
+    \begin{equation}
+      e^{\bm{A}}
+         = e^{\bm{V}\bm{\Lambda}\bm{V}^{-1}}
+         = \bm{V}e^{\bm{\Lambda}}\bm{V}^{-1}
+         = 
+      \begin{bmatrix}
+        0 & 1 & 1 \\
+        -3 & 2 & 0\\
+        1 & 0 & 1 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        1 & 0 & 0 \\
+        0 & e & 0 \\
+        0 & 0 & e \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        2 & -1 & -2 \\
+        3 & -1 & -3 \\
+        -2 & 1 & 3 \\
+      \end{bmatrix}
+    =
+    \begin{bmatrix}
+      e & 0 & 0 \\
+      -6+6e & 3-2e & 6-6e \\
+      2-2e & -1+e & -2+3e \\
+    \end{bmatrix}
+    \nonumber%\label{eq:}%
+  \end{equation}
+
+  \end{itemize}
+
+\item \textbf{Example~2}
+  \begin{itemize}
+  \item Consider a square matrix
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} :=
+      \begin{bmatrix}
+        4 & 1 \\
+        -1 & 2 \\
+      \end{bmatrix}
+    \end{equation}
+  \item Let us say we want to compute $e^{\bm{A}t}$ for each real $t\in \R$
+  \item Notice that $\bm{A}$ is decomposed as
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        4 & 1 \\
+        -1 & 2 \\
+      \end{bmatrix}
+      =
+      \underbrace{
+      \begin{bmatrix}
+        1 & 1 \\
+        -1 & 0 \\
+      \end{bmatrix}}_{\bm{V}}
+    \underbrace{
+      \begin{bmatrix}
+        3 & 1 \\
+        0 & 3 \\
+      \end{bmatrix}}_{\bm{J}}
+    \underbrace{
+      \begin{bmatrix}
+        0 & -1 \\
+        1 & 1 \\
+      \end{bmatrix}}_{\bm{V}^{-1}}
+    \end{equation}
+    so
+    \begin{equation}
+      e^{\bm{A}t}
+         = \bm{V}e^{\bm{J}t}\bm{V}^{-1}
+         =
+      \begin{bmatrix}
+        1 & 1 \\
+        -1 & 0 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        e^{3t} & te^{3t} \\
+        0 & e^{3t} \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        0 & -1 \\
+        1 & 1 \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        te^{3t} + e^{3t} & te^{3t} \\
+        -te^{3t} & e^{3t} -te^{3t} \\
+      \end{bmatrix}
+    \nonumber%\label{eq:}%
+  \end{equation}
+
+  \end{itemize}
+\end{itemize}
+
+\end{document}

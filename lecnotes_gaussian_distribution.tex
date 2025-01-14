@@ -1,0 +1,1172 @@
+\documentclass[12pt,a4paper]{article} 
+\input{preambles/preamble_lecnotes.tex} 
+
+\title{Gaussian distribution}
+\subtitle{Introduction to dynamical systems~\#10}
+\author{Hiroaki Sakamoto}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Elementary statistics}
+
+\subsection{Density}
+
+\begin{itemize}
+
+\item \textbf{Probability and density}
+  \begin{itemize}
+  \item Let $\bm{x} = (x_{1},x_{2},\ldots, x_{m})\in \R^{m}$ be a random vector (i.e., values of $x_{1}, x_{2},\ldots, x_{m}$ are randomly determined)
+  \item For any subset $A\subset \R^{m}$,
+    we write
+    \begin{equation}\nonumber%\label{eq:}%
+      \text{Pr}(\bm{x}\in A) := \text{probability of $\bm{x}$ being in the set $A$}
+    \end{equation}
+  \item If there exists a function $f:\R^{m}\to \R$ such that
+    \begin{equation}\nonumber%\label{eq:}%
+      \int_{A}f(\bm{x})d\bm{x}
+      =
+      \text{Pr}(\bm{x}\in A)
+      \quad \forall A\subset \R^{m},
+    \end{equation}
+    we call it the (joint) \emph{density} of $\bm{x}$
+    and write $p_{X}(\bm{x}):=f(\bm{x})$
+  \item Density $p_{X}(\bar{\bm{x}})$
+    represents the likelihood of $\bm{x}$ taking a particular value $\bar{\bm{x}}$
+    in the sense that
+    \begin{equation}
+      \lim_{\Delta \bm{x} \to \bm{0}}\frac{\text{Pr}(\bm{x}\in \Delta(\bar{\bm{x}}))}{|\Delta(\bar{\bm{x}})|}
+      =
+      \lim_{\Delta x_{m} \to 0}\cdots \lim_{\Delta x_{1} \to 0}\frac{\int_{\bar{x}_{m}}^{\bar{x}_{m}+\Delta x_{m}}\cdots \int_{\bar{x}_{1}}^{\bar{x}_{1}+\Delta x_{1}}p_{X}(\bm{x})dx_{1}\cdots dx_{m}}{\Delta x_{1}\times \Delta x_{2}\times \cdots \times\Delta x_{m}}
+      = p_{X}(\bar{\bm{x}})
+    \nonumber%\label{eq:}%
+    \end{equation}
+    where $\Delta(\bar{\bm{x}}) := \prod_{i=1}^{m}[\bar{x}_{i}, \bar{x}_{i}+\Delta x_{i}]$
+  \end{itemize}
+
+\item \textbf{Expectation and variance}
+  \begin{itemize}
+  \item For a random vector $\bm{x}\in \R^{m}$
+    and a function $\psi:\R^{m}\to\R^{n}$,
+    the \emph{expectation} of $\psi(\bm{x})$ is
+    \begin{equation}\nonumber%\label{eq:}%
+      \mathbb{E}[\psi(\bm{x})] := \int_{\R^{m}}\psi(\bm{x})p_{X}(\bm{x})d\bm{x} \in \R^{n}
+    \end{equation}
+    and the \emph{(co)variance} of $\psi(\bm{x})$ is
+    \begin{equation}\nonumber%\label{eq:}%
+      \mathbb{V}[\psi(\bm{x})] := \mathbb{E}\left[(\psi(\bm{x}) - \mathbb{E}[\psi(\bm{x})])(\psi(\bm{x}) - \mathbb{E}[\psi(\bm{x})])^{\top}\right] \in \R^{n\times n}
+    \end{equation}
+  \item Note that the probability can be expressed using expectation:
+    \begin{equation}\nonumber%\label{eq:}%
+      \text{Pr}(\bm{x}\in A)
+      = \int_{A}p_{X}(\bm{x})d\bm{x}
+      = \int_{\R^{m}}\mathds{1}_{A}(\bm{x})p_{X}(\bm{x})d\bm{x}
+      = \mathbb{E}\left[\mathds{1}_{A}(\bm{x})\right]
+      \quad \forall A\subset \R^{m}
+    \end{equation}
+
+  \end{itemize}
+
+\end{itemize}
+
+\subsection{Conditional density}
+
+\begin{itemize}
+
+\item \textbf{Conditional probability and conditional density}
+  \begin{itemize}
+  \item Let $\bm{x} = (x_{1},x_{2},\ldots, x_{m})\in \R^{m}$ be a random vector
+  \item For each $B\subset \R^{m}$ such that $\text{Pr}(\bm{x}\in B)\neq 0$,
+    we define the \emph{conditional probability} of $\bm{x}\in A$ given that $\bm{x}\in B$ as
+    \begin{equation}\nonumber%\label{eq:}%
+      \text{Pr}(\bm{x}\in A|\bm{x}\in B)
+      := \frac{\text{Pr}(\bm{x}\in A\cap B)}{\text{Pr}(\bm{x}\in B)}
+      \quad \forall A\subset \R^{m}
+    \end{equation}
+  \item For a given set $B\subset \R^{m}$,
+    if there exists a function
+    $f:\R^{m}\to \R$ such that
+    \begin{equation}\label{eq:xB}%
+      \int_{A}f(\bm{x})d\bm{x}
+      =
+      \text{Pr}(\bm{x}\in A|\bm{x}\in B)
+      \quad \forall A\subset \R^{m},
+    \end{equation}
+    we call it the \emph{conditional density} of $\bm{x}$ given $\bm{x}\in B$
+    and write $p_{X}(\bm{x}|\bm{x}\in B) := f(\bm{x})$
+  \item For any $B\subset \R^{m}$ such that $\text{Pr}(\bm{x}\in B)\neq 0$, we have
+    \begin{equation}
+      \int_{A}\frac{\mathds{1}_{B}(\bm{x})p_{X}(\bm{x})}{\int_{B}p_{X}(\bm{x})d\bm{x}}d\bm{x}
+      = 
+      \frac{\int_{A\cap B}p_{X}(\bm{x})d\bm{x}}{\int_{B}p_{X}(\bm{x})d\bm{x}}
+      = 
+      \frac{\text{Pr}(\bm{x}\in A\cap B)}{\text{Pr}(\bm{x}\in B)}
+      =
+      \text{Pr}(\bm{x}\in A|\bm{x}\in B)
+      \nonumber%\label{eq:}%
+      \quad \forall A\subset \R^{m},
+    \end{equation}
+    meaning that the conditional density is given by
+    \begin{equation}\label{eq:pxB}%
+      p_{X}(\bm{x}|\bm{x}\in B)
+      = \frac{\mathds{1}_{B}(\bm{x})p_{X}(\bm{x})}{\int_{B}p_{X}(\bm{x})d\bm{x}}
+      =
+      \begin{cases}
+        \frac{p_{X}(\bm{x})}{\int_{B}p_{X}(\bm{x})d\bm{x}} & \text{if $\bm{x}\in B$} \\
+        0 & \text{otherwise} \\
+      \end{cases}
+    \end{equation}
+  \item Obviously,
+    \begin{equation}\nonumber%\label{eq:}%
+      \text{Pr}(\bm{x}\in A|\bm{x}\in \R^{m})
+      = 
+      \frac{\text{Pr}(\bm{x}\in A\cap \R^{m})}{\text{Pr}(\bm{x}\in \R^{m})}
+      =
+      \text{Pr}(\bm{x}\in A)
+      \quad \forall A \subset \R^{m}
+    \end{equation}
+    and
+    \begin{equation}\nonumber%\label{eq:}%
+      p_{X}(\bm{x}|\bm{x}\in \R^{m})
+      = \frac{\mathds{1}_{\R^{m}}(\bm{x})p_{X}(\bm{x})}{\int_{\R^{m}}p_{X}(\bm{x})d\bm{x}}
+      = p_{X}(\bm{x})
+      \quad \forall \bm{x} \in \R^{m}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Conditional expectation}
+  \begin{itemize}
+
+  \item For any function $\psi:\R^{m}\to\R^{n}$,
+    the \emph{conditional expectation} of $\psi(\bm{x})$ given $\bm{x}\in B\subset \R^{m}$ is
+    \begin{equation}\label{eq:ExB}%
+      \mathbb{E}\left[\psi(\bm{x})| \bm{x}\in B \right]
+      := \int_{\R^{m}}\psi(\bm{x})p_{X}(\bm{x}|\bm{x}\in B)d\bm{x}
+      =
+      \frac{1}{\int_{B}p_{X}(\bm{x})d\bm{x}}\int_{B}\psi(\bm{x})p_{X}(\bm{x})d\bm{x}
+    \end{equation}
+  \item For any partition $B_{1},\ldots, B_{I}$ of $\R^{m}$ (i.e., $B_{i}\cap B_{j}=\varnothing$ for any $i\neq j$ and $\cup_{i=1}^{I}B_{i}=\R^{m_{}}$),
+    \begin{equation}\nonumber%\label{eq:}%
+      \sum_{i=1}^{I}\mathbb{E}\left[\psi(\bm{x})| \bm{x}\in B_{i} \right]\text{Pr}(\bm{x}\in B_{i})
+      =
+      \sum_{i=1}^{I}\int_{B_{i}}\psi(\bm{x})p_{X}(\bm{x})d\bm{x}
+      =
+      \int_{\cup_{i=1}^{I}B_{i}}\psi(\bm{x})p_{X}(\bm{x})d\bm{x}
+      = \mathbb{E}\left[\psi(\bm{x})\right]
+    \end{equation}
+  \item Obviously
+    \begin{equation}\nonumber%\label{eq:}%
+      \mathbb{E}\left[\psi(\bm{x})| \bm{x}\in \R^{m} \right]
+      =
+      \int_{\R^{m}}\psi(\bm{x})p_{X}(\bm{x}|\bm{x}\in \R^{m})d\bm{x}
+      =
+      \int_{\R^{m}}\psi(\bm{x})p_{X}(\bm{x})d\bm{x}
+      =
+      \mathbb{E}\left[\psi(\bm{x}) \right]
+    \end{equation}
+  \end{itemize}
+
+\end{itemize}
+
+\subsection{Marginal density}
+
+\begin{itemize}
+
+\item \textbf{Marginal density and independence}
+  \begin{itemize}
+  \item Let $\bm{x} = (x_{1},x_{2},\ldots, x_{m})\in \R^{m}$ be a random vector
+    with density $p_{X}(\bm{x})$
+  \item Split $\bm{x}$ as $\bm{x}=(\bm{x}_{1},\bm{x}_{2})$
+    where $\bm{x}_{1}\in \R^{m_{1}}$ and $\bm{x}_{2}\in \R^{m_{2}}$ with $m_{1}+m_{2}=m$
+  \item If there exists a function $f:\R^{m_{i}}\to \R$ ($i=1,2$) such that
+    \begin{equation}\nonumber%\label{eq:}%
+      \int_{A_{i}}f(\bm{x}_{i})d\bm{x}_{i}
+      =
+      \text{Pr}(\bm{x}_{i}\in A_{i})
+      \quad \forall A_{i}\subset \R^{m_{i}},
+    \end{equation}
+    we call it the \emph{(marginal) density} of $\bm{x}_{i}$
+    and write $p_{X_{i}}(\bm{x}_{i}):=f(\bm{x}_{i})$
+  \item Note
+    \begin{equation}\nonumber%\label{eq:}%
+      \text{Pr}(\bm{x}_{1}\in A_{1})
+      =
+      \text{Pr}((\bm{x}_{1},\bm{x}_{2})\in A_{1}\times \R^{m_{2}})
+      = \int_{A_{1}}\int_{\R^{m_{2}}}p_{X}(\bm{x}_{1},\bm{x}_{2})d\bm{x}_{2}d\bm{x}_{1}
+      \quad \forall A_{1}\subset \R^{m_{1}},
+    \end{equation}
+    meaning that
+    the density of $\bm{x}_{i}$ ($i=1,2$) is
+    \begin{equation}\nonumber%\label{eq:}%
+      p_{X_{i}}(\bm{x}_{i}) = \int_{\R^{m_{j}}}p_{X}(\bm{x}_{i},\bm{x}_{j})d\bm{x}_{j} \quad \forall \bm{x}_{i}\in \R^{m_{i}},
+      \quad j\neq i
+    \end{equation}
+  \item We say that $\bm{x}_{1}$ and $\bm{x}_{2}$ are \emph{independent} if
+    \begin{equation}\nonumber%\label{eq:}%
+      p_{X}(\bm{x}_{1},\bm{x}_{2}) =
+      p_{X_{1}}(\bm{x}_{1})p_{X_{2}}(\bm{x}_{2})
+      \quad \forall (\bm{x}_{1},\bm{x}_{2})\in \R^{m}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Marginal density and conditional density}
+
+  \begin{itemize}
+  \item For each $A_{2}\subset \R^{m_{2}}$ such that $\text{Pr}(\bm{x}_{2}\in A_{2})\neq 0$,
+    we define the conditional probability of $\bm{x}_{1}\in A_{1}$ given $\bm{x}_{2}\in A_{2}$ is
+    \begin{align}
+      \text{Pr}(\bm{x}_{1}\in A_{1}|\bm{x}_{2}\in A_{2})
+        & := \text{Pr}((\bm{x}_{1},\bm{x}_{2})\in A_{1}\times \R^{m_{2}}|(\bm{x}_{1},\bm{x}_{2})\in \R^{m_{1}}\times A_{2}) \nonumber \\
+        & = \frac{\text{Pr}((\bm{x}_{1},\bm{x}_{2})\in (A_{1}\times \R^{m_{2}})\cap (\R^{m_{1}}\times A_{2}))}{\text{Pr}((\bm{x}_{1},\bm{x}_{2})\in \R^{m_{1}}\times A_{2})}  \nonumber \\
+        & = \frac{\text{Pr}((\bm{x}_{1},\bm{x}_{2})\in A_{1}\times A_{2})}{\text{Pr}(\bm{x}_{2}\in A_{2})}
+    \nonumber%\label{eq:}%
+    \end{align}
+  \item For a given set $A_{2}\subset \R^{m_{2}}$,
+    if there exists a function
+    $f:\R^{m_{1}}\to \R$ such that
+    \begin{equation}\nonumber%\label{eq:x1x2A2}%
+      \int_{A_{1}}f(\bm{x}_{1})d\bm{x}_{1}
+      =
+      \text{Pr}(\bm{x}_{1}\in A_{1}|\bm{x}_{2}\in A_{2})
+      \quad \forall A_{1}\subset \R^{m_{1}},
+    \end{equation}
+    we call it the conditional density of $\bm{x}_{1}$ given $\bm{x}_{2}\in A_{1}$
+    and write $p_{X_{1}|X_{2}}(\bm{x}_{1}|\bm{x}_{2}\in A_{2}):=f(\bm{x}_{1})$
+  \item Notice that
+    \begin{align}
+      \int_{A_{1}}\int_{\R^{m_{2}}}p_{X}(\bm{x}|(\bm{x}_{1},\bm{x}_{2})\in \R^{m_{1}}\times A_{2})d\bm{x}_{2}d\bm{x}_{1}
+        & = \int_{A_{1}\times\R^{m_{2}}}p_{X}(\bm{x}|(\bm{x}_{1},\bm{x}_{2})\in \R^{m_{1}}\times A_{2})d\bm{x} \nonumber \\
+        & = \text{Pr}((\bm{x}_{1},\bm{x}_{2})\in A_{1}\times \R^{m_{2}}|(\bm{x}_{1},\bm{x}_{2})\in \R^{m_{1}}\times A_{2}) \nonumber \\
+        & = \text{Pr}(\bm{x}_{1}\in A_{1}|\bm{x}_{2}\in A_{2})
+      \quad \forall A_{1}\subset \R^{m_{1}},
+    \nonumber%\label{eq:}%
+    \end{align}
+    meaning that the conditional density is more explicitly expressed as
+    \begin{align}
+      p_{X_{1}|X_{2}}(\bm{x}_{1}|\bm{x}_{2}\in A_{2})
+        & = \int_{\R^{m_{2}}}p_{X}(\bm{x}|(\bm{x}_{1},\bm{x}_{2})\in \R^{m_{1}}\times A_{2})d\bm{x}_{2} \nonumber \\
+        & = \int_{\R^{m_{2}}}\frac{\mathds{1}_{\R^{m_{1}}\times A_{2}}(\bm{x})p_{X}(\bm{x})}{\int_{\R^{m_{1}}\times A_{2}}p_{X}(\bm{x})d\bm{x}} d\bm{x}_{2} \nonumber \\
+        & = 
+          \begin{cases}
+            \frac{\int_{A_{2}}p_{X}(\bm{x}_{1},\bm{x}_{2})d\bm{x}_{2}}{\int_{A_{2}}p_{X_{2}}(\bm{x}_{2})d\bm{x}_{2}} & \text{if $\text{Pr}(\bm{x}_{2}\in A_{2}) = \int_{A_{2}}p_{X_{2}}(\bm{x}_{2})d\bm{x}_{2} \neq 0$} \\
+            \frac{p_{X}(\bm{x}_{1},\bm{x}_{2})}{p_{X_{2}}(\bm{x}_{2})} =:p_{X_{1}|X_{2}}(\bm{x}_{1}|\bm{x}_{2}) & \text{if $A_{2} = \{\bm{x}_{2}\}$ and $p_{X_{2}}(\bm{x}_{2})\neq 0$}  \\
+          \end{cases}
+          \nonumber%\label{eq:}%
+    \end{align}
+  \end{itemize}
+
+\item \textbf{Marginal density and conditional expectation}
+  \begin{itemize}
+  \item For any function $\psi:\R^{m}\to\R^{n}$,
+    the expectation of $\psi(\bm{x})$ conditional on $\bm{x}_{2}\in A_{2}\subset \R^{m_{2}}$ is
+    \begin{equation}\nonumber%\label{eq:}%
+      \mathbb{E}\left[\psi(\bm{x})|\bm{x}_{2}\in A_{2} \right]
+      := \mathbb{E}\left[ \psi(\bm{x})| (\bm{x}_{1},\bm{x}_{2})\in \R^{m_{1}}\times A_{2}\right]
+      = \frac{1}{\int_{\R^{m_{1}}\times A_{2}}p_{X}(\bm{x})d\bm{x}}\int_{\R^{m_{1}}\times A_{2}}\psi(\bm{x})p_{X}(\bm{x})d\bm{x}
+    \end{equation}
+  \item In particular, defining $\psi(\bm{x})=\bm{x}_{1}$ gives %We define the expectation of $\bm{x}_{1}$ conditional on $\bm{x}_{2}\in A_{2}\subset \R^{m_{2}}$ as
+    \begin{align}
+      \mathbb{E}\left[ \bm{x}_{1}| \bm{x}_{2}\in A_{2} \right]
+        & = \frac{1}{\int_{\R^{m_{1}}\times A_{2}}p_{X}(\bm{x})d\bm{x}}\int_{\R^{m_{1}}\times A_{2}}\bm{x}_{1}p_{X}(\bm{x})d\bm{x} \nonumber \\
+        & = 
+          \begin{cases}
+            \frac{1}{\int_{A_{2}}p_{X_{2}}(\bm{x}_{2})d\bm{x}_{2}}\int_{\R^{m_{1}}}\bm{x}_{1}\int_{A_{2}}p_{X}(\bm{x}_{1},\bm{x}_{2})d\bm{x}_{2}d\bm{x}_{1} & \text{if $\int_{A_{2}}p_{X_{2}}(\bm{x}_{2})d\bm{x}_{2} \neq 0$} \\
+            \frac{1}{p_{X_{2}}(\bm{x}_{2})}\int_{\R^{m_{1}}}\bm{x}_{1}p_{X}(\bm{x}_{1},\bm{x}_{2})d\bm{x}_{1} & \text{if $A_{2} = \{\bm{x}_{2}\}$}  \\
+          \end{cases}
+          \nonumber \\
+        & = \int_{\R^{m_{1}}}\bm{x}_{1}p_{X_{1}|X_{2}}(\bm{x}_{1}|\bm{x}_{2}\in A_{2})d\bm{x}_{1}
+    \nonumber%\label{eq:}%
+    \end{align}
+
+  \item For a singleton set $A_{2}=\{\bm{x}_{2}\}$ for a particular $\bm{x}_{2}\in \R^{m_{2}}$,
+    we write
+    \begin{equation}\nonumber%\label{eq:}%
+      \mathbb{E}\left[ \bm{x}_{1}| \bm{x}_{2}\right]
+      := \int_{\R^{m_{1}}}\bm{x}_{1}\frac{p_{X}(\bm{x}_{1},\bm{x}_{2})}{p_{X_{2}}(\bm{x}_{2})}d\bm{x}_{1},
+    \end{equation}
+    which is a function of $\bm{x}_{2}$ (and therefore $\mathbb{E}\left[ \bm{x}_{1}| \bm{x}_{2}\right]$ is a random variable)
+
+  \item For any partition $B_{1},\ldots, B_{I}$ of $\R^{m_{2}}$,
+    \begin{equation}\nonumber%\label{eq:}%
+      \sum_{i=1}^{I}\mathbb{E}\left[\bm{x}_{1}| \bm{x}_{2}\in B_{i} \right]\text{Pr}(\bm{x}_{2}\in B_{i})
+      =
+      \sum_{i=1}^{I}\int_{\R^{m_{1}}\times B_{i}}\bm{x}_{1}p_{X}(\bm{x})d\bm{x}
+      =
+      \int_{\R^{m_{1}}\times\cup_{i=1}^{I}B_{i}}\bm{x}_{1}p_{X}(\bm{x})d\bm{x}
+      = \mathbb{E}\left[\bm{x}_{1}\right],
+    \end{equation}
+    the limit case of which (where each $B_{i}$ is a singleton set) gives
+    \begin{equation}\nonumber%\label{eq:}%
+      \int_{\R^{m_{2}}}\mathbb{E}\left[ \bm{x}_{1}|\bm{x}_{2} \right]p_{X_{2}}(\bm{x}_{2})d\bm{x}_{2}
+      = \mathbb{E}\left[\bm{x}_{1}\right],
+    \end{equation}
+    and therefore
+    \begin{equation}\label{eq:lte}%
+      \mathbb{E}\left[\mathbb{E}\left[ \bm{x}_{1}|\bm{x}_{2} \right]\right]
+      = \int_{\R^{m}}\mathbb{E}\left[ \bm{x}_{1}|\bm{x}_{2} \right]p_{X}(\bm{x})d\bm{x}
+      = \int_{\R^{m_{2}}}\mathbb{E}\left[ \bm{x}_{1}|\bm{x}_{2} \right]\underbrace{\int_{\R^{m_{1}}}p_{X}(\bm{x})d\bm{x}_{1}}_{p_{X_{2}}(\bm{x}_{2})}d\bm{x}_{2}
+      = \mathbb{E}\left[\bm{x}_{1}\right],
+    \end{equation}
+    which is called the \emph{law of total expectation} or the \emph{law of iterated expectation}
+  \item Also notice that, for any $A_{2}\subset \R^{m_{2}}$ such that $\text{Pr}(\bm{x}_{2}\in A_{2})\neq 0$, we have
+    \begin{align}
+      \mathbb{E}\left[\mathbb{E}\left[\bm{x}_{1}|\bm{x}_{2}\right] | \bm{x}_{2}\in A_{2} \right]
+        & = \frac{1}{\int_{\R^{m_{1}}\times A_{2}}p_{X}(\bm{x})d\bm{x}}\int_{\R^{m_{1}}\times A_{2}}\mathbb{E}\left[\bm{x}_{1}|\bm{x}_{2}\right]p_{X}(\bm{x})d\bm{x} \nonumber \\
+        & = \frac{1}{\int_{A_{2}}p_{X_{2}}(\bm{x}_{2})d\bm{x}_{2}}\int_{A_{2}}\mathbb{E}\left[\bm{x}_{1}|\bm{x}_{2}\right]p_{X_{2}}(\bm{x}_{2})d\bm{x}_{2} \nonumber \\
+        & = \frac{1}{\int_{A_{2}}p_{X_{2}}(\bm{x}_{2})d\bm{x}_{2}}\int_{A_{2}}\int_{\R^{m_{1}}}\bm{x}_{1} \frac{p_{X}(\bm{x}_{1},\bm{x}_{2})}{p_{X_{2}}(\bm{x}_{2})}d\bm{x}_{1} p_{X_{2}}(\bm{x}_{2})d\bm{x}_{2}  \nonumber \\
+        & = \int_{\R^{m_{1}}}\bm{x}_{1}\frac{\int_{A_{2}}p_{X}(\bm{x}_{1},\bm{x}_{2})d\bm{x}_{2}}{\int_{A_{2}}p_{X_{2}}(\bm{x}_{2})d\bm{x}_{2}}d\bm{x}_{1} \nonumber \\
+        & = \mathbb{E}\left[\bm{x}_{1} | \bm{x}_{2}\in A_{2} \right],
+    \nonumber%\label{eq:}%
+    \end{align}
+    which is a generalization of the law of total expectation
+    (i.e., setting $A_{2}=\R^{m_{2}}$ gives \eqref{eq:lte})
+
+  \end{itemize}
+  
+\end{itemize}
+
+\section{Gaussian distribution}
+
+\subsection{Univariate Gaussian distribution}
+
+\begin{itemize}
+
+\item \textbf{Standard Gaussian distribution}
+
+  \begin{itemize}
+
+  \item We say that a random variable $z\in \R$ has
+    the \emph{standard Gaussian distribution} (also called the \emph{standard normal distribution}) if
+    its density is
+    \begin{equation}\nonumber%\label{eq:}%
+      p_{Z}(z)
+      = \frac{1}{2^{\frac{1}{2}}\pi^{\frac{1}{2}}}e^{- \frac{1}{2}z^{2}}
+      \quad \forall z\in \R
+    \end{equation}
+    and we write $z\sim \mathcal{N}(0,1)$
+
+  \item Notice that:
+    \begin{itemize}
+    \item the mean of $z\sim \mathcal{N}(0,1)$ is $0$:
+      \begin{equation}\nonumber%\label{eq:}%
+        \mathbb{E}\left[z\right]
+        := \int_{-\infty}^{\infty}zp_{Z}(z)dz
+        = \frac{1}{2^{\frac{1}{2}}\pi^{\frac{1}{2}}}\int_{-\infty}^{\infty}ze^{- \frac{1}{2}z^{2}}dz
+        = \frac{1}{2^{\frac{1}{2}}\pi^{\frac{1}{2}}}\int_{-\infty}^{\infty}\frac{d}{dz}\left\{-e^{- \frac{1}{2}z^{2}}\right\}dz
+        = 0
+      \end{equation}
+    \item the variance of $z\sim \mathcal{N}(0,1)$ is $1$:
+      \begin{equation}\nonumber%\label{eq:}%
+        \mathbb{V}\left[z\right]
+        := \mathbb{E}\left[ (z-\mathbb{E}[z])^{2} \right]
+        = \frac{1}{2^{\frac{1}{2}}\pi^{\frac{1}{2}}}\int_{-\infty}^{\infty}z^{2}e^{- \frac{1}{2}z^{2}}dz
+        = \frac{1}{2^{\frac{1}{2}}\pi^{\frac{1}{2}}}\int_{-\infty}^{\infty}
+        \left(e^{- \frac{1}{2}z^{2}} - \frac{d}{dz}ze^{- \frac{1}{2}z^{2}}\right)
+        dz = 1
+      \end{equation}
+    \end{itemize}
+
+  \end{itemize}
+
+\item \textbf{Gaussian distribution}
+
+  \begin{itemize}
+
+  \item We say that a random variable $x\in \R$ has a Gaussian (or normal) distribution if
+    there exists
+    a standard Gaussian $z\sim \mathcal{N}(0,1)$
+    and constants $(\mu,\sigma) \in \R\times \R_{+}$
+    such that
+    \begin{equation}\nonumber%\label{eq:}%
+      x = \mu + \sigma z
+    \end{equation}
+  and we write $x\sim \mathcal{N}(\mu, \sigma^{2})$
+
+  \item Notice that:
+    \begin{itemize}
+    \item the mean of $x\sim \mathcal{N}(\mu, \sigma^{2})$ is
+      $\mathbb{E}\left[x\right]=\mathbb{E}\left[ \mu + \sigma z \right]=\mu+\sigma\mathbb{E}[z]=\mu$
+    \item the variance of $x\sim \mathcal{N}(\mu, \sigma^{2})$ is
+      $\mathbb{V}\left[x\right] = \mathbb{E}\left[ (x-\mathbb{E}[x])^{2} \right]=\mathbb{E}\left[ (\sigma z)^{2} \right] =\sigma^{2}\mathbb{E}\left[ z^{2} \right] = \sigma^{2}$
+    \end{itemize}
+
+  \item If $\sigma\neq 0$,
+    the Gaussian distribution has a density function:
+    \begin{itemize}
+      \item Define
+        \begin{equation}\nonumber%\label{eq:}%
+          \phi(z):=\mu + \sigma z
+          \quad\text{or} \quad
+          \psi(x):=\phi^{-1}(x)= \frac{x-\mu}{\sigma}
+        \end{equation}
+      \item It then follows from the change of variable formula that
+        \begin{equation}\nonumber%\label{eq:}%
+          \text{Pr}(x\in A)
+          =
+          \text{Pr}(z \in \psi(A))
+          =
+          \int_{\psi(A)}p_{Z}(z)dz
+          =
+          \int_{A}p_{Z}(\psi(x)) \left| \frac{d\psi(x)}{dx} \right| dx,
+          \quad \forall A\subset \R
+        \end{equation}
+        meaning that the density of $x$ is
+        \begin{equation}\nonumber%\label{eq:}%
+          p_{X}(x)
+          =
+          p_{Z}(\psi(x)) \left| \frac{d\psi(x)}{dx} \right|
+          =
+          \frac{1}{2^{\frac{1}{2}}\pi^{\frac{1}{2}}}e^{- \frac{1}{2}(\psi(x))^{2}}
+          \left| \frac{1}{\sigma}\right|
+          =
+          \frac{1}{2^{\frac{1}{2}}\pi^{\frac{1}{2}}\sigma}e^{- \frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^{2}}
+        \end{equation}
+      \end{itemize}
+    \end{itemize}
+\item \textbf{Independent Gaussian vector}
+  
+  \begin{itemize}
+
+    \item If
+      $z_{i}\sim \mathcal{N}(0,1)$
+      are independent standard Gaussian,
+      the density of $\bm{z}=(z_{1},\ldots, z_{n})$ is
+      \begin{equation}\nonumber%\label{eq:}%
+        p_{Z}(\bm{z})
+        = p_{Z_{1}}(z_{1})p_{Z_{2}}(z_{2})\cdots p_{Z_{n}}(z_{n}) 
+        = 
+        \frac{1}{2^{\frac{n}{2}}\pi^{\frac{n}{2}}}
+        e^{-\frac{1}{2}\bm{z}^{\top}\bm{z}}
+      \end{equation}
+    \item The expectation of $\bm{z}$ is $\mathbb{E}\left[\bm{z}\right]=\bm{0}$
+    \item The variance-covariance matrix of $\bm{z}$ is $\mathbb{V}[\bm{z}]=\bm{I}$
+
+  \end{itemize}
+\end{itemize}
+
+\subsection{Multivariate Gaussian distribution}
+
+\begin{itemize}
+
+\item \textbf{Multivariate Gaussian}
+    
+  \begin{itemize}
+
+    \item We say that $\bm{x}=(x_{1},x_{2},\ldots,x_{m})\in\R^{m}$ has a
+      \emph{multivariate Gaussian distribution} if there exist
+      $n$ independent standard Gaussian variables $\bm{z}=(z_{1}, z_{2},\ldots,z_{n})\in\R^{n}$,
+      $\bm{\mu}=(\mu_{1},\mu_{2},\ldots,\mu_{m})\in\R^{m}$,
+      and
+      $\bm{S}\in\R^{m\times n}$
+      such that
+      \begin{equation}\label{eq:xmusz}%
+        \bm{x} = \bm{\mu} + \bm{S} \bm{z}
+      \end{equation}
+      and we write $\bm{x}\sim \mathcal{N}(\bm{\mu}, \bm{\Sigma})$
+      where $\bm{\Sigma}:=\bm{S}\bm{S}^{\top}$ (a symmetric positive semidefinite matrix)
+
+  \item Notice that:
+    \begin{itemize}
+    \item the expectation of $\bm{x}\sim\mathcal{N}(\bm{\mu},\bm{\Sigma})$ is
+      $\mathbb{E}\left[\bm{x} \right] = \mathbb{E}\left[\bm{\mu} + \bm{S}\bm{z}\right] = \bm{\mu} + \bm{S}\mathbb{E}\left[\bm{z}\right] = \bm{\mu}$
+    \item the variance-covariance matrix of $\bm{x}\sim\mathcal{N}(\bm{\mu},\bm{\Sigma})$ is
+      \begin{equation}\nonumber%\label{eq:}%
+        \mathbb{V}[\bm{x}]
+        =
+        \mathbb{E}\left[(\bm{x} - \bm{\mu})(\bm{x} - \bm{\mu})^{\top}\right]
+        =
+        \mathbb{E}\left[(\bm{S}\bm{z})(\bm{S}\bm{z})^{\top}\right]
+        =
+        \bm{S}\mathbb{E}\left[\bm{z}\bm{z}^{\top}\right]\bm{S}^{\top}
+        =
+        \bm{S}\bm{S}^{\top} =\bm{\Sigma}
+      \end{equation}
+    \item there cay be multiple combinations of $(\bm{S}, \bm{z})$ that give the same distribution of $\bm{x}$;
+      the distribution is the same as long as $\bm{\Sigma}=\bm{S}\bm{S}^{\top}$ is the same
+    \end{itemize}
+
+  \item If $\bm{\Sigma}=\bm{S}\bm{S}^{\top}$ is non-singular,
+    the Gaussian random vector has a density function:
+    \begin{itemize}
+    \item Since $\bm{\Sigma}$ is a symmetric positive semidefinite matrix,
+      the non-singularity implies that $\bm{\Sigma}$ is positive definite,
+      meaning that it is diagonalizable as
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{\Sigma} =
+        \bm{V}
+        \begin{bmatrix}
+          \lambda_{1} & 0 & \cdots & 0 \\
+          0 & \lambda_{2} & \cdots & 0 \\
+          \vdots & \vdots & \ddots & \vdots \\
+          0 & 0 & \cdots & \lambda_{n} \\
+        \end{bmatrix}
+        \bm{V}^{-1}
+      \end{equation}
+      where $\lambda_{i}>0$ for all $i=1,\ldots, n$
+    \item Define a symmetric positive definite matrix $\bm{\Sigma}^{1/2}\in \R^{n\times n}$ by
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{\Sigma}^{1/2}:=
+        \bm{V}
+        \begin{bmatrix}
+          \lambda_{1}^{1/2} & 0 & \cdots & 0 \\
+          0 & \lambda_{2}^{1/2} & \cdots & 0 \\
+          \vdots & \vdots & \ddots & \vdots \\
+          0 & 0 & \cdots & \lambda_{n}^{1/2} \\
+        \end{bmatrix}
+        \bm{V}^{-1}
+      \end{equation}
+      so that
+      $\bm{\Sigma}^{1/2}(\bm{\Sigma}^{1/2})^{\top}=\bm{\Sigma}$
+      and
+      $|\bm{\Sigma}^{1/2}|=|\bm{\Sigma}|^{1/2}$
+    \item Notice that
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{x} = \bm{\mu} + \bm{\Sigma}^{1/2}\bm{z},
+        \quad\text{where $\bm{z}\in \R^{m}$ is $m$ independent standard Gaussian}
+      \end{equation}
+      has the same distribution as \eqref{eq:xmusz} because $\bm{\Sigma}^{1/2}(\bm{\Sigma}^{1/2})^{\top}=\bm{\Sigma} = \bm{S}\bm{S}^{\top}$
+
+      \item Define
+        \begin{equation}\nonumber%\label{eq:}%
+          \phi(\bm{z}) := \bm{\mu} + \bm{\Sigma}^{1/2}\bm{z}
+          \quad\text{or} \quad
+          \psi(\bm{x}):=\phi^{-1}(\bm{x})= (\bm{\Sigma}^{1/2})^{-1}(\bm{x}-\bm{\mu})
+        \end{equation}
+    
+      \item It then follows from the change of variable formula that
+        \begin{equation}\nonumber%\label{eq:}%
+          \text{Pr}(\bm{x}\in A)
+          =
+          \text{Pr}(\bm{z} \in \psi(A))
+          =
+          \int_{\psi(A)}p_{Z}(\bm{z})d\bm{z}
+          =
+          \int_{A}p_{Z}(\psi(\bm{x})) \left|\left| \frac{d\psi(\bm{x})}{d\bm{x}} \right| \right| d\bm{x},
+          \quad \forall A\subset \R^{m}
+        \end{equation}
+        meaning that the density of $\bm{x}$ is
+        \begin{equation}\nonumber%\label{eq:}%
+          p_{X}(\bm{x})
+          =
+          p_{Z}(\psi(\bm{x})) \left| \left| \frac{d\psi(\bm{x})}{d\bm{x}} \right| \right|
+          =
+          \frac{1}{2^{\frac{m}{2}}\pi^{\frac{m}{2}}}e^{- \frac{1}{2}\psi(\bm{x})^{\top}\psi(\bm{x})}
+          ||(\bm{\Sigma}^{1/2})^{-1}||
+          =
+          \frac{1}{2^{\frac{m}{2}}\pi^{\frac{m}{2}}|\bm{\Sigma}|^{\frac{1}{2}}} e^{- \frac{1}{2}(\bm{x}-\bm{\mu})^{\top}\bm{\Sigma}^{-1}(\bm{x}-\bm{\mu})}
+        \end{equation}
+    \end{itemize}
+
+  \end{itemize}
+
+\item \textbf{Affine transformation}
+  \begin{itemize}
+  \item If $\bm{x}\sim \mathcal{N}(\bm{\mu},\bm{\Sigma})$
+    is $m$-dimensional Gaussian,
+    then for any $\bm{A}\in \R^{l\times m}$ and $\bm{b}\in \R^{l}$,
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A}\bm{x} + \bm{b} \sim \mathcal{N}(\bm{A}\bm{\mu} + \bm{b},\bm{A}\bm{\Sigma} \bm{A}^{\top})
+    \end{equation}
+  \item Note that $\bm{x}\sim \mathcal{N}(\bm{\mu},\bm{\Sigma})$ means that
+    there exist $\bm{S}$ with $\bm{\Sigma}=\bm{S}\bm{S}^{\top}$
+    and independent Gaussian vector $\bm{z}$ such that
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x} = \bm{\mu} + \bm{S}\bm{z}
+    \end{equation}
+    and therefore
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A}\bm{x} + \bm{b}
+      =
+      \bm{A}(\bm{\mu} +\bm{S}\bm{z}) + \bm{b}
+      =
+      (\bm{A}\bm{\mu} + \bm{b}) + (\bm{A}\bm{S})\bm{z}
+    \end{equation}
+    with
+    \begin{equation}\nonumber%\label{eq:}%
+      (\bm{A}\bm{S})(\bm{A}\bm{S})^{\top}
+      = \bm{A}\bm{S}\bm{S}^{\top}\bm{A}^{\top}
+      = \bm{A}\bm{\Sigma} \bm{A}^{\top},
+    \end{equation}
+    which means $\bm{A}\bm{x} + \bm{b} \sim \mathcal{N}(\bm{A}\bm{\mu} + \bm{b},\bm{A}\bm{\Sigma} \bm{A}^{\top})$
+  \item For example, if
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        x_{1} \\ x_{2}
+      \end{bmatrix}
+      \sim \mathcal{N} \bigg(
+      \underbrace{
+        \begin{bmatrix}
+          \mu_{1} \\ \mu_{2}
+        \end{bmatrix}}_{\bm{\mu}},
+      \underbrace{
+        \begin{bmatrix}
+          \sigma_{11} & \sigma_{12} \\
+          \sigma_{21} & \sigma_{22} \\
+        \end{bmatrix}}_{\bm{\Sigma}}
+      \bigg)
+    \end{equation}
+    then
+    \begin{equation}\nonumber%\label{eq:}%
+      a_{1}x_{1} + a_{2}x_{2} + b
+      =
+      \underbrace{
+      \begin{bmatrix}
+        a_{1} & a_{2}
+      \end{bmatrix}}_{\bm{A}}
+      \underbrace{
+      \begin{bmatrix}
+        x_{1} \\ x_{2}
+      \end{bmatrix}}_{\bm{x}}
+    + b
+      \sim
+      \mathcal{N}
+      \big(
+      \underbrace{a_{1}\mu_{1}+a_{2}\mu_{2}}_{\bm{A}\bm{\mu}} + b,
+      \underbrace{
+        a_{1}^{2}\sigma_{11} + 2a_{1}a_{2}\sigma_{12}\sigma_{21} + a_{2}^{2}\sigma_{22}^{2}
+        }_{\bm{A}\bm{\Sigma}\bm{A}^{\top}}
+      \big)
+    \end{equation}
+  \end{itemize}
+
+\end{itemize}
+
+\subsection{Marginal and conditional distribution}
+
+\begin{itemize}
+
+\item \textbf{Marginal distribution}
+
+  \begin{itemize}
+
+  \item If $\bm{x}_{1}\in \R^{m_{1}}$ and $\bm{x}_{2}\in \R^{m_{2}}$ jointly have a normal distribution
+    \begin{equation}\label{eq:x1x2normal}%
+      \underbrace{
+      \begin{bmatrix}
+        \bm{x}_{1}\\
+        \bm{x}_{2}\\
+      \end{bmatrix}}_{\bm{x}}
+      \sim \mathcal{N} \bigg(
+        \underbrace{\begin{bmatrix}
+          \bm{\mu}_{1} \\
+          \bm{\mu}_{2} \\
+        \end{bmatrix}}_{\bm{\mu}},
+      \underbrace{
+        \begin{bmatrix}
+          \bm{\Sigma}_{11} & \bm{\Sigma}_{12} \\
+          \bm{\Sigma}_{21} & \bm{\Sigma}_{22} \\
+        \end{bmatrix}}_{\bm{\Sigma}}
+      \bigg),
+    \end{equation}
+    then the marginal distributions of $\bm{x}_{1}$ and $\bm{x}_{2}$ are
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{1} = \bm{A}_{1}\bm{x}
+      \,\,\text{where}\,\,
+      \bm{A}_{1}:=
+      \begin{bmatrix}
+        \bm{I}_{m_{1}} & \bm{0} \\
+      \end{bmatrix}
+      \implies
+      \bm{x}_{1}
+      \sim \mathcal{N}(\bm{A}_{1}\bm{\mu}, \bm{A}_{1}\Sigma \bm{A}_{1}^{\top})
+      = \mathcal{N}(\bm{\mu}_{1}, \bm{\Sigma}_{11})
+    \end{equation}
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{2} = \bm{A}_{2}\bm{x}
+      \,\,\text{where}\,\,
+      \bm{A}_{2}:=
+      \begin{bmatrix}
+        \bm{0} & \bm{I}_{m_{2}}\\
+      \end{bmatrix}
+      \implies
+      \bm{x}_{2}
+      \sim N(\bm{A}_{2}\bm{\mu}, \bm{A}_{2}\Sigma \bm{A}_{2}^{\top})
+      = \mathcal{N}(\bm{\mu}_{2}, \bm{\Sigma}_{22})
+    \end{equation}
+
+  \end{itemize}
+
+\item \textbf{Independence}
+  \begin{itemize}
+
+  \item If $\bm{x}_{1}\in \R^{m_{1}}$ and $\bm{x}_{2}\in \R^{m_{2}}$ jointly have a normal distribution~\eqref{eq:x1x2normal},
+    then
+    \begin{equation}\nonumber%\label{eq:}%
+      \text{$\bm{x}_{1}$ and $\bm{x}_{2}$ are independent}
+      \iff
+      \bm{\Sigma}_{12} = \bm{\Sigma}_{21} = \bm{O}
+    \end{equation}
+  \item This is because
+    \begin{align}
+      p_{X_{1}}(\bm{x}_{1})p_{X_{2}}(\bm{x}_{2})
+      & = \frac{1}{(2\pi)^{\frac{m_{1}}{2}}|\bm{\Sigma}_{11}|^{\frac{1}{2}}}e^{- \frac{1}{2}(\bm{x}_{1}-\bm{\mu}_{1})^{\top}\bm{\Sigma}_{11}^{-1}(\bm{x}_{1}-\bm{\mu}_{1})}\frac{1}{(2\pi)^{\frac{m_{2}}{2}}|\bm{\Sigma}_{22}|^{\frac{1}{2}}}e^{- \frac{1}{2}(\bm{x}_{2}-\bm{\mu}_{2})^{\top}\bm{\Sigma}_{22}^{-1}(\bm{x}_{2}-\bm{\mu}_{2})}  \nonumber \\
+      & =
+        \underbrace{
+      \frac{1}{(2\pi)^{\frac{m_{1}+m_{2}}{2}}\begin{vmatrix}\bm{\Sigma}_{11}&\bm{O}\\\bm{O}&\bm{\Sigma}_{22}\end{vmatrix}^{\frac{1}{2}}}
+      e^{- \frac{1}{2}
+        \begin{bmatrix}
+          \bm{x}_{1}-\bm{\mu}_{1}\\
+          \bm{x}_{2}-\bm{\mu}_{2}\\
+        \end{bmatrix}^{\top}
+        \begin{bmatrix}
+          \bm{\Sigma}_{11}&\bm{O}\\
+          \bm{O} &\bm{\Sigma}_{22}
+        \end{bmatrix}^{-1}
+        \begin{bmatrix}
+          \bm{x}_{1}-\bm{\mu}_{1}\\
+          \bm{x}_{2}-\bm{\mu}_{2}\\
+        \end{bmatrix}}
+        }_{p_{X}(\bm{x}_{1},\bm{x}_{2})\big|_{\bm{\Sigma}_{12}=\bm{\Sigma}_{21}=\bm{O}}}
+      \nonumber%\label{eq:}%
+    \end{align}
+
+  \end{itemize}
+
+\item \textbf{Conditional distribution}
+  \begin{itemize}
+  \item If $\bm{x}_{1}\in \R^{m_{1}}$ and $\bm{x}_{2}\in \R^{m_{2}}$ jointly have a normal distribution~\eqref{eq:x1x2normal},
+    then the conditional distribution is
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}_{1}|\bm{x}_{2} \sim
+      \mathcal{N} \left(\bm{\mu}_{1|2}, \bm{\Sigma}_{1|2}\right),
+    \end{equation}
+    where
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{\mu}_{1|2}:=
+      \bm{\mu}_{1}+\bm{\Sigma}_{12}\bm{\Sigma}_{22}^{-1}(\bm{x}_{2}-\bm{\mu}_{2}),
+      \quad
+      \bm{\Sigma}_{1|2}:=\bm{\Sigma}_{11}- \bm{\Sigma}_{12}\bm{\Sigma}_{22}^{-1}\bm{\Sigma}_{21}
+    \end{equation}
+  \item This is because
+    \begin{align}
+      p_{X_{1}|X_{2}}(\bm{x}_{1}|\bm{x}_{2})
+        & = \frac{p_{X}(\bm{x}_{1},\bm{x}_{2})}{p_{X_{2}}(\bm{x}_{2})}  \nonumber \\
+        & = \frac{e^{(\bm{x}_{2}-\bm{\mu}_{2})^{\top}\bm{\Sigma}_{22}^{-1}\bm{\Sigma}_{21}\bm{\Sigma}_{1|2}^{-1}\bm{\Sigma}_{12}\bm{\Sigma}_{22}^{-1}(\bm{x}_{2}-\bm{\mu}_{2})}}{(2\pi)^{\frac{m_{1}}{2}} |\bm{\Sigma}_{1|2}|^{\frac{1}{2}}}e^{(\bm{x}_{1}-\bm{\mu}_{1})^{\top}\bm{\Sigma}_{1|2}^{-1}(\bm{x}_{1}-\bm{\mu}_{1})-2(\bm{x}_{2}-\bm{\mu}_{2})^{\top}\bm{\Sigma}_{22}^{-1}\bm{\Sigma}_{21}\bm{\Sigma}_{1|2}^{-1}(\bm{x}_{1}-\bm{\mu}_{1})} \nonumber \\
+        & = \frac{1}{(2\pi)^{\frac{m_{1}}{2}} |\bm{\Sigma}_{1|2}|^{\frac{1}{2}}}e^{(\bm{x}_{1}-\bm{\mu}_{1|2})^{\top}\bm{\Sigma}_{1|2}^{-1}(\bm{x}_{1}-\bm{\mu}_{1|2})},
+    \nonumber%\label{eq:}%
+    \end{align}
+    which is the density of $\mathcal{N}(\bm{\mu}_{1|2}, \bm{\Sigma}_{1|2})$
+  \item Note that $p_{X_{1}|X_{2}}(\bm{x}_{1}|\bm{x}_{2})=p_{X_{1}}(\bm{x}_{1})$
+    if $\bm{x}_{1}$ and $\bm{x}_{2}$ are independent ($\bm{\Sigma}_{12}=\bm{\Sigma}_{12}=\bm{O}$)
+  \end{itemize}
+
+\item \textbf{Example~1}
+  \begin{itemize}
+  \item Consider a Gaussian random vector
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}
+      =
+      \begin{bmatrix}
+        x_{1} \\ x_{2}
+      \end{bmatrix}
+      \sim \mathcal{N} \left(
+        \begin{bmatrix}
+          \mu_{1} \\ \mu_{2}
+        \end{bmatrix},
+        \begin{bmatrix}
+          \sigma_{11} & \sigma_{12} \\
+          \sigma_{21} & \sigma_{22} \\
+        \end{bmatrix}
+      \right),
+      \quad\text{where}\quad \sigma_{21} = \sigma_{12}
+    \end{equation}
+  \item Suppose we can only observe the realization of $x_{2}$
+    and we want to infer the value of $x_{1}$
+  \item The distribution of $x_{1}$ conditional on a particular observation $x_{2}$ is
+    \begin{equation}\nonumber%\label{eq:}%
+      x_{1}|x_{2} \sim
+      \mathcal{N}\left(
+        \mu_{1} + \frac{\sigma_{12}}{\sigma_{22}}(x_{2}-\mu_{2}),
+        \sigma_{11} - \frac{\sigma_{12}\sigma_{21}}{\sigma_{22}}
+      \right),
+    \end{equation}
+  \item Observe
+    \begin{equation}\nonumber%\label{eq:}%
+      \mathbb{E}\left[\mathbb{E}\left[x_{1}|x_{2}\right]\right]
+      =
+      \mathbb{E}\left[\mu_{1} + \frac{\sigma_{12}}{\sigma_{22}}(x_{2}-\mu_{2})\right]
+      =
+      \mu_{1} + \frac{\sigma_{12}}{\sigma_{22}}(\mathbb{E}\left[x_{2}\right]-\mu_{2})
+      =
+      \mu_{1}
+      =
+      \mathbb{E}[x_{1}],
+    \end{equation}
+    which confirms the law of total expectation
+  \end{itemize}
+\item \textbf{Example~2}
+  \begin{itemize}
+  \item Consider an independent Gaussian random vector
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        x_{1} \\
+        x_{2} \\
+      \end{bmatrix}
+      =
+        \begin{bmatrix}
+          \mu_{1} \\
+          \mu_{2}
+        \end{bmatrix}
+        +
+        \begin{bmatrix}
+          \sigma_{1} & 0 \\
+          0 & \sigma_{2}
+        \end{bmatrix}
+      \begin{bmatrix}
+       z_{1} \\ z_{2}
+      \end{bmatrix}
+      \sim \mathcal{N}
+      \left(
+        \begin{bmatrix}
+          \mu_{1} \\
+          \mu_{2}
+        \end{bmatrix},
+        \begin{bmatrix}
+          \sigma_{1}^{2} & 0 \\
+          0 & \sigma_{2}^{2}
+        \end{bmatrix}
+      \right),
+      \quad\text{where}\quad
+      \begin{bmatrix}
+       z_{1} \\ z_{2}
+      \end{bmatrix}
+      \sim \mathcal{N}\left(\bm{0}, \bm{I} \right)
+    \end{equation}
+  \item Suppose that we cannot directly observe the realization of $\bm{x}=(x_{1},x_{2})$,
+    but we instead observe the sum of $x_{1}$ and $x_{2}$
+  \item We want to infer the values of $x_{1}$ and $x_{2}$ based on the observation of $y=x_{1}+x_{2}$
+  \item Since
+    \begin{equation}\nonumber%\label{eq:}%
+      y = \underbrace{x_{1}}_{\mu_{1}+\sigma_{1}z_{1}} + \underbrace{x_{2}}_{\mu_{2}+\sigma_{2}z_{2}}
+      = \mu_{1} + \mu_{2} +
+      \begin{bmatrix}
+       \sigma_{1} & \sigma_{2} 
+      \end{bmatrix}
+      \begin{bmatrix}
+       z_{1} \\ z_{2}
+      \end{bmatrix},
+    \end{equation}
+    the joint distribution is
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        x_{1} \\
+        x_{2} \\
+        y
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        \mu_{1} \\
+        \mu_{2} \\
+        \mu_{1}+\mu_{2}
+      \end{bmatrix}
+      +
+      \begin{bmatrix}
+        \sigma_{1} & 0 \\
+        0 & \sigma_{2} \\
+        \sigma_{1} & \sigma_{2}
+      \end{bmatrix}
+      \begin{bmatrix}
+       z_{1} \\ z_{2}
+      \end{bmatrix}
+      \sim
+      \mathcal{N}
+      \Bigg(
+        \underbrace{
+      \begin{bmatrix}
+        \mu_{1} \\
+        \mu_{2} \\
+        \mu_{1}+\mu_{2}
+      \end{bmatrix}}_{
+      \begin{bmatrix}
+        \bm{\mu}_{x}\\\mu_{y}
+      \end{bmatrix}},
+      \underbrace{
+      \begin{bmatrix}
+        \sigma_{1}^{2} & 0 & \sigma_{1}^{2} \\
+        0 & \sigma_{2}^{2} & \sigma_{2}^{2} \\
+        \sigma_{1}^{2} & \sigma_{2}^{2} & \sigma_{1}^{2}+\sigma_{2}^{2} \\
+      \end{bmatrix}}_{
+      \begin{bmatrix}
+        \bm{\Sigma}_{xx} & \bm{\sigma}_{xy} \\
+        \bm{\sigma}_{xy}^{\top} & \sigma_{yy} \\
+      \end{bmatrix}}
+      \Bigg)
+    \end{equation}
+  \item Hence, the conditional distribution is
+    \begin{align}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        x_{1}\\x_{2}
+      \end{bmatrix}
+      \bigg| y
+      & \sim
+        \mathcal{N}
+        \left(
+        \bm{\mu}_{x} + \bm{\sigma}_{xy}\frac{1}{\sigma_{yy}}(y-\mu_{y}),
+        \bm{\Sigma}_{xx} - \bm{\sigma}_{xy}\frac{1}{\sigma_{yy}}\bm{\sigma}_{xy}^{\top}
+        \right) \nonumber \\
+      & =
+        \mathcal{N}
+        \left(
+        \begin{bmatrix}
+          \mu_{1} \\ \mu_{2}
+        \end{bmatrix}
+        +
+        \begin{bmatrix}
+          \sigma_{1}^{2} \\ \sigma_{2}^{2}
+        \end{bmatrix}
+        \frac{y-(\mu_{1}+\mu_{2})}{\sigma_{1}^{2}+\sigma_{2}^{2}},
+        \begin{bmatrix}
+          \sigma_{1}^{2} & 0 \\
+          0 & \sigma_{2}^{2} \\
+        \end{bmatrix}
+        -
+        \frac{1}{\sigma_{1}^{2}+\sigma_{2}^{2}}
+        \begin{bmatrix}
+          \sigma_{1}^{2} \\ \sigma_{2}^{2}
+        \end{bmatrix}
+        \begin{bmatrix}
+          \sigma_{1}^{2} && \sigma_{2}^{2}
+        \end{bmatrix}
+        \right) \nonumber \\
+      & =
+        \mathcal{N}
+      \left(
+        \begin{bmatrix}
+          \frac{\sigma_{1}^{-2}}{\sigma_{1}^{-2}+\sigma_{2}^{-2}}\mu_{1}
+          +
+          \frac{\sigma_{2}^{-2}}{\sigma_{1}^{-2}+\sigma_{2}^{-2}}(y-\mu_{2})
+          \\
+          \frac{\sigma_{2}^{-2}}{\sigma_{1}^{-2}+\sigma_{2}^{-2}}\mu_{2}
+          +
+          \frac{\sigma_{1}^{-2}}{\sigma_{1}^{-2}+\sigma_{2}^{-2}}(y-\mu_{1})
+        \end{bmatrix},        
+        \begin{bmatrix}
+          \frac{1}{\sigma_{1}^{-2}+\sigma_{2}^{-2}} & -\frac{1}{\sigma_{1}^{-2}+\sigma_{2}^{-2}} \\
+          -\frac{1}{\sigma_{1}^{-2}+\sigma_{2}^{-2}} & \frac{1}{\sigma_{1}^{-2}+\sigma_{2}^{-2}} \\
+        \end{bmatrix}
+      \right)\nonumber
+    \end{align}
+  \item Observe
+    \begin{equation}\nonumber%\label{eq:}%
+      \mathbb{E}\left[\mathbb{E}\left[x_{i}|y\right]\right]
+      =
+        \frac{\sigma_{i}^{-2}}{\sigma_{1}^{-2}+\sigma_{2}^{-2}}\mu_{i}
+        +
+        \frac{\sigma_{j}^{-2}}{\sigma_{1}^{-2}+\sigma_{2}^{-2}}\underbrace{(\mathbb{E}\left[y\right]-\mu_{j})}_{\mu_{i}}
+        = \mu_{i} = \mathbb{E}\left[ x_{i} \right]
+    \end{equation}
+
+  \end{itemize}
+
+\item \textbf{Example~3 (Gaussian signal extraction)}
+  \begin{itemize}
+  \item Let $\bm{x}=(x_{1},\ldots, x_{m})\sim \mathcal{N}(\bm{\mu},\bm{\Sigma})$ be a multivariate Gaussian random vector
+  \item Suppose that we cannot directly observe the realization of $\bm{x}$,
+    but we instead observe a `signal' $\bm{y}\in\R^{l}$, the value of which is determined by
+    \begin{equation}\nonumber%\label{eq:yx}%
+      \bm{y}
+      =
+      \begin{bmatrix}
+        y_{1} \\
+        y_{2} \\
+        \vdots \\
+        y_{l} \\
+      \end{bmatrix}
+      =
+      \underbrace{
+      \begin{bmatrix}
+        a_{1,1} & a_{1,2} & \cdots & a_{1,m} \\
+        a_{2,1} & a_{2,2} & \cdots & a_{2,m} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        a_{l,1} & a_{l,2} & \cdots & a_{l,m} \\
+      \end{bmatrix}}_{\bm{A}}
+      \underbrace{
+      \begin{bmatrix}
+        x_{1} \\
+        x_{2} \\
+        \vdots \\
+        x_{m} \\
+      \end{bmatrix}}_{\bm{x}}
+      +
+      \underbrace{
+      \begin{bmatrix}
+        b_{1} \\
+        b_{2} \\
+        \vdots \\
+        b_{l} \\
+      \end{bmatrix}}_{\bm{b}},
+    \quad\text{where}\quad \mathrm{rank}(\bm{A})<m
+    \end{equation}
+  \item We want to infer the value of $\bm{x}$ conditional on the observed value of $\bm{y}$
+  \item Note that Example~3 is a generalization of Example~1 and Example~2
+    \begin{itemize}
+    \item Example~1: $l=1$, $m=2$, $a_{1,1}=0$, $a_{1,2}=1$, and $b=0$
+    \item Example~2: $l=1$, $m=2$, $a_{1,1}= a_{1,2}=1$ and $b=0$
+    \end{itemize}
+  \item Since $\bm{x}\sim \mathcal{N}(\bm{\mu},\bm{\Sigma})$,
+    there exists $\bm{S}\in \R^{m\times n}$ and
+    independent standard Gaussian variables $\bm{z}\in \R^{n}$ such that
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x} = \bm{\mu} + \bm{S}\bm{z}
+      \quad \text{with}\quad \bm{S}\bm{S}^{\top} = \bm{\Sigma}
+    \end{equation}
+    and thus the joint distribution of $\bm{x}$ and $\bm{y}$ is
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        \bm{x} \\ \bm{y}
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        \bm{\mu} \\ \bm{A}\bm{\mu} + \bm{b}
+      \end{bmatrix}
+      +
+      \begin{bmatrix}
+        \bm{S}\\
+        \bm{A}\bm{S}
+      \end{bmatrix}
+      \bm{z}
+      \sim
+      \mathcal{N}
+      \left(
+      \begin{bmatrix}
+        \bm{\mu} \\ \bm{A}\bm{\mu} + \bm{b}
+      \end{bmatrix},
+      \begin{bmatrix}
+        \bm{\Sigma} & \bm{\Sigma}\bm{A}^{\top} \\
+        \bm{A}\bm{\Sigma} & \bm{A}\bm{\Sigma}\bm{A}^{\top}
+      \end{bmatrix}
+      \right)
+    \end{equation}
+  \item The distribution of $\bm{x}$ conditional on $\bm{y}$ is therefore
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}|\bm{y} \sim \mathcal{N}
+      \left(
+        \bm{\mu}+\bm{\Sigma}\bm{A}^{\top}(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{-1}(\bm{y}-\bm{A}\bm{\mu} - \bm{b}),
+        \bm{\Sigma} - \bm{\Sigma}\bm{A}^{\top}(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{-1}\bm{A}\bm{\Sigma}
+      \right)
+    \end{equation}
+
+  \end{itemize}
+  
+\item \textbf{Example~4}
+  \begin{itemize}
+  \item Suppose $z\sim \mathcal{N}(0,1)$
+  \item What is the expectation of $z$ conditional on $z\geq c$ for some constant $c\in \R$?
+    \begin{equation}\nonumber%\label{eq:}%
+      \mathbb{E}\left[ z | z \geq c \right]
+      = \frac{1}{\int_{c}^{\infty}\frac{1}{\sqrt{2\pi}}e^{- \frac{1}{2}z^{2}}dz}\int_{c}^{\infty}z\frac{1}{\sqrt{2\pi}}e^{- \frac{1}{2}z^{2}}dz
+      = \frac{\Phi'(c)}{1-\Phi(c)},
+    \end{equation}
+    where $\Phi(\cdot)$ is the cumulative distribution function of standard Gaussian:
+    \begin{equation}\nonumber%\label{eq:}%
+      \Phi(c)
+      :=
+      \text{Pr}(z\leq c)
+      =
+      \int_{-\infty}^{c}\frac{1}{\sqrt{2\pi}}e^{- \frac{1}{2}z^{2}}dz
+    \end{equation}
+  \item Similarly
+    \begin{equation}\nonumber%\label{eq:}%
+      \mathbb{E}\left[ z | z < c \right]
+      = \frac{1}{\int_{-\infty}^{c}\frac{1}{\sqrt{2\pi}}e^{- \frac{1}{2}z^{2}}dz}\int_{-\infty}^{c}z\frac{1}{\sqrt{2\pi}}e^{- \frac{1}{2}z^{2}}dz
+      = -\frac{\Phi'(c)}{\Phi(c)}
+    \end{equation}
+  \item Observe
+    \begin{equation}\nonumber%\label{eq:}%
+      \mathbb{E}\left[ z | z \geq c \right]\text{Pr}(z\geq c)
+      +
+      \mathbb{E}\left[ z | z < c \right]\text{Pr}(z< c)
+      =
+      \frac{\Phi'(c)}{1-\Phi(c)}(1-\Phi(c))
+      -
+      \frac{\Phi'(c)}{\Phi(c)}\Phi(c) = 0
+      = \mathbb{E}[z]
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Example~5}
+  \begin{itemize}
+  \item Suppose $x\sim \mathcal{N}(\mu,\sigma^{2})$ with $\sigma >0$
+  \item What is the expectation of $x$ conditional on $x\geq c$ for some constant $c\in \R$?
+  \item There exists $z\sim \mathcal{N}(0,1)$ such that $x=\mu+\sigma z$ and thus
+    \begin{equation}\nonumber%\label{eq:}%
+      \mathbb{E}\left[ x | x \geq c \right]
+      = \mathbb{E}\left[ \mu + \sigma z | \mu + \sigma z \geq c \right]
+      = \mu + \sigma\mathbb{E}\left[z \bigg| z \geq \frac{c - \mu}{\sigma} \right]
+      = \mu + \sigma \frac{\Phi'\left(\frac{c - \mu}{\sigma}\right) }{1-\Phi\left(\frac{c - \mu}{\sigma}\right)}
+    \end{equation}
+  \item Similarly
+    \begin{equation}\nonumber%\label{eq:}%
+      \mathbb{E}\left[ x | x < c \right]
+      = \mathbb{E}\left[ \mu + \sigma z | \mu + \sigma z < c \right]
+      = \mu + \sigma\mathbb{E}\left[z \bigg| z < \frac{c - \mu}{\sigma} \right]
+      = \mu - \sigma \frac{\Phi'\left(\frac{c - \mu}{\sigma}\right) }{\Phi\left(\frac{c - \mu}{\sigma}\right)}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Example~6}
+  \begin{itemize}
+  \item Suppose $(x_{1},\ldots ,x_{m})\sim \mathcal{N}(\bm{\mu},\bm{\Sigma})$ with non-singular $\bm{\Sigma}\in \R^{m\times m}$ and let
+    \begin{equation}\nonumber%\label{eq:}%
+      y := 
+      a_{1}x_{1} + a_{2}x_{2} + \cdots + a_{m}x_{m}
+      =
+      \underbrace{
+      \begin{bmatrix}
+        a_{1} & a_{2} & \cdots & a_{m}
+      \end{bmatrix}}_{\bm{A}}
+    \underbrace{
+      \begin{bmatrix}
+        x_{1} \\
+        x_{2} \\
+        \vdots \\
+        x_{m} \\
+      \end{bmatrix}}_{\bm{x}}
+    \sim
+    \mathcal{N}
+    \left(\bm{A}\bm{\mu}, \bm{A}\bm{\Sigma}\bm{A}^{\top}\right)
+    \end{equation}
+  \item What is the expectation of $\bm{x}$ conditional on $y\geq c$ for some constant $c\in \R$?
+  \item The examples above imply
+    \begin{equation}\nonumber%\label{eq:}%
+      \mathbb{E}\left[y| y\geq c \right]
+      =
+      \bm{A}\bm{\mu} + (\bm{A}\bm{\Sigma}\bm{A}^{\top})^{1/2} \frac{\Phi'\left(\frac{c - \bm{A}\bm{\mu}}{(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{1/2}}\right) }{1-\Phi\left(\frac{c - \bm{A}\bm{\mu}}{(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{1/2}}\right)}
+    \end{equation}
+  \item Since we know
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x}|y
+      \sim \mathcal{N}
+      \left(
+        \bm{\mu}+\bm{\Sigma}\bm{A}^{\top}(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{-1}(y-\bm{A}\bm{\mu}),
+        \bm{\Sigma} - \bm{\Sigma}\bm{A}^{\top}(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{-1}\bm{A}\bm{\Sigma}
+      \right),
+    \end{equation}
+    the law of total expectation gives
+    \begin{align}
+      \mathbb{E}\left[\bm{x}|y\geq c \right]
+        & = \mathbb{E}\left[\mathbb{E}\left[\bm{x}|y\right]|y\geq c \right] \nonumber \\
+        & = \mathbb{E}\left[\bm{\mu}+\bm{\Sigma}\bm{A}^{\top}(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{-1}(y-\bm{A}\bm{\mu}) \Big| y\geq c \right] \nonumber \\
+        & = \bm{\mu}+\bm{\Sigma}\bm{A}^{\top}(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{-1}(\mathbb{E}\left[y| y\geq c \right]-\bm{A}\bm{\mu}) \nonumber \\
+        & = \bm{\mu}+\bm{\Sigma}\bm{A}^{\top}(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{-1}(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{1/2} \frac{\Phi'\left(\frac{c - \bm{A}\bm{\mu}}{(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{1/2}}\right) }{1-\Phi\left(\frac{c - \bm{A}\bm{\mu}}{(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{1/2}}\right)} \nonumber \\
+        & = \bm{\mu}+\frac{1}{(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{1/2}}\bm{\Sigma}\bm{A}^{\top}\frac{\Phi'\left(\frac{c - \bm{A}\bm{\mu}}{(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{1/2}}\right) }{1-\Phi\left(\frac{c - \bm{A}\bm{\mu}}{(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{1/2}}\right)}
+    \nonumber%\label{eq:}%
+    \end{align}
+  \item Similarly
+    \begin{align}
+      \mathbb{E}\left[\bm{x}|y< c \right]
+        & = \mathbb{E}\left[\mathbb{E}\left[\bm{x}|y\right]|y< c \right] \nonumber \\
+        & = \mathbb{E}\left[\bm{\mu}+\bm{\Sigma}\bm{A}^{\top}(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{-1}(y-\bm{A}\bm{\mu}) \Big| y< c \right] \nonumber \\
+        & = \bm{\mu}+\bm{\Sigma}\bm{A}^{\top}(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{-1}(\mathbb{E}\left[y| y< c \right]-\bm{A}\bm{\mu}) \nonumber \\
+        & = \bm{\mu}-\bm{\Sigma}\bm{A}^{\top}(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{-1}(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{1/2} \frac{\Phi'\left(\frac{c - \bm{A}\bm{\mu}}{(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{1/2}}\right) }{\Phi\left(\frac{c - \bm{A}\bm{\mu}}{(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{1/2}}\right)} \nonumber \\
+        & = \bm{\mu}-\frac{1}{(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{1/2}}\bm{\Sigma}\bm{A}^{\top}\frac{\Phi'\left(\frac{c - \bm{A}\bm{\mu}}{(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{1/2}}\right) }{\Phi\left(\frac{c - \bm{A}\bm{\mu}}{(\bm{A}\bm{\Sigma}\bm{A}^{\top})^{1/2}}\right)}
+    \nonumber%\label{eq:}%
+    \end{align}
+    
+  \end{itemize}
+
+\end{itemize}
+
+\end{document}

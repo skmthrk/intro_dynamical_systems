@@ -1,0 +1,1440 @@
+\documentclass[12pt,a4paper]{article} 
+\input{preambles/preamble_lecnotes.tex} 
+
+\title{Jordan normal form}
+\subtitle{Introduction to dynamical systems~\#3}
+\author{Hiroaki Sakamoto}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Jordan normal form}
+
+\subsection{Jordan block and Jordan matrix}
+
+\begin{itemize}
+
+\item \textbf{Jordan block}
+  \begin{itemize}
+  \item A square matrix of the following form is called a \emph{Jordan block} of size $m$:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{J}_{m}(\lambda) :=
+      \begin{bmatrix}
+        \lambda & 1 & 0 & \cdots & 0 & 0 \\
+        0 & \lambda & 1 & \cdots & 0 & 0 \\
+        0 & 0 & \lambda & \ddots & 0 & 0 \\
+        \vdots & \vdots & \vdots & \ddots & \ddots & \vdots \\
+        0 & 0 & 0 & \cdots & \lambda & 1 \\
+        0 & 0 & 0  & \cdots & 0 &  \lambda \\
+      \end{bmatrix} \in \R^{m\times m}
+    \end{equation}
+    
+  \item For example,
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{J}_{1}(\lambda) = \lambda,
+      \quad
+      \bm{J}_{2}(\lambda) =
+      \begin{bmatrix}
+        \lambda & 1 \\
+        0 & \lambda \\
+      \end{bmatrix},
+      \quad
+      \bm{J}_{3}(\lambda) =
+      \begin{bmatrix}
+        \lambda & 1 & 0 \\
+        0 & \lambda & 1 \\
+        0 & 0 & \lambda \\
+      \end{bmatrix}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Jordan matrix}
+  \begin{itemize}
+  \item A block diagonal matrix of the form
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{J} =
+      \begin{bmatrix}
+        \bm{J}_{n_{1}}(\lambda_{1}) & 0 & \cdots & 0 \\
+        0 & \bm{J}_{n_{2}}(\lambda_{2}) & \cdots & 0 \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \cdots & \bm{J}_{n_{d}}(\lambda_{d}) \\
+      \end{bmatrix}
+    \end{equation}
+    is called a \emph{Jordan matrix},
+    where $\lambda_{1}, \lambda_{2},\ldots, \lambda_{d}$ can be the same value or different values
+  \item Examples of a Jordan matrix:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{J} =
+      \begin{bmatrix}
+        2 & 1 \\
+        0 & 2 \\
+      \end{bmatrix},
+      \quad
+      \bm{J} =
+      \begin{bmatrix}
+        2 & 0 \\
+        0 & 5 \\
+      \end{bmatrix},
+      \quad
+      \bm{J} =
+      \begin{bmatrix}
+        3 & 1 & 0 \\
+        0 & 3 & 0 \\
+        0 & 0 & 2 \\
+      \end{bmatrix}
+      \quad
+      \bm{J} =
+      \begin{bmatrix}
+        2 & 1 & 0 & 0 \\
+        0 & 2 & 0 & 0 \\
+        0 & 0 & 2 & 1 \\
+        0 & 0 & 0 & 2 \\
+      \end{bmatrix}
+    \end{equation}
+  \end{itemize}
+
+\end{itemize}
+
+\subsection{Generalized eigenvectors}
+
+\begin{itemize}
+
+\item \textbf{Definition}
+  \begin{itemize}
+    \item Let $\lambda$ be an eigenvalue of $\bm{A}\in \R^{n\times n}$
+    \item We call $\bm{v}\in \R^{n}$ a \emph{generalized eigenvector of rank $m\in \N$} associated with $\lambda$ if
+      \begin{equation}\nonumber%\label{eq:}%
+        (\bm{A}-\lambda \bm{I})^{m}\bm{v} = \bm{0}
+        \quad\text{and}\quad
+        (\bm{A}-\lambda \bm{I})^{m-1}\bm{v} \neq \bm{0}
+      \end{equation}
+    \item Note that an eigenvector is nothing but a generalized eigenvector of rank $m=1$
+      \begin{equation}\nonumber%\label{eq:}%
+        (\bm{A}-\lambda \bm{I})^{1}\bm{v} = \bm{0}
+        \quad\text{and}\quad
+        \bm{v} = (\bm{A}-\lambda \bm{I})^{1-1}\bm{v} \neq \bm{0}
+      \end{equation}
+    \item Important fact:
+      \begin{itemize}
+      \item An eigenvalue does \textbf{not always} have as many linearly independent \textbf{eigenvectors} as its algebraic multiplicity
+      \item Any eigenvalue \textbf{always} has as many linearly independent \textbf{generalized eigenvectors} as its algebraic multiplicity
+      \end{itemize}
+  \end{itemize}
+
+\item \textbf{Example~1}
+  \begin{itemize}
+  \item Consider a $3\times 3$ square matrix
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} :=
+      \begin{bmatrix}
+        3 & -1 & 1 \\
+        2 & 0 & 2 \\
+        1 & -1 & 3 \\
+      \end{bmatrix},
+    \end{equation}
+    whose characteristic polynomial is
+    \begin{equation}\nonumber%\label{eq:}%
+      \phi_{\bm{A}}(t) =
+      \begin{vmatrix}
+        3-t & -1 & 1 \\
+        2 & 0-t & 2 \\
+        1 & -1 & 3-t \\
+      \end{vmatrix}
+      = (2-t)^{3},
+    \end{equation}
+    meaning that $\lambda:=1$ is the unique eigenvalue of $\bm{A}$ (with algebraic multiplicity of $3$)
+  \item Then
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{v} :=
+      \begin{bmatrix}
+        1 \\ 0 \\ 0
+      \end{bmatrix}
+    \end{equation}
+    is a generalized eigenvector of rank $2$ associated with $\lambda=2$,
+    because
+    \begin{equation}\nonumber%\label{eq:}%
+      (\bm{A}-\lambda\bm{I})^{2}\bm{v} = 
+      \begin{bmatrix}
+        3-2 & -1 & 1 \\
+        2 & 0-2 & 2 \\
+        1 & -1 & 3-2 \\
+      \end{bmatrix}^{2}
+      \begin{bmatrix}
+        1 \\ 0 \\ 0
+      \end{bmatrix}
+      = 
+      \begin{bmatrix}
+        0 & 0 & 0 \\
+        0 & 0 & 0 \\
+        0 & 0 & 0 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        1 \\ 0 \\ 0
+      \end{bmatrix}
+      = \bm{0}
+    \end{equation}
+    and
+    \begin{equation}\nonumber%\label{eq:}%
+      (\bm{A}-\lambda\bm{I})\bm{v} = 
+      \begin{bmatrix}
+        3-2 & -1 & 1 \\
+        2 & 0-2 & 2 \\
+        1 & -1 & 3-2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        1 \\ 0 \\ 0
+      \end{bmatrix}
+      = 
+      \begin{bmatrix}
+        1 \\ 2 \\ 1
+      \end{bmatrix}
+      \neq \bm{0}
+    \end{equation}
+  \item In fact,
+    since $(\bm{A}-\lambda \bm{I})^{2}=\bm{O}$,
+    any vector $\bm{v}=(v_{1}, v_{2}, v_{3})^{\top}$ is
+    a generalized eigenvector of rank $2$ associated with $\lambda=2$
+    as long as $(\bm{A}-\lambda \bm{I})\bm{v}\neq \bm{0}$
+    (i.e., as long as $\bm{v}$ is not an eigenvector itself)
+  \end{itemize}
+
+\end{itemize}
+
+\subsection{Jordan decomposition}
+
+\begin{itemize}
+\item \textbf{Jordan decomposition theorem}
+  \begin{itemize}
+  \item Consider a square matrix $\bm{A} \in\R^{n\times n}$
+  \item There always exists
+    a Jordan matrix $\bm{J}\in \R^{n\times n}$ and
+    a nonsingular matrix $\bm{V}\in \R^{n\times n}$ (consisting of $n$ generalized eigenvectors) such that
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} = \bm{V} \bm{J} \bm{V}^{-1},
+      \quad\text{where}\quad
+      \bm{J} =
+      \begin{bmatrix}
+        \bm{J}_{n_{1}}(\lambda_{1}) & 0 & \cdots & 0 \\
+        0 & \bm{J}_{n_{2}}(\lambda_{2}) & \cdots & 0 \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \cdots & \bm{J}_{n_{d}}(\lambda_{d}) \\
+      \end{bmatrix}
+    \end{equation}
+    and $\lambda_{1},\lambda_{2},\ldots, \lambda_{d}$ are eigenvalues (with possibility of duplicates) of $\bm{A}$
+  \item The matrix $\bm{J}$ above is called the \emph{Jordan normal form} of $\bm{A}$
+  \end{itemize}
+
+\item \textbf{More details}
+  \begin{itemize}
+  \item There exist $\lambda_{1},\lambda_{2},\ldots, \lambda_{d}\in \R$
+    and
+    $n_{1}, n_{2}, \ldots, n_{d} \in \N$
+    such that
+    \begin{enumerate}
+    \item $\lambda_{1},\lambda_{2},\ldots, \lambda_{d}$ are eigenvalues of $\bm{A}$ (with possibility of duplicates)
+    \item $n_{1} + n_{2} + \ldots + n_{d} = n$
+    \item for each $i=1,\ldots, d$,
+      there exist $n_{i}$ generalized eigenvectors $\bm{v}_{i,1}, \bm{v}_{i,2}, \ldots, \bm{v}_{i,n_{i}}$
+      associated with $\lambda_{i}$
+      such that
+      \begin{itemize}
+      \item $\bm{v}_{i,1}$ is a generalized eigenvector of rank $1$ satisfying $(\bm{A} - \lambda_{i}\bm{I})\bm{v}_{i,1}= \bm{0}$ and $\bm{v}_{i,1}\neq \bm{0}$
+      \item $\bm{v}_{i,2}$ is a generalized eigenvector of rank $2$ satisfying $(\bm{A} - \lambda_{i}\bm{I})\bm{v}_{i,2} = \bm{v}_{i,1}$
+      \item $\bm{v}_{i,3}$ is a generalized eigenvector of rank $3$ satisfying $(\bm{A} - \lambda_{i}\bm{I})\bm{v}_{i,3} = \bm{v}_{i,2}$
+      \item[] $\vdots$
+      \item $\bm{v}_{i,n_{i}}$ is a generalized eigenvector of rank $n_{i}$ satisfying $(\bm{A} - \lambda_{i}\bm{I})\bm{v}_{i,n_{i}} = \bm{v}_{i,n_{i}-1}$
+      \end{itemize}
+    \end{enumerate}
+  \item Then $\bm{v}_{1,1},\bm{v}_{1,2},\ldots, \bm{v}_{1,n_{1}},\bm{v}_{2,1},\ldots, \bm{v}_{2,n_{2}},\ldots, \bm{v}_{d,n_{d}}$
+    are $n$ linearly independent vectors
+  \item Note that for each $i = 1, 2, \ldots, d$,
+    \begin{equation}\nonumber%\label{eq:}%
+      (\bm{A} - \lambda_{i}\bm{I})
+      \underbrace{
+      \begin{bmatrix}
+        \bm{v}_{i,1} & \bm{v}_{i,2} & \ldots & \bm{v}_{i,n_{i}}
+      \end{bmatrix}}_{=:\bm{V}_{i}\in \R^{n\times n_{i}}}
+      =
+      \begin{bmatrix}
+        \bm{0} & \bm{v}_{i,1} & \ldots & \bm{v}_{i,n_{i}-1}
+      \end{bmatrix},
+    \end{equation}
+    which implies
+    \begin{equation}
+      \bm{V}_{i} \bm{J}_{n_{i}}(\lambda_{i})
+      = \bm{V}_{i} \left(\lambda_{i}\bm{I}
+        +
+        \begin{bmatrix}
+          0 & 1 & 0 & \ldots & 0 \\
+          0 & 0 & 1 & \ldots & 0 \\
+          \vdots & \vdots & \ddots & \ddots & \vdots \\
+          0 & 0 & \ldots & 0 & 1 \\
+          0 & 0 & \ldots & 0 & 0 \\
+        \end{bmatrix}
+        \right)
+      = \lambda_{i}\bm{V}_{i} + 
+      \begin{bmatrix}
+        \bm{0} & \bm{v}_{i,1} & \ldots & \bm{v}_{i,n_{i}-1}
+      \end{bmatrix}
+      = \bm{A}\bm{V}_{i}
+    \nonumber%\label{eq:}%
+    \end{equation}
+  \item Hence, defining $\bm{V}:=[\bm{V}_{1}\, \bm{V}_{2} \, \ldots \, \bm{V}_{d}]$ gives 
+    \begin{equation}\nonumber
+      \bm{V}
+      \begin{bmatrix}
+        \bm{J}_{n_{1}}(\lambda_{1}) & 0 & \cdots & 0 \\
+        0 & \bm{J}_{n_{2}}(\lambda_{2}) & \cdots & 0 \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \cdots & \bm{J}_{n_{d}}(\lambda_{d}) \\
+      \end{bmatrix}
+      =
+        \big[
+        \underbrace{\bm{V}_{1}\bm{J}_{n_{1}}(\lambda_{1})}_{\bm{A}\bm{V}_{1}}
+        \,\,\,
+        \underbrace{\bm{V}_{2}\bm{J}_{n_{2}}(\lambda_{2})}_{\bm{A}\bm{V}_{2}}
+        \,\,\,
+        \ldots
+        \,\,\,
+        \underbrace{\bm{V}_{d}\bm{J}_{n_{d}}(\lambda_{d})}_{\bm{A}\bm{V}_{d}}
+        \big]
+        = \bm{A} \bm{V}
+    \end{equation}
+  \item Since $\bm{V}$ is nonsingular, we therefore obtain
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} = \bm{A}\bm{V}\bm{V}^{-1} = \bm{V}\bm{J}\bm{V}^{-1}
+    \end{equation}
+  \end{itemize}
+
+\end{itemize}
+
+\section{Examples}
+
+\subsection{2$\times$2 matrix}
+
+\begin{itemize}
+
+\item \textbf{Example~2}
+  \begin{itemize}
+  \item Consider a square matrix
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} :=
+      \begin{bmatrix}
+        5 & 4 \\
+        -1 & 1 \\
+      \end{bmatrix}
+    \end{equation}
+  \item We know that
+    \begin{itemize}
+    \item the characteristic polynomial of $\bm{A}$ is
+      \begin{equation}\nonumber%\label{eq:}%
+        \phi_{\bm{A}}(t) =
+        \begin{vmatrix}
+          5 - t & 4 \\
+          -1 & 1 - t \\
+        \end{vmatrix}
+        = (3-t)^{2}
+      \end{equation}
+    \item $\bm{A}$ only has one eigenvalue $\lambda_{1}:=3$
+      with $\bm{v}_{1,1}:=(2, -1)^{\top}$ being an associated eigenvector
+    \item $\bm{A}$ is not diagonalizable (no other linearly independent eigenvector)
+    \end{itemize}
+  \item But the Jordan decomposition theorem shows that
+    $\bm{A}$ is ``semi-diagonalizable''
+    in the sense that 
+    there exists a non-zero vector $\bm{v}_{1,2}\in \R^{2}$ such that
+    $\bm{v}_{1,1}, \bm{v}_{1,2}$ are linearly independent and
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} =
+      \begin{bmatrix}
+        \bm{v}_{1,1} & \bm{v}_{1,2}
+      \end{bmatrix}
+      \underbrace{
+      \begin{bmatrix}
+        \lambda_{1} & 1 \\
+        0 & \lambda_{1} \\
+      \end{bmatrix}}_{\bm{J}}
+      \begin{bmatrix}
+        \bm{v}_{1,1} & \bm{v}_{1,2}
+      \end{bmatrix}^{-1},
+    \end{equation}
+    where $\bm{J}$ is the Jordan normal form of $\bm{A}$
+  \item Procedure to find such $\bm{v}_{1,2}$
+    \begin{enumerate}
+    \item The discussion above indicates that
+      $\bm{v}_{1,2}$ is a generalized eigenvector of rank $2$ associated with $\lambda_{1}$, satisfying
+      \begin{equation}\nonumber%\label{eq:}%
+        (\bm{A} - \lambda_{1}\bm{I})\bm{v}_{1,2} = \bm{v}_{1,1}
+      \end{equation}
+    \item Hence, we solve the following system of equations for $\bm{v}$:
+      \begin{equation}\nonumber%\label{eq:}%
+        (\bm{A} - \lambda_{1}\bm{I})\bm{v} = \bm{v}_{1,1}
+        \implies
+        \bm{v} = \ldots
+      \end{equation}
+    \item For the current example,
+      \begin{equation}\nonumber%\label{eq:}%
+        \begin{bmatrix}
+          5 - 3 & 4 \\
+          -1 & 1 - 3 \\
+        \end{bmatrix}
+        \begin{bmatrix}
+          v_{1} \\
+          v_{2} \\
+        \end{bmatrix}
+        = 
+        \begin{bmatrix}
+          2 \\
+          -1 \\
+        \end{bmatrix}
+        \iff
+        \begin{matrix*}[l]
+          v_{1} + 2v_{2} = 1  \\
+        \end{matrix*}
+        \iff
+        \begin{bmatrix}
+          v_{1} \\
+          v_{2} \\
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+          1 \\
+          0 \\
+        \end{bmatrix}
+        +
+        \alpha
+        \begin{bmatrix}
+          -2 \\
+          1 \\
+        \end{bmatrix}
+        \quad \forall \alpha\in \R
+      \end{equation}
+    \item So we choose the following $\bm{v}_{1,2}$ as a generalized eigenvector associated with $\lambda_{1}$:
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{v}_{1,2} := 
+        \begin{bmatrix}
+          1 \\
+          0 \\
+        \end{bmatrix}
+      \end{equation}
+    \end{enumerate}
+  \item Defining
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{V} :=
+      \begin{bmatrix}
+        \bm{v}_{1,1} & \bm{v}_{1,2}
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        2 & 1 \\
+        -1 & 0
+      \end{bmatrix}
+      \implies
+      \bm{V}^{-1}
+      = 
+      \begin{bmatrix}
+        0 & -1 \\
+        1 & 2
+      \end{bmatrix},
+    \end{equation}
+    one can verify that
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{V}\bm{J}\bm{V}^{-1}
+      =
+      \begin{bmatrix}
+        2 & 1 \\
+        -1 & 0
+      \end{bmatrix}
+      \begin{bmatrix}
+        3 & 1 \\
+        0 & 3
+      \end{bmatrix}
+      \begin{bmatrix}
+        0 & -1 \\
+        -1 & 2
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        5 & 4 \\
+        -1 & 1
+      \end{bmatrix}
+      = \bm{A}
+    \end{equation}
+
+  \end{itemize}
+
+\clearpage
+\item \textbf{Example~3}
+  \begin{itemize}
+  \item Consider a square matrix
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} :=
+      \begin{bmatrix}
+        4 & 1 \\
+        -1 & 2 \\
+      \end{bmatrix}
+    \end{equation}
+  \item The characteristic polynomial is
+    \begin{equation}\nonumber%\label{eq:}%
+      \phi_{\bm{A}}(t) = 
+      \begin{vmatrix}
+        4 -t & 1 \\
+        -1 & 2-t \\
+      \end{vmatrix}
+      = (4-t)(2-t) + 1
+      = (3-t)^{2},
+    \end{equation}
+    which means $\bm{A}$ has only one eigenvalue $\lambda_{1}:=3$
+  \item Solving $(\bm{A}-\lambda_{1}\bm{I})\bm{v}=\bm{0}$ for $\bm{v}$ yields
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        4 - 3 & 1 \\
+        - 1 & 2 - 3 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+      \end{bmatrix}
+      = 
+      \begin{bmatrix}
+        0 \\
+        0 \\
+      \end{bmatrix}
+      \iff
+      \begin{matrix*}[l]
+        v_{1} = -v_{2} \\
+      \end{matrix*}
+      \iff
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+      \end{bmatrix}
+      =
+      \alpha
+      \begin{bmatrix}
+        1 \\
+        -1 \\
+      \end{bmatrix}
+      \quad \forall \alpha
+    \end{equation}
+    so we choose the following $\bm{v}_{1,1}$ as an eigenvector associated with $\lambda_{1}$:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{v}_{1,1} :=
+      \begin{bmatrix}
+        1 \\
+        -1 \\
+      \end{bmatrix}
+    \end{equation}
+  \item Since there is no other linearly independent eigenvector,
+    we seek to find a rank-$2$ generalized eigenvector $\bm{v}_{1,2}$ associated with $\lambda_{1}$
+    such that
+    \begin{equation}\nonumber%\label{eq:}%
+      (\bm{A}-\lambda_{1}\bm{I})\bm{v}_{1,2}=\bm{v}_{1,1},
+    \end{equation}
+    which, once we found such $\bm{v}_{1,2}$, would imply
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A}\bm{v}_{1,1} = \lambda_{1}\bm{v}_{1,1}
+      =
+      \begin{bmatrix}
+        \bm{v}_{1,1} & \bm{v}_{1,2}
+      \end{bmatrix}
+      \begin{bmatrix}
+        \lambda_{1}\\
+        0 \\
+      \end{bmatrix}
+      \quad\text{and}\quad
+      \bm{A}\bm{v}_{1,2} = \bm{v}_{1,1} + \lambda_{1}\bm{v}_{1,2}
+      =
+      \begin{bmatrix}
+        \bm{v}_{1,1} & \bm{v}_{1,2}
+      \end{bmatrix}
+      \begin{bmatrix}
+        1 \\
+        \lambda_{1}
+      \end{bmatrix}
+    \end{equation}
+    and thus
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A}
+      \begin{bmatrix}
+        \bm{v}_{1,1} & \bm{v}_{1,2}
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        \bm{v}_{1,1} & \bm{v}_{1,2}
+      \end{bmatrix}
+      \begin{bmatrix}
+        \lambda_{1} & 1 \\
+        0 & \lambda_{1}
+      \end{bmatrix}
+      \implies
+      \bm{A}
+      =
+      \begin{bmatrix}
+        \bm{v}_{1,1} & \bm{v}_{1,2}
+      \end{bmatrix}
+      \begin{bmatrix}
+        \lambda_{1} & 1 \\
+        0 & \lambda_{1}
+      \end{bmatrix}
+      \begin{bmatrix}
+        \bm{v}_{1,1} & \bm{v}_{1,2}
+      \end{bmatrix}^{-1}
+    \end{equation}
+    
+  \item Solving $(\bm{A}-\lambda_{1}\bm{I})\bm{v}=\bm{v}_{1,1}$ for $\bm{v}$ yields
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        4 - 3 & 1 \\
+        - 1 & 2 - 3 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+      \end{bmatrix}
+      = 
+      \begin{bmatrix}
+        1 \\
+        -1 \\
+      \end{bmatrix}
+      \iff
+      \begin{matrix*}[l]
+        v_{1} = 1 -v_{2} \\
+      \end{matrix*}
+      \iff
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        1 \\
+        0 \\
+      \end{bmatrix}
+      +
+      \alpha
+      \begin{bmatrix}
+        1 \\
+        -1 \\
+      \end{bmatrix}
+      \quad \forall \alpha
+    \end{equation}
+    so we choose the following $\bm{v}_{1,2}$ as a generalized eigenvector associated with $\lambda_{1}$:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{v}_{1,2} :=
+      \begin{bmatrix}
+        1 \\
+        0 \\
+      \end{bmatrix}
+    \end{equation}
+  \item Defining
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{V} :=
+      \begin{bmatrix}
+        \bm{v}_{1,1} & \bm{v}_{1,2}
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        1 & 1 \\
+        -1 & 0
+      \end{bmatrix}
+      \implies
+      \bm{V}^{-1}
+      = 
+      \begin{bmatrix}
+        0 & -1 \\
+        1 & 1
+      \end{bmatrix},
+    \end{equation}
+    one can verify that
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{V}\bm{J}\bm{V}^{-1}
+      =
+      \begin{bmatrix}
+        1 & 1 \\
+        -1 & 0
+      \end{bmatrix}
+      \underbrace{
+      \begin{bmatrix}
+        3 & 1 \\
+        0 & 3
+      \end{bmatrix}}_{=\bm{J}}
+      \begin{bmatrix}
+        0 & -1 \\
+        1 & 1
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        4 & 1 \\
+        -1 & 2
+      \end{bmatrix}
+      = \bm{A}
+    \end{equation}
+    
+  \end{itemize}
+
+\end{itemize}
+
+\subsection{3$\times$3 matrix}
+
+\begin{itemize}
+
+\item \textbf{Example~4}
+  \begin{itemize}
+  \item Consider a square matrix
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} :=
+      \begin{bmatrix}
+        1 & 3 & 0 \\
+        0 & 1 & 0 \\
+        2 & 1 & 5 \\
+      \end{bmatrix}
+    \end{equation}
+  \item We know that
+    \begin{itemize}
+    \item $\phi_{\bm{A}}(t) = -(t-1)^{2}(t-5)$ so eigenvalues are $\lambda_{1}:=1$ (twice) and $\lambda_{2}:=5$
+    \item Only one linearly independent eigenvector associated with $\lambda_{1}$, such as $\bm{v}_{1,1}:=(2, 0, -1)^{\top}$
+    \item Only one linearly independent eigenvector associated with $\lambda_{2}$, such as $\bm{v}_{2,1}:=(0, 0, 1)^{\top}$
+    \item $\bm{A}$ is not diagonalizable
+    \end{itemize}
+  \item We need another generalized eigenvector which, together with $\bm{v}_{1,1}$ and $\bm{v}_{2,1}$,
+    gives us 3 linearly independent vectors in total
+  \item Since $\lambda_{1}$ has the algebraic multiplicity of $2$,
+    it must have two generalized eigenvectors
+    \begin{enumerate}
+    \item Use $\bm{v}_{1,1}$ as the first generalized eigenvector (of rank $1$)
+    \item Find the second generalized eigenvector, $\bm{v}_{1,2}$, such that
+      \begin{equation}\nonumber%\label{eq:}%
+        (\bm{A}-\lambda_{1}\bm{I})\bm{v}_{1,2} = \bm{v}_{1,1},
+      \end{equation}
+      so that $\bm{A}$ would be decomposed as
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{A} =
+        \begin{bmatrix}
+          \bm{v}_{1,1} & \bm{v}_{1,2} & \bm{v}_{2,1}
+        \end{bmatrix}
+        \begin{bmatrix}
+          \lambda_{1} & 1 & 0 \\
+          0 & \lambda_{1} & 0 \\
+          0 & 0 & \lambda_{2} \\
+        \end{bmatrix}
+        \begin{bmatrix}
+          \bm{v}_{1,1} & \bm{v}_{1,2} & \bm{v}_{2,1}
+        \end{bmatrix}^{-1}
+      \end{equation}
+    \end{enumerate}
+  \item Solving $(\bm{A}-\lambda_{1}\bm{I})\bm{v} = \bm{v}_{1,1}$ for $\bm{v}$ yields
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        1-1 & 3 & 0 \\
+        0 & 1-1 & 0 \\
+        2 & 1 & 5-1 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        2 \\
+        0 \\
+        -1 \\
+      \end{bmatrix}
+      \iff
+      \begin{matrix*}[l]
+        v_{2} = \frac{2}{3}  \\
+        v_{1} + 2v_{3} = - \frac{5}{6} \\
+      \end{matrix*}
+      \iff
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        - \frac{5}{6} \\
+        \frac{2}{3} \\
+        0 \\
+      \end{bmatrix}
+      +
+      \alpha
+      \begin{bmatrix}
+        -2 \\
+        0 \\
+        1 \\
+      \end{bmatrix}
+      \quad \forall \alpha
+    \end{equation}
+  \item So we choose the following $\bm{v}_{1,2}$ as a generalized eigenvector of rank $2$ associated with $\lambda_{1}$:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{v}_{1,2} := 
+      \begin{bmatrix}
+        -\frac{5}{6} \\
+        \frac{2}{3} \\
+        0 \\
+      \end{bmatrix}
+    \end{equation}
+
+  \item Defining
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{V} :=
+      \begin{bmatrix}
+        \bm{v}_{1,1} & \bm{v}_{1,2} & \bm{v}_{2,1}
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        2 & - 5/6 & 0 \\
+        0 & 2/3 & 0 \\
+        -1 & 0 & 1 \\
+      \end{bmatrix}
+      \implies
+      \bm{V}^{-1}
+      = 
+      \begin{bmatrix}
+        1/2 & 5/8 & 0 \\
+        0 & 3/2 & 0 \\
+        1/2 & 5/8 & 1 \\
+      \end{bmatrix},
+    \end{equation}
+    one can verify that
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{V}\bm{J}\bm{V}^{-1}
+      =
+      \begin{bmatrix}
+        2 & - 5/6 & 0 \\
+        0 & 2/3 & 0 \\
+        -1 & 0 & 1 \\
+      \end{bmatrix}
+      \underbrace{
+      \begin{bmatrix}
+        1 & 1 & 0 \\
+        0 & 1 & 0 \\
+        0 & 0 & 5 \\
+      \end{bmatrix}}_{=\bm{J}}
+      \begin{bmatrix}
+        1/2 & 5/8 & 0 \\
+        0 & 3/2 & 0 \\
+        1/2 & 5/8 & 1 \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        1 & 3 & 0 \\
+        0 & 1 & 0 \\
+        2 & 1 & 5 \\
+      \end{bmatrix}
+      = \bm{A}
+    \end{equation}
+
+  \end{itemize}
+
+\item \textbf{Example~5}
+  \begin{itemize}
+  \item Consider a square matrix
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} :=
+      \begin{bmatrix}
+        2 & 1 & 1 \\
+        1 & 3 & 2 \\
+        0 & -1 & 1 \\
+      \end{bmatrix}
+    \end{equation}
+  \item The characteristic polynomial is
+    \begin{equation}\nonumber%\label{eq:}%
+      \phi_{\bm{A}}(t) = 
+      \begin{vmatrix}
+        2-t & 1 & 1 \\
+        1 & 3-t & 2 \\
+        0 & -1 & 1-t \\
+      \end{vmatrix}
+      = - (t-2)^{3}
+    \end{equation}
+    which means $\bm{A}$ has only one eigenvalue $\lambda_{1}:=2$ (three times)
+
+  \item Solving $(\bm{A}-\lambda_{1}\bm{I})\bm{v}=\bm{0}$ for $\bm{v}$ yields
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        2-2 & 1 & 1 \\
+        1 & 3-2 & 2 \\
+        0 & -1 & 1-2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      = 
+      \begin{bmatrix}
+        0 \\
+        0 \\
+        0 \\
+      \end{bmatrix}
+      \iff
+      \begin{matrix*}[l]
+        v_{1} = v_{2} \\
+        v_{3} = -v_{2} \\
+      \end{matrix*}
+      \iff
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      =
+      \alpha
+      \begin{bmatrix}
+        1 \\
+        1 \\
+        -1 \\
+      \end{bmatrix}
+      \quad \forall \alpha
+    \end{equation}
+    so we choose the following $\bm{v}_{1,1}$ as an eigenvector associated with $\lambda_{1}$:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{v}_{1,1} :=
+      \begin{bmatrix}
+        1 \\
+        1 \\
+        -1 \\
+      \end{bmatrix}
+    \end{equation}
+  \item No other linearly independent eigenvector, thus
+    we seek to find two more generalized eigenvectors $\bm{v}_{1,2}, \bm{v}_{1,3}$ associated with $\lambda_{1}$ so that
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        \bm{v}_{1,1} & \bm{v}_{1,2} & \bm{v}_{1,3}
+      \end{bmatrix}
+      \begin{bmatrix}
+        \lambda_{1} & 1 & 0 \\
+        0 & \lambda_{1} & 1 \\
+        0 & 0 & \lambda_{1} \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        \bm{v}_{1,1} & \bm{v}_{1,2} & \bm{v}_{1,3}
+      \end{bmatrix}^{-1}
+      = \bm{A}
+    \end{equation}
+    
+  \item Such generalized eigenvectors must satisfy
+    \begin{equation}\nonumber%\label{eq:}%
+      (\bm{A}-\lambda_{1}\bm{I})\bm{v}_{1,2} = \bm{v}_{1,1},
+      \quad\text{and}\quad
+      (\bm{A}-\lambda_{1}\bm{I})\bm{v}_{1,3} = \bm{v}_{1,2}
+    \end{equation}
+
+  \item First, solving $(\bm{A}-\lambda_{1}\bm{I})\bm{v} = \bm{v}_{1,1}$ for $\bm{v}$ yields
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        2-2 & 1 & 1 \\
+        1 & 3-2 & 2 \\
+        0 & -1 & 1-2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      = 
+      \begin{bmatrix}
+        1 \\
+        1 \\
+        -1 \\
+      \end{bmatrix}
+      \iff
+      \begin{matrix*}[l]
+        v_{2} + v_{3} = 1 \\
+        v_{1} + v_{3} = 0 \\
+      \end{matrix*}
+      \iff
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        0 \\
+        1 \\
+        0 \\
+      \end{bmatrix}
+      +
+      \alpha
+      \begin{bmatrix}
+        -1 \\
+        -1 \\
+        1 \\
+      \end{bmatrix}
+      \quad \forall \alpha
+    \end{equation}
+    so we choose the following $\bm{v}_{1,2}$ as another generalized eigenvector associated with $\lambda_{1}$:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{v}_{1,2} :=
+      \begin{bmatrix}
+        0 \\
+        1 \\
+        0 \\
+      \end{bmatrix}
+    \end{equation}
+
+  \item Given this $\bm{v}_{1,2}$, we solve $(\bm{A}-\lambda_{1}\bm{I})\bm{v} = \bm{v}_{1,2}$ for $\bm{v}$ to obtain
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        2-2 & 1 & 1 \\
+        1 & 3-2 & 2 \\
+        0 & -1 & 1-2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      = 
+      \begin{bmatrix}
+        0 \\
+        1 \\
+        0 \\
+      \end{bmatrix}
+      \iff
+      \begin{matrix*}[l]
+        v_{2} + v_{3} = 0 \\
+        v_{1} + v_{3} = 1 \\
+      \end{matrix*}
+      \iff
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        1 \\
+        0 \\
+        0 \\
+      \end{bmatrix}
+      +
+      \alpha
+      \begin{bmatrix}
+        -1 \\
+        -1 \\
+        1 \\
+      \end{bmatrix}
+      \quad \forall \alpha
+    \end{equation}
+    so we choose the following $\bm{v}_{1,3}$ as yet another generalized eigenvector associated with $\lambda_{1}$:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{v}_{1,3} :=
+      \begin{bmatrix}
+        1 \\
+        0 \\
+        0 \\
+      \end{bmatrix}
+    \end{equation}
+    
+  \item Defining
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{V} :=
+      \begin{bmatrix}
+        \bm{v}_{1,1} & \bm{v}_{1,2} & \bm{v}_{1,3}
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        1 & 0 & 1 \\
+        1 & 1 & 0 \\
+        -1 & 0 & 0 \\
+      \end{bmatrix}
+      \implies
+      \bm{V}^{-1}
+      = 
+      \begin{bmatrix}
+        0 & 0 & -1 \\
+        0 & 1 & 1 \\
+        1 & 0 & 1 \\
+      \end{bmatrix},
+    \end{equation}
+    one can verify that
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{V}\bm{J}\bm{V}^{-1}
+      =
+      \begin{bmatrix}
+        1 & 0 & 1 \\
+        1 & 1 & 0 \\
+        -1 & 0 & 0 \\
+      \end{bmatrix}
+      \underbrace{
+      \begin{bmatrix}
+        2 & 1 & 0 \\
+        0 & 2 & 1 \\
+        0 & 0 & 2 \\
+      \end{bmatrix}}_{=\bm{J}}
+      \begin{bmatrix}
+        0 & 0 & -1 \\
+        0 & 1 & 1 \\
+        1 & 0 & 1 \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        2 & 1 & 1 \\
+        1 & 3 & 2 \\
+        0 & -1 & 1 \\
+      \end{bmatrix}
+      = \bm{A}
+    \end{equation}
+
+  \end{itemize}
+
+\item \textbf{Example~1}
+
+  \begin{itemize}
+  \item Let us revisit Example~1 and consider a square matrix
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} :=
+      \begin{bmatrix}
+        3 & -1 & 1 \\
+        2 & 0 & 2 \\
+        1 & -1 & 3 \\
+      \end{bmatrix},
+    \end{equation}
+    for which we already know that
+    $\lambda:=1$ is the unique eigenvalue
+  \item Solving $(\bm{A}-\lambda \bm{I})\bm{v} = \bm{0}$ for $\bm{v}$ yields
+    \begin{equation}\nonumber%\label{eq:}%
+      (\bm{A}-\lambda \bm{I})\bm{v} = \bm{0}
+      \iff
+      \begin{bmatrix}
+        3-2 & -1 & 1 \\
+        2 & 0-2 & 2 \\
+        1 & -1 & 3-2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        0 \\
+        0 \\
+        0 \\
+      \end{bmatrix}
+      \iff
+      v_{2} = v_{1} + v_{3},
+    \end{equation}
+    implying that any non-zero vector of the form
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{v}
+      =
+      \begin{bmatrix}
+        \alpha \\ \alpha + \beta \\ \beta
+      \end{bmatrix}
+      =
+      \alpha
+      \begin{bmatrix}
+        1 \\ 1 \\ 0
+      \end{bmatrix}
+      +
+      \beta
+      \begin{bmatrix}
+        0 \\ 1 \\ 1
+      \end{bmatrix}
+      \quad \forall \alpha, \beta 
+    \end{equation}
+    is an eigenvector associated with $\lambda$
+  \item Observe that
+    \begin{itemize}
+    \item one can choose two linearly independent eigenvectors associated with $\lambda$, such as
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{v}\big|_{(\alpha,\beta)=(1,0)}
+        =
+        \begin{bmatrix}
+          1 \\ 1 \\ 0
+        \end{bmatrix}
+        \quad\text{and}\quad
+        \bm{v}\big|_{(\alpha,\beta)=(0,1)}
+        =
+        \begin{bmatrix}
+          0 \\ 1 \\ 1
+        \end{bmatrix}
+      \end{equation}
+    \item there are many other ways of choosing two linearly independent eigenvectors, like
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{v}\big|_{(\alpha,\beta)=(1,1)}
+        =
+        \begin{bmatrix}
+          1 \\ 2 \\ 1
+        \end{bmatrix}
+        \quad\text{and}\quad
+        \bm{v}\big|_{(\alpha,\beta)=(1,-1)}
+        =
+        \begin{bmatrix}
+          1 \\ 0 \\ -1
+        \end{bmatrix}
+      \end{equation}
+    \end{itemize}
+  \item When the eigenspace has multiple degrees of freedom (here we have two free parameters, $\alpha$ and $\beta$),
+    you need to carefully choose eigenvectors; otherwise you would not be able to find generalized eigenvectors of higher ranks
+    \begin{itemize}
+    \item To demonstrate the point, let us say we choose
+      \begin{equation}\label{eq:eigenvector_fail}%
+        \bm{v}_{1,1}
+        =
+        \begin{bmatrix}
+          1 \\ 1 \\ 0
+        \end{bmatrix}
+        \quad\text{and}\quad
+        \bm{v}_{2,1}
+        =
+        \begin{bmatrix}
+          0 \\ 1 \\ 1
+        \end{bmatrix}
+      \end{equation}
+      as two linearly independent eigenvectors associated with $\lambda=2$
+    \item Then, there does not exist $\bm{v}_{1,2}$ such that $(\bm{A}-\lambda \bm{I})\bm{v}_{1,2}=\bm{v}_{1,1}$ because
+      \begin{equation}\nonumber%\label{eq:}%
+        (\bm{A}-\lambda \bm{I})\bm{v} = \bm{v}_{1,1}
+        \iff
+      \begin{bmatrix}
+        1 & -1 & 1 \\
+        2 & -2 & 2 \\
+        1 & -1 & 1 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        1 \\
+        1 \\
+        0 \\
+      \end{bmatrix}
+      \iff
+      \begin{matrix*}[l]
+      v_{1} - v_{2} + v_{3} = 1 \\
+      v_{1} - v_{2} + v_{3} = 1/2 \\
+      v_{1} - v_{2} + v_{3} = 0 \\
+      \end{matrix*}
+      \end{equation}
+
+    \item There is no $\bm{v}_{2,2}$ to satisfy $(\bm{A}-\lambda \bm{I})\bm{v}_{2,2}=\bm{v}_{2,1}$, either, because
+      \begin{equation}\nonumber%\label{eq:}%
+        (\bm{A}-\lambda \bm{I})\bm{v} = \bm{v}_{2,1}
+        \iff
+      \begin{bmatrix}
+        1 & -1 & 1 \\
+        2 & -2 & 2 \\
+        1 & -1 & 1 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+        v_{3} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        0 \\
+        1 \\
+        1 \\
+      \end{bmatrix}
+      \iff
+      \begin{matrix*}[l]
+      v_{1} - v_{2} + v_{3} = 0 \\
+      v_{1} - v_{2} + v_{3} = 1/2 \\
+      v_{1} - v_{2} + v_{3} = 1 \\
+      \end{matrix*}
+      \end{equation}
+
+    \item Hence, if we use \eqref{eq:eigenvector_fail} as eigenvectors,
+      we cannot find a generalized eigenvector that allows us to complete the Jordan decomposition
+    \end{itemize}
+
+  \item Here is a procedure you can use when the eigenspace of an eigenvalue $\lambda$ has multiple degrees of freedom:
+    \begin{enumerate}
+    \item First, find a generalized eigenvector of highest rank (rank~$2$, in this example) associated with $\lambda$,
+      namely, find $\bm{v}_{1,2}$ such that
+      \begin{equation}\label{eq:cond1}%
+        (\bm{A}-\lambda \bm{I})^{2}\bm{v}_{1,2} = \bm{0}
+        \quad\text{and}\quad
+        (\bm{A}-\lambda \bm{I})\bm{v}_{1,2} \neq \bm{0}
+      \end{equation}
+    \item Then find a generalized eigenvector of lower rank (rank~$1$, in this example)
+      by defining $\bm{v}_{1,1}$ as
+      \begin{equation}\label{eq:cond2}%
+        \bm{v}_{1,1} := (\bm{A}-\lambda \bm{I})\bm{v}_{1,2},
+      \end{equation}
+      which is, by construction, an eigenvector associated with $\lambda$
+    \item Finally, find another eigenvector $\bm{v}_{2,1}$ that is linearly independent of $\bm{v}_{1,1}$
+    \end{enumerate}
+
+  \item Note that in this procedure, we find (generalized) eivenvectors in the reverse order
+    \begin{itemize}
+    \item previously, we first find an eigenvector $\bm{v}_{i,1}$ and then compute a generalized eigenvector $\bm{v}_{i,2}$
+      by solving $(\bm{A}-\lambda \bm{I})\bm{v}_{i,2} = \bm{v}_{i,1}$ for $\bm{v}_{i,2}$
+    \item here, we first find a generalized eigenvector $\bm{v}_{i,2}$ and then compute an eigenvector $\bm{v}_{i,1}$
+      by solving $(\bm{A}-\lambda \bm{I})\bm{v}_{i,2} = \bm{v}_{i,1}$ for $\bm{v}_{i,1}$
+    \end{itemize}
+
+  \item For Example~1,
+    first find $\bm{v}_{1,2}$ that satisfies \eqref{eq:cond1}:
+    \begin{itemize}
+    \item we have
+      \begin{equation}\nonumber%\label{eq:}%
+        (\bm{A}-\lambda \bm{I})^{2} =
+        \begin{bmatrix}
+          3-2 & -1 & 1 \\
+          2 & 0-2 & 2 \\
+          1 & -1 & 3-2 \\
+        \end{bmatrix}^{2}
+        =
+        \begin{bmatrix}
+          0 & 0 & 0 \\
+          0 & 0 & 0 \\
+          0 & 0 & 0 \\
+        \end{bmatrix},
+      \end{equation}
+      meaning that
+      $(\bm{A}-\lambda \bm{I})^{2}\bm{v}=\bm{0}$ for any vector $\bm{v}$
+    \item thus, $\bm{v}$ is a generalized eigenvector of rank 2 if and only if
+      it is not an eigenvector itself, i.e.,
+      \begin{equation}\nonumber%\label{eq:}%
+        (\bm{A}-\lambda \bm{I})\bm{v}\neq \bm{0}
+        \iff
+        v_{1} - v_{2} + v_{3} \neq 0
+      \end{equation}
+    \item for example, we can choose the following
+      \begin{equation}\nonumber%\label{eq:}%
+        \bm{v}_{1,2} :=
+        \begin{bmatrix}
+          1 \\ 0 \\ 0
+        \end{bmatrix}
+      \end{equation}
+    \end{itemize}
+  \item Based on this $\bm{v}_{1,2}$, we choose an eigenvector by \eqref{eq:cond2}:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{v}_{1,1}
+      := (\bm{A}-\lambda\bm{I})\bm{v}_{1,2}
+      = 
+        \begin{bmatrix}
+          3-2 & -1 & 1 \\
+          2 & 0-2 & 2 \\
+          1 & -1 & 3-2 \\
+        \end{bmatrix}
+        \begin{bmatrix}
+          1 \\ 0 \\ 0
+        \end{bmatrix}
+        =
+        \begin{bmatrix}
+          1 \\ 2 \\ 1
+        \end{bmatrix}
+      \end{equation}
+    \item Finally, choose another eigenvector $\bm{v}_{2,1}$
+      that is linearly independent of $\bm{v}_{1,1}$
+      \begin{itemize}
+      \item recall that the eigenvector associated with $\lambda=2$ must be of the form
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{v}
+      =
+      \begin{bmatrix}
+        \alpha \\ \alpha + \beta \\ \beta
+      \end{bmatrix}
+      =
+      \alpha
+      \begin{bmatrix}
+        1 \\ 1 \\ 0
+      \end{bmatrix}
+      +
+      \beta
+      \begin{bmatrix}
+        0 \\ 1 \\ 1
+      \end{bmatrix}
+      \quad \forall \alpha, \beta 
+    \end{equation}
+  \item $\bm{v}_{1,1}$ above is the one where $(\alpha,\beta)=(1,1)$
+  \item any $(\alpha,\beta)$ with $\alpha \neq \beta$ would give us an eigenvector that is linearly independent of $\bm{v}_{1,1}$
+  \item for example, setting $(\alpha,\beta) =(1, 0)$ yields
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{v}_{2,1} : =
+      \begin{bmatrix}
+        1 \\
+        1 \\
+        0 \\
+      \end{bmatrix}
+    \end{equation}
+  \end{itemize}
+    
+\item Then $\bm{A}$ should be decomposed as:
+  \begin{equation}\nonumber%\label{eq:}%
+    \bm{A}
+    =
+      \begin{bmatrix}
+        \bm{v}_{1,1} & \bm{v}_{1,2} & \bm{v}_{2,1}
+      \end{bmatrix}
+      \underbrace{
+      \begin{bmatrix}
+        \lambda_{1} & 1 & 0 \\
+        0 & \lambda_{1} & 0 \\
+        0 & 0 & \lambda_{2} \\
+      \end{bmatrix}}_{=:\bm{J}}
+      \begin{bmatrix}
+        \bm{v}_{1,1} & \bm{v}_{1,2} & \bm{v}_{2,1}
+      \end{bmatrix}^{-1}
+    \end{equation}
+    where $\lambda_{1}=\lambda_{2}=\lambda = 2$
+
+  \item In fact, 
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{V} :=
+      \begin{bmatrix}
+        \bm{v}_{1,1} & \bm{v}_{1,2} & \bm{v}_{2,1}
+      \end{bmatrix}
+      = 
+      \begin{bmatrix}
+        1 & 1 & 1 \\
+        2 & 0 & 1 \\
+        1 & 0 & 0 \\
+      \end{bmatrix}
+      \implies
+      \bm{V}^{-1}
+      = 
+      \begin{bmatrix}
+        0 & 0 & 1 \\
+        1 & -1 & 1 \\
+        0 & 1 & -2 \\
+      \end{bmatrix}
+    \end{equation}
+    and
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{V}\bm{J}\bm{V}^{-1}
+      = 
+      \begin{bmatrix}
+        1 & 1 & 1 \\
+        2 & 0 & 1 \\
+        1 & 0 & 0 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        2 & 1 & 0 \\
+        0 & 2 & 0 \\
+        0 & 0 & 2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        0 & 0 & 1 \\
+        1 & -1 & 1 \\
+        0 & 1 & -2 \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        3 & -1 & 1 \\
+        2 & 0 & 2 \\
+        1 & -1 & 3 \\
+      \end{bmatrix}
+      = \bm{A}
+    \end{equation}
+
+  \end{itemize}
+
+\end{itemize}
+
+\end{document}

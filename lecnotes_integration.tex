@@ -1,0 +1,909 @@
+\documentclass[12pt,a4paper]{article} 
+\input{preambles/preamble_lecnotes.tex} 
+
+\title{Integration and change of variables}
+\subtitle{Introduction to dynamical systems~\#9}
+\author{Hiroaki Sakamoto}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Integrals: recap}
+
+\subsection{Single dimensional case}
+
+\begin{itemize}
+
+\item \textbf{Integral over intervals}
+  \begin{itemize}
+  \item Consider a function $f:X \to \R$ defined over $X\subset \R$ 
+  \item For an interval $R:=[a, b]\subset X$ and $n\in \N$,
+    the number
+    \begin{equation}\nonumber%\label{eq:}%
+      \sum_{k=0}^{n-1}f(x_{k})(x_{k+1}-x_{k}),
+      \quad x_{k}:= a + \frac{k}{n}(b-a)
+    \end{equation}
+    is called a (left) Riemann sum
+  \item We define the integral of $f$ over $R$ as the limit of this number for $n\to \infty$
+    \begin{equation}\nonumber%\label{eq:q}%
+      \int_{R}f(x)dx := \lim_{n\to \infty}\sum_{k=0}^{n-1}f(x_{k})(x_{k+1}-x_{k})
+    \end{equation}
+  \item We also write this integral as $\int_{a}^{b}f(x)dx$
+  \end{itemize}
+
+\item \textbf{Examples}
+  \begin{itemize}
+  \item The integral of $f(x):=x$ over $R:=[0,x]$ is
+    \begin{equation}\nonumber
+      \int_{0}^{x}f(t)dt
+      =
+      \int_{0}^{x}tdt
+      =
+      \lim_{n\to\infty}\sum_{k=0}^{n-1}\left(k\frac{x}{n}\right)\frac{x}{n}
+      =
+      \lim_{n\to\infty}\frac{x^{2}}{n^{2}}\underbrace{\sum_{k=0}^{n-1}k}_{\frac{1}{2}n(n-1)}
+      =
+      \frac{1}{2}x^{2}
+    \end{equation}
+  \item The integral of $f(x) := x^{2}$ over $R:=[0,x]$ is
+    \begin{equation}\nonumber
+      \int_{0}^{x}f(t)dt
+      =
+      \int_{0}^{x}t^{2}dt
+      =
+      \lim_{n\to\infty}\sum_{k=0}^{n-1}\left(k\frac{x}{n}\right)^{2}\frac{x}{n}
+      =
+      \lim_{n\to\infty}\frac{x^{3}}{n^{3}}\hspace{-15pt}\underbrace{\sum_{k=0}^{n-1}k^{2}}_{\frac{1}{3}n(n-1)\left(n-\frac{1}{2}\right)}\hspace{-15pt}
+      =
+      \frac{1}{3}x^{3}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Antiderivatives}
+  \begin{itemize}
+  \item We say that a function $F:X\to \R$ is an \emph{antiderivative} or \emph{primitive function} of another function $f:X\to\R$
+    if $F'(x) = f(x)$ for all $x\in X$
+  \item If $F(x)$ is an antiderivative of $f(x)$,
+    then the integral of $f(x)$ over $R=[a,b]$ is
+    \begin{equation}\nonumber%\label{eq:}%
+      \int_{R}f(x)dx
+      = \lim_{n\to \infty}\sum_{k=0}^{n-1}\underbrace{f(x_{k})}_{F'(x_{k})}(x_{k+1}-x_{k})
+      = \lim_{n\to \infty}\sum_{k=0}^{n-1}(F(x_{k+1})-F(x_{k}))
+      = F(b)-F(a)
+    \end{equation}
+    
+  \end{itemize}
+
+\item \textbf{Example}
+  \begin{itemize}
+  \item Consider a function $f(x):=1/x$
+  \item Since $F(x):=\ln(x)$ is an antiderivative of $f(x)$,
+    the integral of $f(x)$ over $[1,x]$ is
+    \begin{equation}\nonumber%\label{eq:}%
+      \int_{1}^{x}\frac{1}{t}dt
+      = \ln(x) - \ln(1)
+      = \ln(x)
+    \end{equation}
+  \item In fact, this can be seen as a definition of $\ln(x)$ when read from right to left
+  \end{itemize}
+
+\item \textbf{Measure of sets}
+  \begin{itemize}
+  \item For any subset $D\subset \R$, we define
+    \begin{equation}\nonumber%\label{eq:}%
+      \mathds{1}_{D}(x) :=
+      \begin{cases}
+        1 & \text{if $x\in D$} \\
+        0 & \text{otherwise} \\
+      \end{cases}
+      \quad \forall x \in \R,
+    \end{equation}
+    which is called the \emph{indicator function} of $D$
+  \item Let $D\subset \R$ be an arbitrary set and $R=[a,b]\subset \R$ be an interval such that $D\subset R$
+  \item We define the (Lebesgue) measure of $D$ as
+    \begin{equation}\nonumber%\label{eq:}%
+      |D|:=\int_{R}\mathds{1}_{D}(x)dx
+      := \lim_{n\to\infty}\sum_{k=0}^{n-1}\mathds{1}_{D}(x_{k})(x_{k+1}-x_{k})
+    \end{equation}
+  \item The measure of an interval $R=[a,b]$ coincides with the length of the interval
+    \begin{equation}\nonumber%\label{eq:}%
+      |R|
+      = \lim_{n\to\infty}\sum_{k=0}^{n-1}\mathds{1}_{R}(x_{k})(x_{k+1}-x_{k})
+      = \lim_{n\to\infty}\sum_{k=0}^{n-1}(x_{k+1}-x_{k})
+      = b-a
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Integral over arbitrary sets}
+  \begin{itemize}
+  \item Consider a function $f:X \to \R$ defined over $X\subset \R$
+  \item For any subset $D\subset X$, 
+    we define the integral of $f$ over $D$ as
+    \begin{equation}\nonumber%\label{eq:q}%
+      \int_{D}f(x)dx := \int_{R}\mathds{1}_{D}(x)f(x)dx := \lim_{n\to \infty}\sum_{k=0}^{n-1}\mathds{1}_{D}(x_{k})f(x_{k})(x_{k+1}-x_{k}),
+    \end{equation}
+    where $R$ is an interval that contains $D$, provided that the limit exists
+  \item Note that $\mathds{1}_{D}(x)f(x)$ can be seen as a single function defined over $X$
+    \begin{equation}\nonumber%\label{eq:}%
+      \mathds{1}_{D}(x)f(x) =
+      \begin{cases}
+        f(x) & \text{if $x\in D$} \\
+        0 & \text{if $x\notin D$}
+      \end{cases}
+      \quad \forall x\in X
+     \end{equation}
+  \end{itemize}
+
+\end{itemize}
+
+\clearpage
+\subsection{Two dimensional case}
+
+\begin{itemize}
+
+\item \textbf{Integral over rectangles}
+  \begin{itemize}
+  \item Consider a function $f:X \to \R$ defined over $X\subset \R^{2}$
+  \item For a rectangle $R:=[a_{1}, b_{1}]\times [a_{2}, b_{2}]\subset X$ and $n_{1},n_{2}\in \N$,
+    the Riemann sum is
+    \begin{equation}\nonumber%\label{eq:}%
+      \sum_{k_{2}=0}^{n_{2}-1}\sum_{k_{1}=0}^{n_{1}-1}f(x_{1,k_{1}},x_{2,k_{2}})(x_{1,k_{1}+1}-x_{1,k_{1}})(x_{2,k_{2}+1}-x_{2,k_{2}}),
+      \quad x_{i,k_{i}}:= a_{i} + \frac{k_{i}}{n_{i}}(b_{i}-a_{i})
+    \end{equation}
+  \item We define the integral of $f$ over $R$ as
+    \begin{align}
+      \int_{R}f(\bm{x})d\bm{x}
+      & := \lim_{n_{2}\to \infty}\lim_{n_{1}\to \infty}\sum_{k_{2}=0}^{n_{2}-1}\sum_{k_{1}=0}^{n_{1}-1}f(x_{1,k_{1}},x_{2,k_{2}})(x_{1,k_{1}+1}-x_{1,k_{1}})(x_{2,k_{2}+1}-x_{2,k_{2}}) \nonumber \\
+      & = \lim_{n_{2}\to \infty}\sum_{k_{2}=0}^{n_{2}-1}\underbrace{\left(\lim_{n_{1}\to \infty}\sum_{k_{1}=0}^{n_{1}-1}f(x_{1,k_{1}},x_{2,k_{2}})(x_{1,k_{1}+1}-x_{1,k_{1}})\right)}_{\int_{a_{1}}^{b_{1}}f(x_{1},x_{2,k_{2}})dx_{1}}(x_{2,k_{2}+1}-x_{2,k_{2}}) \nonumber \\
+      & = \int_{a_{2}}^{b_{2}}\left(\int_{a_{1}}^{b_{1}}f(x_{1},x_{2})dx_{1}\right)dx_{2} \nonumber%\label{eq:}
+    \end{align}
+  \item We may write this integral more explicitly as
+    \begin{equation}\nonumber%\label{eq:}%
+      \iint_{R}f(x_{1},x_{2})dx_{1}dx_{2},
+      \quad\text{or}\quad
+      \int_{a_{2}}^{b_{2}}\int_{a_{1}}^{b_{1}}f(x_{1},x_{2})dx_{1}dx_{2}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Example}
+  \begin{itemize}
+  \item The integral of $f(x_{1},x_{2}):=x_{1}x_{2}$ over $R:=[0,x_{1}]\times [0, x_{2}]$ is
+    \begin{equation}\nonumber%\label{eq:}%
+      \int_{0}^{x_{2}}\int_{0}^{x_{1}}t_{1}t_{2}dt_{1}dt_{2}
+      = 
+      \int_{0}^{x_{2}}\left(\int_{0}^{x_{1}}t_{1}t_{2}dt_{1}\right)dt_{2}
+      = 
+      \int_{0}^{x_{2}}\left(\frac{1}{2}x_{1}^{2}t_{2}\right)dt_{2}
+      = 
+      \frac{1}{2}\frac{1}{2}x_{1}^{2}x_{2}^{2}
+      = 
+      \frac{1}{4}x_{1}^{2}x_{2}^{2}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Measure of sets}
+  \begin{itemize}
+  \item For any subset $D\subset \R^{2}$, we define
+    \begin{equation}\nonumber%\label{eq:}%
+      \mathds{1}_{D}(\bm{x}) :=
+      \begin{cases}
+        1 & \text{if $\bm{x}\in D$} \\
+        0 & \text{otherwise} \\
+      \end{cases}
+      \quad \forall \bm{x} \in \R^{2},
+    \end{equation}
+    which is called the \emph{indicator function} of $D$
+  \item Let $R=[a_{1},b_{2}]\times [a_{2},b_{2}]\subset \R^{2}$ be a rectangle that contains $D\subset R^{2}$
+  \item We define the (Lebesgue) measure of $D$ as
+    \begin{equation}\nonumber%\label{eq:}%
+      |D|:=\int_{R}\mathds{1}_{D}(\bm{x})d\bm{x} :=
+      \lim_{n_{2}\to\infty}\lim_{n_{1}\to\infty}
+      \sum_{k_{2}=0}^{n_{2}-1}\sum_{k_{1}=0}^{n_{1}-1}\mathds{1}_{D}(x_{1,k_{1}},x_{2,k_{2}})(x_{1,k_{1}+1}-x_{1,k_{1}})(x_{2,k_{2}+1}-x_{2,k_{2}})
+    \end{equation}
+    provided that the limit exists
+  \item The measure of a rectangle $R=[a_{1},b_{1}]\times[a_{2},b_{2}]$ coincides with the area of the rectangle
+    \begin{equation}\nonumber%\label{eq:}%
+      |R| =
+      \lim_{n_{2}\to\infty}\lim_{n_{1}\to\infty}
+      \sum_{k_{1}=0}^{n_{1}-1}(x_{1,k_{1}+1}-x_{1,k_{1}})\sum_{k_{2}=0}^{n_{2}-1}(x_{2,k_{2}+1}-x_{2,k_{2}})
+      = (b_{1}-a_{1})(b_{2}-a_{2})
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Integral over arbitrary sets}
+  \begin{itemize}
+  \item Consider a function $f:X \to \R$ defined over $X\subset \R^{2}$
+  \item For any subset $D\subset X$, 
+    we define the integral of $f$ over $D$ as
+    \begin{equation}\nonumber%\label{eq:q}%
+      \int_{D}f(\bm{x})d\bm{x} := \int_{R}\mathds{1}_{D}(\bm{x})f(\bm{x})d\bm{x}
+    \end{equation}
+    where $R$ is a rectangle that contains $D$, provided that the limit exists
+  \end{itemize}
+
+\end{itemize}
+
+\subsection{Higher dimensional case}
+
+\begin{itemize}
+
+\item \textbf{Integral over hyperrectangles}
+  \begin{itemize}
+  \item Consider a function $f:X \to \R$ defined over $X\subset \R^{m}$
+  \item For an $m$-dimensional hyperrectangle $R:=\prod_{i=1}^{m}[a_{i}, b_{i}]\subset X$ and $n_{1},n_{2},\ldots, n_{i}\in \N$,
+    the number
+    \begin{equation}\nonumber%\label{eq:}%
+      \sum_{k_{m}=0}^{n_{m}-1}\cdots\sum_{k_{1}=0}^{n_{1}-1}f(x_{1,k_{1}},\ldots, x_{m,k_{m}})\prod_{i=1}^{m}(x_{i,k_{i}+1}-x_{i,k_{i}}),
+      \quad x_{i,k_{i}}:= a_{i} + \frac{k_{i}}{n_{i}}(b_{i}-a_{i})
+    \end{equation}
+    is called a (left) Riemann sum
+  \item We define the integral of $f$ over $R$ as
+    \begin{equation}\nonumber%\label{eq:q}%
+      \int_{R}f(\bm{x})d\bm{x} := \lim_{n_{m}\to \infty}\cdots\lim_{n_{1}\to \infty}
+      \left(\sum_{k_{m}=0}^{n_{m}-1}\cdots\sum_{k_{1}=0}^{n_{1}-1}f(x_{1,k_{1}},\ldots, x_{m,k_{m}})\prod_{i=1}^{m}(x_{i,k_{i}+1}-x_{i,k_{i}})\right)
+    \end{equation}
+    provided that the limit exists
+  \item We may write this integral more explicitly as
+    \begin{equation}\nonumber%\label{eq:}%
+      \idotsint_{R}f(x_{1},\ldots, x_{m})dx_{1}\ldots dx_{m}
+      \quad\text{or}\quad
+      \int_{a_{m}}^{b_{m}}\cdots\int_{a_{1}}^{b_{2}}(x_{1},\ldots, x_{m})dx_{1}\ldots dx_{m}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Measure of sets}
+  \begin{itemize}
+  \item For any subset $D\subset \R^{m}$, we define
+    \begin{equation}\nonumber%\label{eq:}%
+      \mathds{1}_{D}(\bm{x}) :=
+      \begin{cases}
+        1 & \text{if $\bm{x}\in D$} \\
+        0 & \text{otherwise} \\
+      \end{cases}
+      \quad \forall \bm{x} \in \R^{m},
+    \end{equation}
+    which is called the \emph{indicator function} of $D$
+  \item Let $R=\prod_{i=1}^{m}[a_{i},b_{i}]\subset \R^{m}$ be a hyperrectangle that contains $D\subset R^{m}$
+  \item We define the (Lebesgue) measure of $D$ as
+    \begin{equation}\nonumber%\label{eq:}%
+      |D|:=\int_{R}\mathds{1}_{D}(\bm{x})d\bm{x}
+    \end{equation}
+    provided that the limit on the right-hand side exists
+  \item The measure of a hyperrectangle $R=\prod_{i=1}^{m}[a_{i},b_{i}]$ is
+    \begin{equation}\nonumber%\label{eq:}%
+      |R|
+      = (b_{1}-a_{1})(b_{2}-a_{2})\cdots(b_{m}-a_{m})
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Integral over arbitrary sets}
+  \begin{itemize}
+  \item Consider a function $f:X \to \R$ defined over $X\subset \R^{m}$
+  \item For any subset $D\subset X$, 
+    we define the integral of $f$ over $D$ as
+    \begin{equation}\nonumber%\label{eq:q}%
+      \int_{D}f(\bm{x})d\bm{x} := \int_{R}\mathds{1}_{D}(\bm{x})f(\bm{x})d\bm{x}
+    \end{equation}
+    where $R$ is a hyperrectangle that contains $D$, provided that the limit exists
+  \end{itemize}
+
+\end{itemize}
+
+\section{Change of variables}
+
+\subsection{Determinant revisited}
+
+\begin{itemize}
+
+\item \textbf{Determinant of orthogonal matrices}
+  \begin{itemize}
+  \item Let $\bm{a}_{1}, \bm{a}_{2},\ldots \bm{a}_{m} \in \R^{m}$ be $m$-dimensional orthogonal vectors,
+    i.e.,
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{a}_{i}^{\top}\bm{a}_{j} = 0 \quad \forall i\neq j
+    \end{equation}
+    and define $\bm{A}:= \begin{bmatrix} \bm{a}_{1} & \bm{a}_{2} & \cdots & \bm{a}_{m}\end{bmatrix}$
+  \item Then
+    \begin{equation}\nonumber%\label{eq:}%
+      \prod_{i=1}^{m}\|\bm{a}_{i}\| = \left|\det(\bm{A}) \right|
+    \end{equation}
+    because
+    \begin{equation}\nonumber%\label{eq:}%
+      (|\bm{A}|)^{2}
+      = 
+      |\bm{A}||\bm{A}|
+      =
+      |\bm{A}^{\top}||\bm{A}|
+      =
+      |\bm{A}^{\top}\bm{A}|
+      = \begin{vmatrix}
+          \bm{a}_{1}^{\top}\bm{a}_{1} & \bm{a}_{1}^{\top}\bm{a}_{2} & \cdots & \bm{a}_{1}^{\top}\bm{a}_{m} \\
+          \bm{a}_{2}^{\top}\bm{a}_{1} & \bm{a}_{2}^{\top}\bm{a}_{2} & \cdots & \bm{a}_{2}^{\top}\bm{a}_{m} \\
+          \vdots & \vdots & \ddots & \vdots \\
+          \bm{a}_{m}^{\top}\bm{a}_{1} & \bm{a}_{m}^{\top}\bm{a}_{2} & \cdots & \bm{a}_{m}^{\top}\bm{a}_{m} \\
+      \end{vmatrix}
+      = \prod_{i=1}^{n}\|\bm{a}_{i}\|^{2}
+      = \left(\prod_{i=1}^{n}\|\bm{a}_{i}\|\right)^{2}
+    \end{equation}
+  \item In other words,
+    if $\bm{a}_{1},\ldots,\bm{a}_{m}$ are orthogonal,
+    \begin{equation}\nonumber%\label{eq:}%
+      \text{measure of $m$-dimensional hyperrectangle made by $\bm{a}_{1},\ldots,\bm{a}_{m}$}
+      = \text{absolute value of $\det(\bm{A})$}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Skew translation and determinant}
+  \begin{itemize}
+  \item Let $\bm{a}_{1}, \bm{a}_{2},\ldots \bm{a}_{m} \in \R^{m}$ be orthogonal vectors
+  \item Now take the $j$-th column vector $\bm{a}_{j}$ and add $c_{j}\bm{a}_{j}$ with $c_{j}\neq 0$ to the $i$-th column to create another matrix
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A}' := 
+    \begin{bmatrix}
+      \bm{a}_{1} & \cdots & \bm{a}_{i} + c_{j}\bm{a}_{j} & \cdots & \bm{a}_{j} & \cdots & \bm{a}_{m},
+    \end{bmatrix}
+    \quad i \neq j
+    \end{equation}
+    which geometrically represents an $m$-dimensional parallelepiped (i.e., an object you obtain by skewing the hyperrectangle made by $\bm{A}$ in the direction of $\bm{a}_{j}$)
+  \item Such a skew translation does not change the measure of the object, so we know that
+    \begin{equation}\nonumber%\label{eq:}%
+      \text{measure of object made by columns of $\bm{A}'$}
+      = \text{measure of object made by columns of $\bm{A}$}
+    \end{equation}
+  \item Since
+    \begin{align}
+      |\bm{A}'|
+      & =
+        \begin{vmatrix}
+          \bm{a}_{1} & \cdots & \bm{a}_{i} + c_{j}\bm{a}_{j} & \cdots & \bm{a}_{j} & \cdots & \bm{a}_{m}
+        \end{vmatrix}
+        \nonumber \\
+      & =
+        \begin{vmatrix}
+          \bm{a}_{1} & \cdots & \bm{a}_{i} & \cdots & \bm{a}_{j} & \cdots & \bm{a}_{m}
+        \end{vmatrix}
+        + c_{j}
+        \underbrace{
+        \begin{vmatrix}
+          \bm{a}_{1} & \cdots & \bm{a}_{j} & \cdots & \bm{a}_{j} & \cdots & \bm{a}_{m}
+        \end{vmatrix}}_{=0}
+       = |\bm{A}|
+    \nonumber%\label{eq:}%
+    \end{align}
+    we conclude that
+    \begin{align}
+      &\text{measure of parallelepiped made by columns of $\bm{A}'$} \nonumber \\
+        &\qquad = \text{measure of hyperrectangle made by columns of $\bm{A}$} \nonumber \\
+        &\qquad = \text{absolute value of $\det(\bm{A})$}  \nonumber \\
+        &\qquad = \text{absolute value of $\det(\bm{A}')$}
+    \nonumber%\label{eq:}%
+    \end{align}
+  \item This observation should hold more generally
+    because one can repeatedly apply skew translations without invalidating the argument
+    
+  \end{itemize}
+  \clearpage
+
+\item \textbf{Determinant of general $m\times m$ matrices}
+  \begin{itemize}
+  \item Let $\bm{a}_{1}, \ldots, \bm{a}_{m} \in \R^{m}$ be a set of any vectors
+    and define $\bm{A} := \begin{bmatrix} \bm{a}_{1} & \bm{a}_{2} & \cdots & \bm{a}_{m} \end{bmatrix}$
+  \item We want to show that:
+    \begin{equation}\nonumber%\label{eq:}%
+      \text{measure of parallelepiped made by $\bm{a}_{1},\ldots, \bm{a}_{m}\in \R^{m}$}
+      = \text{absolute value of $\det(\bm{A})$}
+    \end{equation}
+  \item To show this, we apply a set of skew translations (i.e., the Gram-Schmidt orthogonalization) to transform the parallelepiped into a hyperrectangle (\figurename~\ref{fig:integration_2}):
+    \begin{align}
+      \bm{a}_{1}' & := \bm{a}_{1} \nonumber \\
+      \bm{a}_{2}' & := \bm{a}_{2} - (\bm{a}_{2}^{\top}\bm{a}_{1}')\frac{\bm{a}_{1}'}{\|\bm{a}_{1}'\|^{2}} \nonumber \\
+      \bm{a}_{3}' & := \bm{a}_{3} - (\bm{a}_{3}^{\top}\bm{a}_{1}')\frac{\bm{a}_{1}'}{\|\bm{a}_{1}'\|^{2}} - (\bm{a}_{3}^{\top}\bm{a}_{2}')\frac{\bm{a}_{2}'}{\|\bm{a}_{2}'\|^{2}} \nonumber \\
+       \vdots &  \nonumber \\
+      \bm{a}_{m}' & := \bm{a}_{m} - (\bm{a}_{m}^{\top}\bm{a}_{1}')\frac{\bm{a}_{1}'}{\|\bm{a}_{1}'\|^{2}}
+                    - (\bm{a}_{m}^{\top}\bm{a}_{2}')\frac{\bm{a}_{2}'}{\|\bm{a}_{2}'\|^{2}}
+                    \cdots - (\bm{a}_{m}^{\top}\bm{a}_{m-1}')\frac{\bm{a}_{m-1}'}{\|\bm{a}_{m-1}'\|^{2}}
+                    \nonumber
+    \end{align}
+    and let
+    $\bm{A}' := \begin{bmatrix}\bm{a}_{1}' & \bm{a}_{2}' & \cdots & \bm{a}_{m}'\end{bmatrix}$
+      \begin{figure}[t]\centering%
+        \includegraphics[width=480pt]%
+        {figures/fig_integration_2.png}
+        \caption{%
+          Skew translation and determinant
+        } 
+        \label{fig:integration_2}
+      \end{figure} 
+  \item Observe:
+    \begin{itemize}
+    \item the column vectors of $\bm{A}'$ are orthogonal to each other so:
+      \begin{equation}\nonumber%\label{eq:}%
+        \text{measure of hyperrectangle made by $\bm{a}_{1}',\ldots,\bm{a}_{m}'$}
+        = \text{absolute value of $\det(\bm{A}')$}
+      \end{equation}
+    \item since the skew translations should not change the measure of the object:
+      \begin{align}
+        & \text{measure of hyperrectangle made by $\bm{a}_{1}',\ldots,\bm{a}_{m}'$} \nonumber \\
+        & \quad = \text{measure of parallelepiped made by $\bm{a}_{1},\ldots,\bm{a}_{m}$}
+          \nonumber%\label{eq:}% 
+      \end{align}
+    \item On the other hand, we know from the properties of determinant that $\det(\bm{A}') = \det(\bm{A})$
+    \end{itemize}
+    \clearpage
+  \item Therefore
+    \begin{align}
+      & \text{measure of parallelepiped made by $\bm{a}_{1}, \bm{a}_{2},\ldots \bm{a}_{m}$} \nonumber \\
+      & \quad = \text{measure of hyperrectangle made by $\bm{a}_{1}',\ldots,\bm{a}_{m}'$} \nonumber \\
+      & \quad = \text{absolute value of $\det(\bm{A}')$} \nonumber \\
+      & \quad = \text{absolute value of $\det(\bm{A})$}
+    \nonumber%\label{eq:}% 
+    \end{align}
+    \end{itemize}
+
+\item \textbf{Example: $2\times 2$ matrix}
+  \begin{itemize}
+  \item Let $\bm{a}_{1}, \bm{a}_{2}\in \R^{2}$ be the column vectors of $\bm{A}\in \R^{2\times 2}$
+  \item Then
+    \begin{align}
+      (|\bm{A}|)^{2}
+        & = |\bm{A}||\bm{A}|
+        = |\bm{A}^{\top}||\bm{A}|
+        = |\bm{A}^{\top}\bm{A}|
+        = \left|
+          \begin{bmatrix}
+            \bm{a}_{1}^{\top} \\
+            \bm{a}_{2}^{\top} \\
+          \end{bmatrix}
+          \begin{bmatrix}
+            \bm{a}_{1} & \bm{a}_{2}
+          \end{bmatrix}
+          \right|
+        = \left|
+          \begin{bmatrix}
+            \bm{a}_{1}^{\top}\bm{a}_{1} & \bm{a}_{1}^{\top}\bm{a}_{2} \\
+            \bm{a}_{2}^{\top}\bm{a}_{1} & \bm{a}_{2}^{\top}\bm{a}_{2} \\
+          \end{bmatrix}
+          \right|  \nonumber \\
+        & = \bm{a}_{1}^{\top}\bm{a}_{1}\bm{a}_{2}^{\top}\bm{a}_{2}
+          - \bm{a}_{1}^{\top}\bm{a}_{2}\bm{a}_{2}^{\top}\bm{a}_{1}
+         = \|\bm{a}_{1}\|^{2}\|\bm{a}_{2}\|^{2} - (\bm{a}_{1}^{\top}\bm{a}_{2})^{2} \nonumber \\
+        & = \|\bm{a}_{1}\|^{2}\|\bm{a}_{2}\|^{2} \left(1 - \left(\frac{(\bm{a}_{1}^{\top}\bm{a}_{2})}{\|\bm{a}_{1}\|\|\bm{a}_{2}\|}\right)^{2}\right)  \nonumber \\
+        & = \|\bm{a}_{1}\|^{2}\|\bm{a}_{2}\|^{2} \left(1 - \cos^{2}(\theta)\right) \quad\text{where}\quad \text{$\theta$ is the angle between $\bm{a}_{1}$ and $\bm{a}_{2}$}  \nonumber \\
+        & = \|\bm{a}_{1}\|^{2}\|\bm{a}_{2}\|^{2}\sin^{2}(\theta)
+        = \left(\|\bm{a}_{1}\|\|\bm{a}_{2}\|\sin(\theta)\right)^{2}  \nonumber \\
+        & = \left(\text{area of parallelogram made by $\bm{a}_{1}$ and $\bm{a}_{2}$}\right)^{2},
+    \nonumber%\label{eq:}%
+    \end{align}
+    which confirms
+    \begin{equation}\nonumber%\label{eq:}%
+      \text{area of parallelogram made by $\bm{a}_{1}$ and $\bm{a}_{2}$}
+      = \text{absolute value of $\det(\bm{A})$}
+    \end{equation}
+  \end{itemize}
+
+\end{itemize}
+
+\subsection{Change of variable formula}
+
+\begin{itemize}
+\item \textbf{What we want to do}
+  \begin{itemize}
+  \item Let us say that
+    we want to compute the integral
+    \begin{equation}\nonumber%\label{eq:}%
+      \int_{Z}f_{Z}(\bm{z})d\bm{z}
+    \end{equation}
+    for some function $f_{Z}:\R^{m}\to \R$
+    over some subset $Z\subset \R^{m}$
+  \item Suppose that the variable $\bm{z}\in Z$ can be transformed into another variable $\bm{x}\in \R^{m}$
+    through a bijective function $\phi:Z\to \phi(Z)$
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x} = \phi(\bm{z}) \quad \forall \bm{z}\in Z\subset \R^{n}
+    \end{equation}
+    or
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{z} = \phi^{-1}(\bm{x})=:\psi(\bm{x}) \quad \forall \bm{x}\in X:=\phi(Z)
+    \end{equation}
+  \item We want to find a function $f_{X}:X\to\R$ such that
+    \begin{equation}\label{eq:fzfx}%
+      \int_{B}f_{Z}(\bm{z})d\bm{z}
+      = \int_{\phi(B)}f_{X}(\bm{x})d\bm{x}
+      \quad \forall B\subset Z
+    \end{equation}
+    or equivalently 
+    \begin{equation}\label{eq:fxfz}%
+      \int_{A}f_{X}(\bm{x})d\bm{x} = \int_{\psi(A)}f_{Z}(\bm{z})d\bm{z} \quad \forall A\subset X
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Case with $m=1$}
+  \begin{itemize}
+  \item The function $f_{X}$ that satisfies \eqref{eq:fzfx} or \eqref{eq:fxfz} is
+    \begin{equation}\label{eq:fx1}%
+      f_{X}(x) = f_{Z}(\psi(x))\left| \frac{d\psi(x)}{dx}\right| \quad \forall x \in X
+    \end{equation}
+  \item To see this, fix $\bar{x}\in X$
+  \item If $f_{X}$ satisfies \eqref{eq:fxfz}, we must have
+    \begin{equation}\label{eq:fxfz1}%
+      \int_{[\bar{x}, \bar{x}+\Delta x]} f_{X}(x)dx
+      = 
+      \int_{\psi([\bar{x}, \bar{x}+\Delta x])} f_{Z}(z)dz
+    \quad \forall \Delta x\geq 0
+    \end{equation}
+  \item Notice that for each $\Delta x> 0$,
+    \begin{itemize}
+    \item there exists $\tilde{x}(\Delta x) \in [\bar{x},\bar{x}+\Delta x]$ such that
+      \begin{equation}\label{eq:fxdx1}%
+        \int_{[\bar{x}, \bar{x}+\Delta x]} f_{X}(x)dx
+        =
+        \int_{[\bar{x}, \bar{x}+\Delta x]} f_{X}(\tilde{x}(\Delta x))dx
+        =
+        f_{X}(\tilde{x}(\Delta x))\underbrace{|[\bar{x},\bar{x}+\Delta x]|}_{\Delta x},
+      \end{equation}
+      which is illustrated in \figurename~\ref{fig:integration_1}
+      \begin{figure}[t]\centering%
+        \includegraphics[width=400pt]%
+        {figures/fig_integration_1.png}
+        \caption{%
+          Choice of $\tilde{x}(\Delta x)\in [\bar{x},\bar{x}+\Delta x]$ and $\tilde{z}(\Delta x)\in \psi([\bar{x},\bar{x}+\Delta x])$
+          that satisfies \eqref{eq:fxdx1} and \eqref{eq:fzdzpsi1}
+        } 
+        \label{fig:integration_1}
+      \end{figure} 
+    \item there exists $\tilde{z}(\Delta x) \in \psi([\bar{x},\bar{x}+\Delta x])$ such that
+      \begin{equation}\label{eq:fzdzpsi1}%
+        \int_{\psi([\bar{x}, \bar{x}+\Delta x])} f_{Z}(z)dz
+        =
+        \int_{\psi([\bar{x}, \bar{x}+\Delta x])} f_{Z}(\tilde{z}(\Delta x))dz
+        =
+        f_{Z}(\tilde{z}(\Delta x))|\psi([\bar{x},\bar{x}+\Delta x])|
+      \end{equation}
+      where $|\psi([\bar{x},\bar{x}+\Delta x])|$ is the measure of the set $\psi([\bar{x},\bar{x}+\Delta x])$
+    \end{itemize}
+  \item It follows from \eqref{eq:fxfz1}, \eqref{eq:fxdx1}, and \eqref{eq:fzdzpsi1} that
+    \begin{equation}\nonumber%\label{eq:}%
+      f_{X}(\tilde{x}(\Delta x))
+      = f_{Z}(\tilde{z}(\Delta x)) \frac{|\psi([\bar{x},\bar{x}+\Delta x])|}{\Delta x},
+      \quad \forall \Delta x >0
+    \end{equation}
+  \item Obviously,
+    \begin{equation}\nonumber%\label{eq:}%
+      \lim_{\Delta x \to 0}\tilde{x}(\Delta x) = \bar{x},
+      \quad
+      \lim_{\Delta x \to 0}\tilde{z}(\Delta x) = \psi(\bar{x}),
+    \end{equation}
+    \begin{equation}\nonumber%\label{eq:}%
+      |\psi([\bar{x},\bar{x}+\Delta x])| =  \left|\psi(\bar{x}+\Delta x) - \psi(\bar{x}) \right|
+      \quad \text{for sufficiently small $\Delta x$},
+    \end{equation}
+    and therefore
+    \begin{align}
+      f_{X}(\bar{x})
+        & = \lim_{\Delta x \to 0}f_{X}(\tilde{x}(\Delta x))  \nonumber \\
+        & = \lim_{\Delta x \to 0} f_{Z}(\tilde{z}(\Delta x))\frac{|\psi([\bar{x},\bar{x}+\Delta x])|}{\Delta x}  \nonumber \\
+        & = f_{Z}(\psi(\bar{x}))\lim_{\Delta x \to 0} \frac{|\psi([\bar{x},\bar{x}+\Delta x])|}{\Delta x}  \nonumber \\
+        & = f_{Z}(\psi(\bar{x}))\lim_{\Delta x \to 0} \left|\frac{\psi(\bar{x}+\Delta x) - \psi(\bar{x})}{\Delta x}\right| \nonumber \\
+        & = f_{Z}(\psi(\bar{x}))\left| \frac{d\psi(\bar{x})}{dx}\right|,
+    \nonumber%\label{eq:}%
+    \end{align}
+    where the absolute value is necessary because $\psi(\bar{x}+\Delta x)$ can be smaller than $\psi(\bar{x})$
+  \item Since the argument above does not depend on the choice of $\bar{x}$,
+    we conclude that the function $f_{X}$ must be given by \eqref{eq:fx1}
+  \end{itemize}
+
+\item \textbf{Case with $m=2$ and higher $m$}
+  \begin{itemize}
+  \item The function $f_{X}$ that satisfies \eqref{eq:fzfx} or \eqref{eq:fxfz} is
+    \begin{equation}\label{eq:fx2}%
+      f_{X}(\bm{x}) =
+      f_{Z}(\psi(\bm{x}))\left|\left| \frac{d\psi(\bm{x})}{d\bm{x}}\right|\right|
+      \quad \forall \bm{x} \in X
+    \end{equation}
+  \item To see this, fix $\bar{\bm{x}} = (\bar{x}_{1},\bar{x}_{2})\in X$
+  \item If $f_{X}$ satisfies \eqref{eq:fxfz}, we must have
+    \begin{equation}\label{eq:fxfz2}%
+      \int_{[\bar{\bm{x}}, \bar{\bm{x}}+\Delta \bm{x}]} f_{X}(\bm{x})d\bm{x}
+      = 
+      \int_{\psi([\bar{\bm{x}}, \bar{\bm{x}}+\Delta \bm{x}])} f_{Z}(\bm{z})d\bm{z}
+      \quad \forall \Delta \bm{x} = (\Delta x_{1}, \Delta x_{2})\geq \bm{0}
+    \end{equation}
+    where $[\bar{\bm{x}}, \bar{\bm{x}}+\Delta \bm{x}] := [\bar{x}_{1},\bar{x}_{1}+\Delta x_{1}]\times[\bar{x}_{2},\bar{x}_{2}+\Delta x_{2}]$
+  \item Notice that for each $\Delta \bm{x}>\bm{0}$,
+    \begin{itemize}
+    \item there exists $\tilde{\bm{x}}(\Delta \bm{x}) \in [\bar{\bm{x}},\bar{\bm{x}}+\Delta \bm{x}]$ such that
+      \begin{equation}\label{eq:fxdx2}%
+        \int_{[\bar{\bm{x}}, \bar{\bm{x}}+\Delta \bm{x}]} f_{X}(\bm{x})d\bm{x}
+        =
+        \int_{[\bar{\bm{x}}, \bar{\bm{x}}+\Delta \bm{x}]} f_{X}(\tilde{\bm{x}}(\Delta\bm{x}))d\bm{x}
+        =
+        f_{X}(\tilde{\bm{x}}(\Delta \bm{x}))\underbrace{|[\bar{\bm{x}},\bar{\bm{x}}+\Delta \bm{x}]|}_{\Delta x_{1}\Delta x_{2}}
+      \end{equation}
+    \item there exists $\tilde{\bm{z}}(\Delta \bm{x}) \in \psi([\bar{\bm{x}},\bar{\bm{x}}+\Delta \bm{x}])$ such that
+      \begin{equation}\label{eq:fzdzpsi2}%
+        \int_{\psi([\bar{\bm{x}}, \bar{\bm{x}}+\Delta \bm{x}])} f_{Z}(\bm{z})d\bm{z}
+        =
+        \int_{\psi([\bar{\bm{x}}, \bar{\bm{x}}+\Delta \bm{x}])} f_{Z}(\tilde{\bm{z}}(\Delta \bm{x}))d\bm{z}
+        =
+        f_{Z}(\tilde{\bm{z}}(\Delta \bm{x}))|\psi([\bar{\bm{x}},\bar{\bm{x}}+\Delta \bm{x}])|
+      \end{equation}
+      where $|\psi([\bar{\bm{x}},\bar{\bm{x}}+\Delta \bm{x}])|$
+        is the measure of the set $\psi([\bar{\bm{x}},\bar{\bm{x}}+\Delta \bm{x}])$
+    \end{itemize}
+  \item It follows from \eqref{eq:fxfz2}, \eqref{eq:fxdx2}, and \eqref{eq:fzdzpsi2} that
+    \begin{equation}\nonumber%\label{eq:}%
+      f_{X}(\tilde{\bm{x}}(\Delta \bm{x})) = f_{Z}(\tilde{\bm{z}}(\Delta \bm{x})) \frac{|\psi([\bar{\bm{x}},\bar{\bm{x}}+\Delta \bm{x}])|}{\Delta x_{1}\Delta x_{2}},
+      \quad \forall \Delta \bm{x} >0
+    \end{equation}
+  \item We know that for $\Delta \bm{x}$ close enough to $\bm{0}$
+    \begin{align}
+      |\psi([\bar{\bm{x}},\bar{\bm{x}}+\Delta \bm{x}])|
+      & \approx \textstyle \text{area of parallelogram made by
+        $\bm{a}_{1}:=
+        \begin{bmatrix}
+          \frac{\partial \psi_{1}(\bar{\bm{x}})}{\partial x_{1}}\\
+          \frac{\partial\psi_{2}(\bar{\bm{x}})}{\partial x_{1}}
+        \end{bmatrix}\Delta x_{1}$
+        and
+        $\bm{a}_{2}:=
+        \begin{bmatrix}
+          \frac{\partial \psi_{1}(\bar{\bm{x}})}{\partial x_{2}}\\
+          \frac{\partial\psi_{2}(\bar{\bm{x}})}{\partial x_{2}}
+        \end{bmatrix}\Delta x_{2}$
+        } \nonumber \\
+        & = \left|\det(\begin{bmatrix} \bm{a}_{1} & \bm{a}_{2}\end{bmatrix})\right|\nonumber \\
+      & = \left|
+        \begin{vmatrix}
+          \frac{\partial \psi_{1}(\bar{\bm{x}})}{\partial x_{1}}\Delta x_{1} & \frac{\partial \psi_{1}(\bar{\bm{x}})}{\partial x_{2}}\Delta x_{2} \\
+          \frac{\partial \psi_{2}(\bar{\bm{x}})}{\partial x_{1}}\Delta x_{1} & \frac{\partial \psi_{2}(\bar{\bm{x}})}{\partial x_{2}}\Delta x_{2} \\
+        \end{vmatrix}\right|
+       = \left|
+        \begin{vmatrix}
+          \frac{\partial \psi_{1}(\bar{\bm{x}})}{\partial x_{1}} & \frac{\partial \psi_{1}(\bar{\bm{x}})}{\partial x_{2}} \\
+          \frac{\partial \psi_{2}(\bar{\bm{x}})}{\partial x_{1}} & \frac{\partial \psi_{2}(\bar{\bm{x}})}{\partial x_{2}} \\
+        \end{vmatrix}
+        \Delta x_{1}\Delta x_{2}
+        \right|\nonumber \\
+      & = \left|\left| \frac{d\psi(\bar{\bm{x}})}{d\bm{x}}\right|\right|\Delta x_{1} \Delta x_{2}
+    \nonumber%\label{eq:}%
+    \end{align}
+    where $\left|\left| \frac{d\psi(\bar{\bm{x}})}{d\bm{x}}\right|\right|$
+    is the absolute value of the determinant of the Jacobian matrix $\frac{d\psi(\bar{\bm{x}})}{d\bm{x}}$
+    (See \figurename~\ref{fig:integration_3} for an illustration)
+      \begin{figure}[t]\centering%
+        \includegraphics[width=480pt]%
+        {figures/fig_integration_3.png}
+        \caption{%
+          Derivation of $|\psi([\bar{\bm{x}},\bar{\bm{x}}+\Delta\bm{x}])|$
+          based on Example~2
+        }
+        \label{fig:integration_3}
+      \end{figure} 
+  \item Obviously,
+    \begin{equation}\nonumber%\label{eq:}%
+      \lim_{\Delta \bm{x} \to \bm{0}}\tilde{\bm{x}}(\Delta \bm{x}) = \bar{\bm{x}},
+      \quad
+      \lim_{\Delta \bm{x} \to \bm{0}}\tilde{\bm{z}}(\Delta \bm{x}) = \psi(\bar{\bm{x}})
+    \end{equation}
+    and therefore
+    \begin{align}
+      f_{X}(\bar{\bm{x}})
+        & = \lim_{\Delta \bm{x} \to \bm{0}}f_{X}(\tilde{\bm{x}}(\Delta \bm{x}))  \nonumber \\
+        & = \lim_{\Delta \bm{x} \to \bm{0}} f_{Z}(\tilde{\bm{z}}(\Delta \bm{x}))\frac{|\psi([\bar{\bm{x}},\bar{\bm{x}}+\Delta \bm{x}])|}{\Delta x_{1}\Delta x_{2}}  \nonumber \\
+        & = f_{Z}(\psi(\bar{\bm{x}}))\lim_{\Delta \bm{x} \to \bm{0}} \frac{|\psi([\bar{\bm{x}},\bar{\bm{x}}+\Delta \bm{x}])|}{\Delta x_{1}\Delta x_{2}}  \nonumber \\
+        & = f_{Z}(\psi(\bar{\bm{x}}))\left|\left| \frac{d\psi(\bar{\bm{x}})}{d\bm{x}}\right|\right|
+    \nonumber%\label{eq:}%
+    \end{align}
+
+  \item Since the argument above does not depend on the choice of $\bar{\bm{x}}$,
+    we conclude that the function $f_{X}$ must be given by \eqref{eq:fx2}
+  \item The same is true of higher $m$
+
+  \end{itemize}
+  \clearpage
+
+\item \textbf{Example~1}
+
+  \begin{itemize}
+  \item Consider the integral
+    \begin{equation}\nonumber%\label{eq:}%
+      \int_{Z} f_{Z}(z)dz,
+      \quad
+      f_{Z}(z) = \frac{(z^{-\alpha}+\gamma)^{\beta}}{z^{\alpha+1}}
+      \quad Z:=[a, b],
+      \quad b>a>0
+    \end{equation}
+    for some $\alpha, \beta,\gamma>0$
+  \item Transform $z$ into $x$ by defining a function $\phi:Z\to \R$ as
+    \begin{equation}\nonumber%\label{eq:}%
+      x = \phi(z) := z^{-\alpha} + \gamma
+      \quad \forall z \in Z
+    \end{equation}
+  \item Notice that $\phi:Z\to X$ is a bijective (monotonically decreasing) function with
+    \begin{equation}\nonumber%\label{eq:}%
+      X:=
+      \phi(Z) =
+      [\phi(b), \phi(a)]
+      =
+      [b^{-\alpha} + \gamma, a^{-\alpha} + \gamma]
+    \end{equation}
+    and the inverse function $\psi:=\phi^{-1}$ is given by
+    \begin{equation}\nonumber%\label{eq:}%
+      z = \psi(x):=(x - \gamma)^{- \frac{1}{\alpha}}
+      \quad \forall x \in X
+    \end{equation}
+  \item Using the change of variable formula, one would obtain
+    \begin{align}
+      \int_{Z}f_{Z}(z)dz
+        & = \int_{X}f_{X}(x)dx,\quad\text{where}\quad f_{X}(x):=f_{Z}(\psi(x))\left| \frac{d\psi(x)}{dx}\right|  \nonumber \\
+        & = \int_{X} (x-\gamma)^{\frac{\alpha+1}{\alpha}}x^{\beta}\left|-\frac{1}{\alpha}(x-\gamma)^{- \frac{\alpha+1}{\alpha}}\right|dx  \nonumber \\
+        & = \int_{X} \frac{1}{\alpha} x^{\beta}dx  \nonumber \\
+        & = \int_{b^{-\alpha} + \gamma}^{a^{-\alpha} + \gamma} \frac{d}{dx}\left\{\frac{1}{\alpha \beta} x^{\beta} \right\}dx  \nonumber \\
+        & = \frac{1}{\alpha \beta} \left((a^{-\alpha} + \gamma)^{\beta} - (b^{-\alpha} + \gamma)^{\beta} \right)
+    \nonumber%\label{eq:}%
+    \end{align}
+
+  \end{itemize}
+
+\item \textbf{Example~2}
+
+  \begin{itemize}
+  \item Consider the integral
+    \begin{equation}\nonumber%\label{eq:}%
+      \int_{Z}f_{Z}(\bm{z})d\bm{z},
+      \quad\text{where}\quad
+      f_{Z}(\bm{z}):=e^{-z_{1}^{2}-z_{2}^{2}},
+      \quad
+      Z:= \left\{ (z_{1},z_{2})\in \R^{2}\setminus\{\bm{0}\} \,\Big|\, z_{1}^{2} + z_{2}^{2} \leq a^{2} \right\}
+    \end{equation}
+  \item Transform $\bm{z}=(z_{1},z_{2})$ into $\bm{x}=(x_{1},x_{2})$ by defining a function $\phi:Z \to \R^{2}$ as
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        x_{1} \\
+        x_{2}
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        \phi_{1}(z_{1},z_{2}) \\
+        \phi_{2}(z_{1},z_{2})
+      \end{bmatrix}
+      :=
+      \begin{bmatrix}
+        (z_{1}^{2} + z_{2}^{2})^{1/2} \\
+        \arctan2(z_{2},z_{1})
+      \end{bmatrix}
+      \quad \forall \bm{z}\in Z
+    \end{equation}
+  \item Notice that $\phi:Z \to X$ is bijective with
+    \begin{equation}\nonumber%\label{eq:}%
+      X:= \phi(Z) = \left\{ (x_{1},x_{2}) \,|\, a \geq x_{1}> 0, \pi\geq x_{2} \geq -\pi \right\}
+    \end{equation}
+    and the inverse function $\psi:=\phi^{-1}$ is given by
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{bmatrix}
+        z_{1} \\
+        z_{2}
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        \psi_{1}(x_{1},x_{2}) \\
+        \psi_{2}(x_{1},x_{2})
+      \end{bmatrix}
+      :=
+      \begin{bmatrix}
+        x_{1}\cos(x_{2}) \\
+        x_{1}\sin(x_{2})
+      \end{bmatrix}
+      \quad \forall \bm{x} \in X
+    \end{equation}
+  \item Using the change of variable formula,
+    \begin{align}
+      \int_{Z}f_{Z}(\bm{z})d\bm{z}
+      & = \int_{X}f_{X}(\bm{x})d\bm{x}, \quad \text{where}\quad
+        f_{X}(\bm{x}) = f_{Z}(\psi(\bm{x})) \left|\left| \frac{d\psi(\bm{x})}{d\bm{x}}\right|\right|
+        \nonumber \\
+        & = \int_{X}f_{Z}(\psi(\bm{x})) \left|\left| \frac{d\psi(\bm{x})}{d\bm{x}}\right|\right| d\bm{x} \nonumber \\
+      & = \int_{-\pi}^{\pi}\int_{0}^{a}e^{-x_{1}^{2}\cos^{2}(x_{2})-x_{1}^{2}\sin^{2}(x_{2})}
+        \left|
+        \begin{vmatrix}
+          \cos(x_{2}) & -x_{1}\sin(x_{2}) \\
+          \sin(x_{2}) & x_{1}\cos(x_{2}) \\
+        \end{vmatrix}
+        \right| dx_{1}dx_{2} \nonumber \\
+      & = \int_{-\pi}^{\pi}\int_{0}^{a}e^{-x_{1}^{2}\cos^{2}(x_{2})-x_{1}^{2}\sin^{2}(x_{2})}
+        \left| x_{1}\cos^{2}(x_{2}) + x_{1}\sin^{2}(x_{2}) \right| dx_{1}dx_{2} \nonumber \\
+      & = \int_{-\pi}^{\pi}\int_{0}^{a}e^{-x_{1}^{2}}x_{1} dx_{1}dx_{2} \nonumber \\
+      & = \int_{-\pi}^{\pi} \frac{1}{2}\left(1 - e^{-a^{2}}\right)  dx_{2} \nonumber \\
+      & = \pi\left(1 - e^{-a^{2}}\right)
+    \nonumber%\label{eq:}%
+    \end{align}
+  \item Since $\lim_{a\to\infty}Z=\R^{2}\setminus\{\bm{0}\}$, we have
+    \begin{equation}\nonumber%\label{eq:}%
+      \int_{\R^{2}}e^{-z_{1}^{2}-z_{2}^{2}}d\bm{z}
+      =\int_{\R^{2}\setminus\{\bm{0}\}}e^{-z_{1}^{2}-z_{2}^{2}}d\bm{z}
+      = \lim_{a\to\infty}\pi\left(1 - e^{-a^{2}}\right)
+      = \pi,
+    \end{equation}
+    which in turn allows us to compute the Gaussian integral:
+    \begin{equation}\label{eq:gaussianintegral}%
+      \int_{\R}e^{-z^{2}}dz
+      =
+      \left(
+      \left(\int_{\R}e^{-z_{1}^{2}}dz_{1}\right)
+      \left(\int_{\R}e^{-z_{2}^{2}}dz_{2}\right)
+      \right)^{1/2}
+      =
+      \left(
+      \int_{\R}\int_{\R}e^{-z_{1}^{2}}e^{-z_{2}^{2}}dz_{1}dz_{2}
+      \right)^{1/2}
+      = \sqrt{\pi}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Example~3}
+
+  \begin{itemize}
+  \item Consider the integral
+    \begin{equation}\nonumber%\label{eq:}%
+      \int_{Z}f_{Z}(\bm{z})d\bm{z},
+      \quad
+      Z \subset \R^{m}
+    \end{equation}
+    for some function $f_{Z}:\R^{m}\to \R$
+  \item Transform $\bm{z}\in \R^{m}$ into $\bm{x}\in \R^{m}$ by defining a function $\phi:\R^{m} \to \R^{m}$ as
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{x} = \phi(\bm{z}) := \bm{A}\bm{z} + \bm{b}
+      \quad \forall \bm{z}\in \R^{m}
+    \end{equation}
+    for some $\bm{A}\in \R^{m\times m}$ and $\bm{b}\in \R^{m}$
+  \item Notice that, as long as $\bm{A}$ is non-singular,
+    the function $\phi: Z \to X$ is bijective
+    and the inverse function $\psi:=\phi^{-1}$ is
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{z}
+      = \psi(\bm{x})
+      := \bm{A}^{-1}(\bm{x}-\bm{b})
+      \quad \forall \bm{x} \in X:= \phi(Z) = \left\{ \bm{x}\in \R^{m} \,|\, \bm{x}=\bm{A}\bm{z} + \bm{b}\right\}
+    \end{equation}
+  \item Using the change of variable formula, we arrive at
+    \begin{align}
+      \int_{Z}f_{Z}(\bm{z})d\bm{z}
+      & = \int_{X}f_{X}(\bm{x})d\bm{x}, \quad \text{where}\quad
+        f_{X}(\bm{x}) = f_{Z}(\psi(\bm{x})) \left|\left| \frac{d\psi(\bm{x})}{d\bm{x}}\right|\right|
+        \nonumber \\
+      & = \int_{X}f_{Z}(\psi(\bm{x})) \left|\left| \frac{d\psi(\bm{x})}{d\bm{x}}\right|\right| d\bm{x} \nonumber \\
+      & = \int_{X}f_{Z}(\bm{A}^{-1}(\bm{x}-\bm{b}))\left|\left|\bm{A}^{-1}\right|\right| d\bm{x} \nonumber \\
+      & = \int_{X}f_{Z}(\bm{A}^{-1}(\bm{x}-\bm{b}))\frac{1}{||\bm{A}||}d\bm{x}
+    \nonumber%\label{eq:}%
+    \end{align}
+  \end{itemize}
+\item \textbf{Example~4}
+  \begin{itemize}
+  \item Let us say we want to compute the integral
+    \begin{equation}\nonumber%\label{eq:}%
+      \int_{-\infty}^{\infty}e^{-\frac{1}{2}z^{2}}dz
+    \end{equation}
+  \item With the application of Gaussian integral \eqref{eq:gaussianintegral} in mind,
+    let us consider the following ``change of variable''
+    \begin{equation}\nonumber%\label{eq:}%
+      x = \underbrace{\frac{1}{\sqrt{2}} z}_{\phi(z)}
+      \qquad \text{or equivalently} \qquad
+      z = \underbrace{\sqrt{2}x}_{\psi(x)}
+    \end{equation}
+  \item Then the change of variable formula implies
+    \begin{equation}\nonumber%\label{eq:}%
+      \int_{-\infty}^{\infty}e^{-\frac{1}{2}z^{2}}dz
+      =
+      \int_{-\infty}^{\infty}e^{-\frac{1}{2}(\psi(x))^{2}}\underbrace{|\psi'(x)|}_{\sqrt{2}}dx
+      =
+      \sqrt{2}\underbrace{\int_{-\infty}^{\infty}e^{-x^{2}}dx}_{\sqrt{\pi}}
+      =
+      \sqrt{2\pi}
+    \end{equation}
+  \item Note that this is a special case of Example~3, where $\bm{A}=1/\sqrt{2}$ and $\bm{b}=0$
+  \end{itemize}
+
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,835 @@
+\documentclass[12pt,a4paper]{article} 
+\input{preambles/preamble_lecnotes.tex} 
+
+\title{Matrix series}
+\subtitle{Introduction to dynamical systems~\#4}
+\author{Hiroaki Sakamoto}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Numerical series and convergence}
+
+\subsection{Sequences and series}
+
+\begin{itemize}
+\item \textbf{Cauchy sequences}
+  \begin{itemize}
+  \item A sequence $\{a_{k}\}$ in $\R$ is said to be a \emph{Cauchy sequence}
+    if for every $\epsilon>0$, there is an integer $n\in \N$ such that
+    \begin{equation}\nonumber%\label{eq:}%
+      l\geq m\geq n  \implies |a_{l} - a_{m}|<\epsilon
+    \end{equation}
+  \item Cauchy criterion: for a sequence $\{a_{k}\}$ in $\R$, the following are euqivalent:
+    \begin{itemize}
+    \item it converges to some $a \in \R$: for every $\epsilon > 0$, there exists $n\in \N$ such that
+      $|a_{k}-a|<\epsilon$ for all $k\geq n$
+    \item it is a Cauchy sequence
+    \end{itemize}
+  \end{itemize}
+
+\item \textbf{Series}
+  \begin{itemize}
+  \item Given a sequence $\{a_{k}\}$ in $\R$,
+    we define another sequence $\{s_{t}\}$ in $\R$ by
+    \begin{equation}\nonumber%\label{eq:}%
+      \textstyle s_{t} := \sum_{k=0}^{t}a_{k} = a_{0} + a_{1} + \ldots + a_{t}, \quad \forall t = 0, 1, 2, \ldots,
+    \end{equation}
+    which is called a \emph{series} and denoted as $\sum_{k} a_{k}$
+  \item We say that a series $\sum_{k} a_{k}$ converges if $\{s_{t}\}$ converges
+  \item By the Cauchy criterion, the following are equivalent:
+    \begin{itemize}
+    \item a series $\sum_{k} a_{k}$ converges
+    \item for any $\epsilon > 0$, there exists $n \in \N$ such that
+    \begin{equation}\label{eq:series_Cauchy}%
+      \textstyle l\geq m\geq n  \implies \left| \sum_{k=m}^{l}a_{k}\right|< \epsilon
+    \end{equation}
+    \end{itemize}
+  \item It immediately follows that
+    $\lim_{k\to\infty}a_{k}=0$
+    whenever $\sum_{k} a_{k}$ converges:
+    \begin{equation}\nonumber%\label{eq:}%
+      \text{$\sum_{k} a_{k}$ is convergent}
+      \implies
+      \text{\eqref{eq:series_Cauchy} with $l=m$}
+      \implies
+      \lim_{k\to\infty} a_{k} = 0
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Example}
+  \begin{itemize}
+  \item If $a_{k}:=x$ for all $k$ and $|x|<1$, then the series $\sum_{k}a_{k}$ converges:
+    \begin{equation}\label{eq:xk}%
+      \textstyle \sum_{k=0}^{\infty}a_{k}
+      =
+      x^{0} + 
+      x^{1} + 
+      x^{2} + \ldots
+      =
+      (1-x)^{-1}
+    \end{equation}
+  \end{itemize}
+ 
+\end{itemize}
+
+\subsection{Tests for convergence}
+
+\begin{itemize}
+
+\item \textbf{Comparison test}
+  \begin{itemize}
+  \item Consider a sequence $\{a_{k}\}$ in $\R$
+  \item If there exists another sequence $\{b_{k}\}$ in $\R$ such that
+    \begin{itemize}
+    \item $\sum_{k}b_{k}$ converges, and
+    \item $|a_{k}|\leq b_{k}$ for all $k\geq n_{0}$ for some fixed $n_{0}\in \N$,
+    \end{itemize}
+    then $\sum_{k}a_{k}$ converges
+  \item Proof:
+    \begin{itemize}
+    \item Fix $\epsilon > 0$
+    \item Since $\sum_{k}b_{k}$ converges, there exists $n_{1}\in \N$ such that
+      \begin{equation}\nonumber%\label{eq:}%
+        l\geq m\geq n_{1}  \implies \left| \sum_{k=m}^{l}b_{k}\right|< \epsilon
+      \end{equation}
+    \item Letting $n:=\max\{n_{0}, n_{1}\}$,
+      we then have $b_{k} \geq |a_{k}|\geq 0$ for all $k\geq n$ and thus
+      \begin{equation}\nonumber%\label{eq:}%
+        l\geq m\geq n  \implies
+        \left| \sum_{k=m}^{l}a_{k}\right|
+        \leq
+        \sum_{k=m}^{l}\left|a_{k}\right|
+        \leq
+        \sum_{k=m}^{l}b_{k}
+        =
+        \left| \sum_{k=m}^{l}b_{k}\right|< \epsilon,
+      \end{equation}
+      which implies $\sum_{k}a_{k}$ converges
+    \end{itemize}
+  \end{itemize}
+
+\item \textbf{Root test}
+  \begin{itemize}
+  \item Consider a sequence $\{a_{k}\}$ such that the limit
+    \begin{equation}\nonumber%\label{eq:}%
+      r:=\lim_{k\to\infty} \left|a_{k}\right|^{1/k}
+    \end{equation}
+    exists in $\R\cup\{\infty\}$
+  \item If $r<1$, then $\sum_{k}a_{k}$ converges because:
+    \begin{itemize}
+    \item Since $r<1$, one can choose $\beta\in \R$ such that $r < \beta < 1$
+    \item Since $\lim_{k\to\infty}\left|a_{k}\right|^{1/k}=r$, there exists $n_{0}\in \N$ such that
+      \begin{equation}\nonumber%\label{eq:}%
+        k\geq n_{0} \implies |a_{k}|^{1/k}< \beta \implies |a_{k}| < \beta^{k}
+      \end{equation}
+    \item Since $\sum_{k}\beta^{k}$ is convergent,
+      so is $\sum_{k}a_{k}$ by the comparison test
+    \end{itemize}
+  \item If $r>1$, then $\sum_{k}a_{k}$ does not converge because:
+    \begin{itemize}
+    \item Since $r>1$ and since $\lim_{k\to\infty}\left|a_{k}\right|^{1/k}=r$,
+      there exists $n\in \N$ such that
+      \begin{equation}\nonumber%\label{eq:}%
+        k\geq n \implies |a_{k}|^{1/k} > 1 \implies |a_{k}| > 1,
+      \end{equation}
+      which means $\lim_{k\to\infty}a_{k}\neq 0$, violating the necessary condition for series convergence
+    \end{itemize}
+  \end{itemize}
+
+\item \textbf{Ratio test}
+  \begin{itemize}
+  \item Consider a sequence $\{a_{k}\}$ such that the limit
+    \begin{equation}\nonumber%\label{eq:}%
+      r:=\lim_{k\to\infty} \left| \frac{a_{k+1}}{a_{k}} \right|
+    \end{equation}
+    exists in $\R\cup\{\infty\}$
+  \item If $r < 1$, then $\sum_{k}a_{k}$ converges because:
+    \begin{itemize}
+    \item Since $r<1$, one can choose $\beta\in \R$ such that $r < \beta < 1$
+    \item Since $\lim_{k\to\infty}\left|a_{k+1}/a_{k}\right|=r$, there exists $n\in \N$ such that
+      \begin{equation}\nonumber%\label{eq:}%
+        k\geq n
+        \implies |a_{k+1}/a_{k}| < \beta
+        \implies |a_{k+1}| < \beta|a_{k}|,
+      \end{equation}
+      which implies $|a_{k}|< |a_{n}|\beta^{k-n}$ for all $k\geq n+1$
+    \item Since $\sum_{k}|a_{n}|\beta^{k-n}$ is convergent,
+      so is $\sum_{k}a_{k}$ by the comparison test
+    \end{itemize}
+    
+  \item If $r > 1$, then $\sum_{k}a_{k}$ does not converge because:
+    \begin{itemize}
+    \item Since $r>1$ and
+      since $\lim_{k\to\infty}\left|a_{k+1}/a_{k}\right|=r$, there exists $n\in \N$ such that
+      \begin{equation}\nonumber%\label{eq:}%
+        k\geq n
+        \implies |a_{k+1}/a_{k}| > 1
+        \implies |a_{k+1}| > |a_{k}|,
+      \end{equation}
+      which means $\lim_{k\to\infty}a_{k}\neq 0$, violating the necessary condition for series convergence
+    \end{itemize}
+  \end{itemize}
+
+\item \textbf{Power series and radius of convergence}
+  \begin{itemize}
+  \item A series $\sum_{k}a_{k}$ of the form
+    \begin{equation}\nonumber%\label{eq:}%
+      a_{k}:= \alpha_{k}x^{k} \quad \forall k = 0, 1, 2, \ldots,
+    \end{equation}
+    is called a \emph{power series}
+  \item \textbf{Root test}: consider a power series $\sum_{k}\alpha_{k}x^{k}$ such that
+    \begin{equation}\nonumber%\label{eq:}%
+      \alpha := \lim_{k\to\infty}|\alpha_{k}|^{1/k}
+    \end{equation}
+    exists in $\R\cup\{\infty\}$
+    \begin{itemize}
+    \item Define $R\in \R\cup\{\infty\}$ by
+      \begin{equation}\nonumber%\label{eq:}%
+        R :=
+        \begin{cases}
+          0 & \text{if $\alpha\in \{-\infty, \infty\}$} \\
+          \infty & \text{if $\alpha = 0$} \\
+          1/\alpha & \text{otherwise} \\
+        \end{cases},
+      \end{equation}
+      which is called the \emph{radius of convergence} of the power series $\sum_{k}\alpha_{k}x^{k}$
+    \item If $|x|<R$, then $\sum_{k}\alpha_{k}x^{k}$ converges because
+      $\lim_{k\to\infty}|\alpha_{k}x^{k}|^{1/k} = \lim_{k\to\infty}|\alpha_{k}|^{1/k}|x|= \alpha|x|$
+    \item Similarly, if $|x|>R$, then $\sum_{k}\alpha_{k}x^{k}$ does not converge
+    \end{itemize}
+  \item \textbf{Ratio test}: consider a power series $\sum_{k}\alpha_{k}x^{k}$ such that
+    \begin{equation}\nonumber%\label{eq:}%
+      \alpha := \lim_{k\to\infty}|\alpha_{k+1}/\alpha_{k}|
+    \end{equation}
+    exists in $\R\cup\{\infty\}$
+    \begin{itemize}
+    \item The radius of convergence is given by $R:=1/\alpha$ because
+      \begin{equation}\nonumber%\label{eq:}%
+        \lim_{k\to\infty}\left| \frac{\alpha_{k+1}x^{k+1}}{\alpha_{k}x^{k}}\right|
+        =
+        \lim_{k\to\infty}\left| \frac{\alpha_{k+1}}{\alpha_{k}}\right||x|
+        =
+        \alpha|x|
+      \end{equation}
+    \end{itemize}
+  \end{itemize}
+
+\item \textbf{Examples}
+  \begin{itemize}
+  \item What is the radius of convergence of the series defined in \eqref{eq:xk}?
+  \item Does the following series converge? What is the radius of convergence?
+    \begin{equation}\label{eq:ex}%
+      \sum_{k=0}^{\infty} \frac{1}{k!}x^{k}
+      := 1 + x + \frac{1}{2!}x^{2} + \frac{1}{3!}x^{3} + \ldots
+    \end{equation}
+  \end{itemize}
+
+\end{itemize}
+
+\section{Matrix series and convergence}
+
+\subsection{Powers of matrices}
+
+\begin{itemize}
+\item \textbf{Powers of Jordan blocks}
+  \begin{itemize}
+  \item Let $\bm{J}_{m}(\lambda)$ be a Jordan block of size $m$:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{J}_{m}(\lambda) :=
+      \begin{bmatrix}
+        \lambda & 1 & 0 & \cdots & 0 & 0 \\
+        0 & \lambda & 1 & \cdots & 0 & 0 \\
+        0 & 0 & \lambda & \ddots & 0 & 0 \\
+        \vdots & \vdots & \vdots & \ddots & \ddots & \vdots \\
+        0 & 0 & 0 & \cdots & \lambda & 1 \\
+        0 & 0 & 0  & \cdots & 0 &  \lambda \\
+      \end{bmatrix}
+      =
+      \lambda \bm{I}
+      +
+      \underbrace{
+      \begin{bmatrix}
+        0 & 1 & 0 & \cdots & 0 & 0 \\
+        0 & 0 & 1 & \cdots & 0 & 0 \\
+        0 & 0 & 0 & \ddots & 0 & 0 \\
+        \vdots & \vdots & \vdots & \ddots & \ddots & \vdots \\
+        0 & 0 & 0 & \cdots & 0 & 1 \\
+        0 & 0 & 0  & \cdots & 0 & 0 \\
+      \end{bmatrix}}_{=:\bm{Z}}
+    \end{equation}
+  \item It follows form the binomial theorem\footnote{
+      For any $a, b \in \R$ and $k\in \N$, we have
+      $(a+b)^{k}=
+      a^{k} + ka^{k-1}b + \frac{k(k-1)}{2}a^{k-2}b^{2}
+      + \cdots
+      + \frac{k(k-1)}{2}a^{2}b^{k-2} + kab^{k-1} + b^{k}
+      =
+      \sum_{l=0}^{k}\frac{k!}{l!(k-l)!}a^{k-l}b^{l}$.
+      The binomial theorem is also true for square matrices $\bm{A}, \bm{B} \in \R^{n\times n}$
+      provided that $\bm{A}\bm{B} = \bm{B}\bm{A}$.
+    } that, for any $k\in \N$,
+    \begin{equation}\nonumber%\label{eq:}%
+      \textstyle (\bm{J}_{m}(\lambda))^{k}
+      = (\lambda\bm{I} + \bm{Z})^{k}
+      = \sum_{l=0}^{k}\frac{k!}{l!(k-l)!}\lambda^{k-l}\bm{Z}^{l},
+    \end{equation}
+    where
+    \begin{equation}\nonumber%\label{eq:}%
+      \begin{aligned}
+      &  \bm{Z}^{0} = 
+      \begin{bmatrix}
+        \bm{e}_{1} & \bm{e}_{2} & \bm{e}_{3} & \bm{e}_{4} & \bm{e}_{5} & \bm{e}_{6} & \cdots & \bm{e}_{m} 
+      \end{bmatrix} = \bm{I}\\
+      &  \bm{Z}^{1} = 
+      \begin{bmatrix}
+        \bm{0} & \bm{e}_{1} & \bm{e}_{2} & \bm{e}_{3} & \bm{e}_{4} & \bm{e}_{5} & \cdots & \bm{e}_{m-1} 
+      \end{bmatrix}\\
+      & \bm{Z}^{2} = 
+      \begin{bmatrix}
+        \bm{0} & \bm{0} & \bm{e}_{1} & \bm{e}_{2} & \bm{e}_{3} & \bm{e}_{4} & \cdots & \bm{e}_{m-2} 
+      \end{bmatrix}\\
+      & \quad\vdots \\
+      & \bm{Z}^{m-1} = 
+      \begin{bmatrix}
+        \bm{0} & \bm{0} & \bm{0} & \bm{0} & \bm{0} & \bm{0} & \cdots & \bm{e}_{1} 
+      \end{bmatrix}\\
+      & \bm{Z}^{l} = 
+      \begin{bmatrix}
+        \bm{0} & \bm{0} & \bm{0} & \bm{0} & \bm{0} & \bm{0} & \cdots & \bm{0}
+      \end{bmatrix} = \bm{O} \quad \forall l\geq m\\
+      \end{aligned}
+    \end{equation}
+  \item Consider the case with $m = 4$, for example:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{Z} =
+      \begin{bmatrix}
+        0 & 1 & 0 & 0 \\
+        0 & 0 & 1 & 0 \\
+        0 & 0 & 0 & 1 \\
+        0 & 0 & 0 & 0 \\
+      \end{bmatrix},
+      \quad
+      \bm{Z}^{2} =
+      \begin{bmatrix}
+        0 & 0 & 1 & 0 \\
+        0 & 0 & 0 & 1 \\
+        0 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 0 \\
+      \end{bmatrix},
+      \quad
+      \bm{Z}^{3} =
+      \begin{bmatrix}
+        0 & 0 & 0 & 1 \\
+        0 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 0 \\
+      \end{bmatrix},
+      \quad
+      \bm{Z}^{4} =
+      \begin{bmatrix}
+        0 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 0 \\
+        0 & 0 & 0 & 0 \\
+      \end{bmatrix}
+    \end{equation}
+    and thus
+    \begin{align}
+      (\bm{J}_{4}(\lambda))^{k}
+        & = \frac{k!}{0!(k-0)!}\lambda^{k-0}\bm{Z}^{0} + \frac{k!}{1!(k-1)!}\lambda^{k-1}\bm{Z}^{1} \nonumber \\
+        & \quad + \frac{k!}{2!(k-2)!}\lambda^{k-2}\bm{Z}^{2} +  \frac{k!}{3!(k-1)!}\lambda^{k-3}\bm{Z}^{3} + \bm{O}  \nonumber \\
+        & = \frac{k!}{0!(k-0)!}\lambda^{k-0}
+          \begin{bmatrix}
+            1 & 0 & 0 & 0 \\
+            0 & 1 & 0 & 0 \\
+            0 & 0 & 1 & 0 \\
+            0 & 0 & 0 & 1 \\
+          \end{bmatrix}
+          + \frac{k!}{1!(k-1)!}\lambda^{k-1}
+          \begin{bmatrix}
+            0 & 1 & 0 & 0 \\
+            0 & 0 & 1 & 0 \\
+            0 & 0 & 0 & 1 \\
+            0 & 0 & 0 & 0 \\
+          \end{bmatrix}
+          \nonumber \\
+        & \quad + \frac{k!}{2!(k-2)!}\lambda^{k-2}
+          \begin{bmatrix}
+            0 & 0 & 1 & 0 \\
+            0 & 0 & 0 & 1 \\
+            0 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 0 \\
+          \end{bmatrix}
+        + \frac{k!}{3!(k-3)!}\lambda^{k-3}
+          \begin{bmatrix}
+            0 & 0 & 0 & 1 \\
+            0 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 0 \\
+          \end{bmatrix}
+          \nonumber \\
+    \nonumber%\label{eq:}%
+    \end{align}
+  \item In general,
+    \begin{equation}\nonumber%\label{eq:Jnit}%
+      (\bm{J}_{m}(\lambda))^{k}
+      =
+      \begin{bmatrix}
+        c_{0}(k) & c_{1}(k) & c_{2}(k) & \cdots & c_{m-1}(k) \\
+        0 & c_{0}(k) & c_{1}(k) & \cdots & c_{m-2}(k) \\
+        0 & 0 & c_{0}(k) & \ddots & \vdots \\
+        \vdots & \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & 0  & 0 & c_{0}(k) \\
+      \end{bmatrix},
+      \quad
+      c_{l}(k) :=
+      \begin{cases}
+        \frac{k!}{l!(k-l)!}\lambda^{k-l} & k\geq l \\
+        0 & k < l \\
+      \end{cases}
+    \end{equation}
+  \item Notice that for each $l=1,\ldots, m-1$
+    \begin{equation}\nonumber%\label{eq:}%
+      c_{l}(k)
+      = \frac{k!}{l!(k-l)!}\lambda^{k-l}
+      = \frac{k(k-1)\cdots (k-l+1)}{l(l-1)\cdots (l-l+1)}\lambda^{k-l}
+      \leq k^{l}\lambda^{k-l}
+      \quad \forall k \geq l,
+    \end{equation}
+    which, since $\lim_{k\to\infty} k^{l}\lambda^{k}=0$ iff $|\lambda|<1$, implies
+    \begin{equation}\nonumber%\label{eq:}%
+      \lim_{k\to\infty}c_{l}(k) = 0
+      \iff
+      |\lambda| < 1
+    \end{equation}
+  \item Therefore
+    \begin{equation}\nonumber%\label{eq:}%
+      \lim_{k\to\infty}(\bm{J}_{m}(\lambda))^{k} = \bm{O}
+      \iff
+      |\lambda| < 1
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Powers of Jordan matrices}
+  \begin{itemize}
+  \item Let $\bm{J}\in \R^{n\times n}$ be a Jordan matrix of the following form:
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{J} =
+      \begin{bmatrix}
+        \bm{J}_{n_{1}}(\lambda_{1}) & \bm{O} & \cdots & \bm{O} \\
+        \bm{O} & \bm{J}_{n_{2}}(\lambda_{2}) & \cdots & \bm{O} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \bm{O} & \bm{O} & \cdots & \bm{J}_{n_{d}}(\lambda_{d}) \\
+      \end{bmatrix},
+    \end{equation}
+    where $n_{1}+n_{2}+\ldots + n_{d} = n$
+  \item The $k$th power of $\bm{J}$ is
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{J}^{k}
+      =
+      \begin{bmatrix}
+        (\bm{J}_{n_{1}}(\lambda_{1}))^{k} & \bm{O} & \ldots & \bm{O} \\
+        \bm{O} & (\bm{J}_{n_{2}}(\lambda_{2}))^{k} & \ldots & \bm{O} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \bm{O} & \bm{O} & \ldots & (\bm{J}_{n_{d}}(\lambda_{d}))^{k} \\
+      \end{bmatrix}
+    \end{equation}
+    and therefore
+    \begin{equation}\nonumber%\label{eq:}%
+      \lim_{k\to\infty}\bm{J}^{k} = \bm{O}
+      \iff
+      \max\{|\lambda_{1}|,|\lambda_{2}|, \ldots, |\lambda_{d}|\} < 1
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Powers of general matrices}
+  \begin{itemize}
+  \item Consider a square matrix $\bm{A}\in \R^{n\times n}$
+  \item Denote by $\rho(\bm{A})\in \R_{+}$ the largest (in absolute terms) eigenvalue of $\bm{A}$, i.e.,
+    \begin{equation}\nonumber%\label{eq:}%
+      \rho(\bm{A}) := \max\left\{ |\lambda|\in\R_{+} \,|\, \text{$\lambda$ is an eigenvalue of $\bm{A}$} \right\},
+    \end{equation}
+    which is called the \emph{spectral radius} of $\bm{A}$
+  \item The $k$th power of $\bm{A}$ is
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A}^{k}
+      = (\bm{V} \bm{J} \bm{V}^{-1})^{k}
+      = \bm{V} \bm{J}^{k} \bm{V}^{-1}
+    \end{equation}
+    and therefore
+    \begin{equation}\nonumber%\label{eq:}%
+      \lim_{k\to\infty}\bm{A}^{k} = \bm{O}
+      \iff
+      \bm{V} \left(\lim_{k\to \infty}\bm{J}^{k}\right)\bm{V}^{-1} = \bm{O}
+      \iff
+      \rho(\bm{A}) < 1
+    \end{equation}
+   \item Note: if $\rho(\bm{A})<1$ and $\rho(\bm{B})<1$, then $\rho(\bm{A}\otimes \bm{B})<1$
+  \end{itemize}
+
+\end{itemize}
+
+\subsection{Matrix series and its convergence}
+
+\begin{itemize}
+
+\item \textbf{Geometric series and Neumann series lemma}
+  \begin{itemize}
+  \item Let $\bm{A}\in \R^{n\times n}$ be an arbitrary square matrix
+  \item We define the \emph{geometric series} generated by $\bm{A}$ as
+    \begin{equation}\nonumber%\label{eq:}%
+      \sum_{k=0}^{t}\bm{A}^{k}
+      := \bm{A}^{0} + \bm{A}^{1} + \bm{A}^{2} + \ldots + \bm{A}^{t},
+      \quad
+      t = 0, 1, 2, 3, \ldots
+    \end{equation}
+  \item The following result is called the \emph{Neumann series lemma}:
+    \begin{equation}\nonumber%\label{eq:}%
+      \text{
+        $\sum_{k=0}^{t}\bm{A}^{k}$ converges
+      }
+      \iff
+      \rho(\bm{A}) < 1
+    \end{equation}
+  \item In particular, if $\rho(\bm{A}) < 1$, then $\sum_{k}\bm{A}^{k}$ converges and
+    \begin{equation}\nonumber%\label{eq:}%
+      \lim_{t\to\infty}\sum_{k=0}^{t}\bm{A}^{k} = (\bm{I}-\bm{A})^{-1}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Sufficiency ($\Longleftarrow$)}
+  \begin{itemize}
+  \item Notice that
+    \begin{equation}\nonumber%\label{eq:}%
+      \sum_{k=0}^{t}\bm{A}^{k}\left(\bm{I}-\bm{A}\right)
+      =
+      \left(\bm{A}^{0} + \bm{A}^{1} + \bm{A}^{2} + \ldots + \bm{A}^{t}\right)\left(\bm{I}-\bm{A}\right)
+      =
+      \bm{I}-\bm{A}^{t+1}
+    \end{equation}
+  \item Hence
+    \begin{equation}\nonumber%\label{eq:}%
+      \rho(\bm{A}) < 0
+      \implies
+      \lim_{t\to\infty}\bm{A}^{t+1}=\bm{O}
+      \implies
+      \lim_{t\to\infty}\sum_{k=0}^{t}\bm{A}^{k}\left(\bm{I}-\bm{A}\right) = \bm{I}
+      \implies
+      \lim_{t\to\infty}\sum_{k=0}^{t}\bm{A}^{k} = \left(\bm{I}-\bm{A}\right)^{-1}
+    \end{equation}
+  \end{itemize}
+
+\item \textbf{Necessity ($\Longrightarrow$)}
+  \begin{itemize}
+  \item If $(\lambda,\bm{v})$ is an eigenpair of $\bm{A}$,
+    we have $\bm{A}^{k}\bm{v}=\lambda^{k}\bm{v}$ and thus
+    \begin{equation}\nonumber%\label{eq:}%
+      \left(\sum_{k=0}^{t}\bm{A}^{k}\right)\bm{v}
+      =
+      \sum_{k=0}^{t}\left(\bm{A}^{k}\bm{v}\right)
+      =
+      \sum_{k=0}^{t}\left(\lambda^{k}\bm{v}\right)
+      =
+      \left(\sum_{k=0}^{t}\lambda^{k}\right)\bm{v},
+    \end{equation}
+    which means that (because $\bm{v}\neq \bm{0}$)
+    \begin{equation}\nonumber%\label{eq:}%
+      \text{$\sum_{k=0}^{t}\bm{A}^{k}$ converges}
+      \implies
+      \text{$\sum_{k=0}^{t}\lambda^{k}$ converges}
+      \implies
+      |\lambda|<1
+    \end{equation}
+  \item Since this must be true for any eigenpair of $\bm{A}$,
+    we conclude that $\rho(\bm{A})<1$
+  \end{itemize}
+
+\item \textbf{Examples}
+  \begin{itemize}
+  \item Consider a square matrix
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} :=
+      \begin{bmatrix}
+        5/8 & -1/4 \\
+        -1/16 & 5/8 \\
+      \end{bmatrix}
+    \end{equation}
+  \item Does the series $\sum_{k}\bm{A}^{k}$ converge? If so, what is the limit?
+  \item The characteristic polynomial of $\bm{A}$ is
+    \begin{equation}\nonumber%\label{eq:}%
+      \phi_{\bm{A}}(t) = 
+      \begin{vmatrix}
+        5/8 - t & -1/4 \\
+        -1/16 & 5/8 - t \\
+      \end{vmatrix}
+      = (3/4-t)(1/2-t),
+    \end{equation}
+    which means that
+    the eigenvalues of $\bm{A}$ are $\lambda_{1}:=3/4$ and $\lambda_{2}:=1/2$
+  \item Since $\rho(\bm{A}) = \max\{|\lambda_{1}|,|\lambda_{2}|\} = 3/4 < 1$,
+    we know that $\sum_{k}\bm{A}^{k}$ must converge to
+    \begin{equation}\nonumber%\label{eq:}%
+      (\bm{I}-\bm{A})^{-1}
+      =
+      \begin{bmatrix}
+        1 - 5/8 & 1/4 \\
+        1/16 & 1 - 5/8 \\
+      \end{bmatrix}^{-1}
+      =
+      \begin{bmatrix}
+        3 & -2 \\
+        -1/2 & 3 \\
+      \end{bmatrix}
+    \end{equation}
+  \item To verify this, 
+    we decompose $\bm{A}$ through eigenvectors:
+    \begin{equation}\nonumber%\label{eq:}%
+      (\bm{A}-\lambda_{1}\bm{I})\bm{v}
+      = \bm{0}
+      \iff
+      \begin{bmatrix}
+        5/8 - 3/4 & - 1/4 \\
+        -1/16 & 5/8 - 3/4 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        0 \\
+        0 \\
+      \end{bmatrix}
+      \iff
+      \bm{v} = \alpha
+      \begin{bmatrix}
+        1 \\
+        -\frac{1}{2}
+      \end{bmatrix}
+      \quad \forall \alpha
+    \end{equation}
+    and
+    \begin{equation}\nonumber%\label{eq:}%
+      (\bm{A}-\lambda_{2}\bm{I})\bm{v}
+      = \bm{0}
+      \iff
+      \begin{bmatrix}
+        5/8 - 1/2 & - 1/4 \\
+        -1/16 & 5/8 - 1/2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        v_{1} \\
+        v_{2} \\
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        0 \\
+        0 \\
+      \end{bmatrix}
+      \iff
+      \bm{v} = \alpha
+      \begin{bmatrix}
+        1 \\
+        \frac{1}{2}
+      \end{bmatrix}
+      \quad \forall \alpha
+    \end{equation}
+    so we choose
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{\Lambda}:=
+      \begin{bmatrix}
+       \lambda_{1} & 0\\
+       0 & \lambda_{2}
+      \end{bmatrix},
+      \quad
+      \bm{v}_{1} :=
+      \begin{bmatrix}
+        1 \\
+        - \frac{1}{2}
+      \end{bmatrix},
+      \quad
+      \bm{v}_{2} :=
+      \begin{bmatrix}
+        1 \\
+        \frac{1}{2}
+      \end{bmatrix}
+    \end{equation}
+    and
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{V}:=
+      \begin{bmatrix}
+        \bm{v}_{1} & \bm{v}_{2}
+      \end{bmatrix}
+      =
+      \begin{bmatrix}
+        1 & 1 \\
+        -1/2 & 1/2 \\
+      \end{bmatrix}
+      \implies
+      \bm{V}^{-1} =
+      \begin{bmatrix}
+        1/2 & -1 \\
+        1/2 & 1 \\
+      \end{bmatrix}
+    \end{equation}
+  \item It follows that
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A}^{k}
+      =
+      \left(\bm{V}\bm{\Lambda}\bm{V}^{-1}\right)^{k}
+      =
+      \bm{V}\bm{\Lambda}^{k}\bm{V}^{-1}
+      =
+      \begin{bmatrix}
+        1 & 1 \\
+        -1/2 & 1/2 \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        (3/4)^{k} & 0 \\
+        0 & (1/2)^{k} \\
+      \end{bmatrix}
+      \begin{bmatrix}
+        1/2 & -1 \\
+        1/2 & 1 \\
+      \end{bmatrix}
+    \end{equation}
+    and therefore
+    \begin{align}
+      \sum_{k=0}^{t}\bm{A}^{k}
+        & = \sum_{k=0}^{t}\left(\bm{V}\bm{\Lambda}^{k}\bm{V}^{-1}\right)  \nonumber \\
+        & = \bm{V}\left(\sum_{k=0}^{t}\bm{\Lambda}^{k}\right)\bm{V}^{-1}  \nonumber \\
+        & =
+          \begin{bmatrix}
+            1 & 1 \\
+            -1/2 & 1/2 \\
+          \end{bmatrix}
+          \begin{bmatrix}
+            \sum_{k=0}^{t}(3/4)^{k} & 0 \\
+            0 & \sum_{k=0}^{t}(1/2)^{k} \\
+          \end{bmatrix}
+          \begin{bmatrix}
+            1/2 & -1 \\
+            1/2 & 1 \\
+          \end{bmatrix}
+          \nonumber \\
+        & \to
+          \begin{bmatrix}
+            1 & 1 \\
+            -1/2 & 1/2 \\
+          \end{bmatrix}
+          \begin{bmatrix}
+            4 & 0 \\
+            0 & 2 \\
+          \end{bmatrix}
+          \begin{bmatrix}
+            1/2 & -1 \\
+            1/2 & 1 \\
+          \end{bmatrix}
+          \quad (t \to \infty)
+          \nonumber \\
+        & = 
+          \begin{bmatrix}
+            3 & -2 \\
+            -1/2 & 3 \\
+          \end{bmatrix}
+          \nonumber
+    \end{align}
+    
+  \item What about the following matrix?
+    \begin{equation}\nonumber%\label{eq:}%
+      \bm{A} :=
+      \begin{bmatrix}
+        3/4 & -1/2 \\
+        -1/8 & 3/4 \\
+      \end{bmatrix}
+    \end{equation}
+  \end{itemize}
+  \clearpage
+
+\item \textbf{Convergence of general power series}
+  \begin{itemize}
+  \item Consider a more general power series
+    \begin{equation}\nonumber%\label{eq:}%
+      \sum_{k=0}^{t}\alpha_{k}\bm{A}^{k}
+      := \alpha_{0}\bm{A}^{0} + \alpha_{1}\bm{A}^{1} + \alpha_{2}\bm{A}^{2} + \ldots + \alpha_{t}\bm{A}^{t},
+      \quad
+      t = 0, 1, 2, 3, \ldots,
+    \end{equation}
+    where $\alpha_{k}$ is not necessarily $1$
+  \item We claim that
+    \begin{equation}\nonumber%\label{eq:}%
+      \sum_{k=0}^{t}|\alpha_{k}(\rho(\bm{A}))^{k}| \text{ converges }
+      \implies
+      \sum_{k=0}^{t}\alpha_{k}\bm{A}^{k} \text{ converges}
+    \end{equation}
+  \item To prove this, let $R$ be the radius of convergence of the series $\sum_{k} \alpha_{k}\rho^{k}$ so that
+    the function
+    \begin{equation}\nonumber%\label{eq:}%
+      f(\rho) :=
+      \lim_{t\to\infty}\sum_{k=0}^{t} \alpha_{k}\rho^{k}
+      \quad \forall \rho \in (-R, R)
+    \end{equation}
+    is well-defined, differentiable on $(-R, R)$, and
+    \begin{equation}\nonumber%\label{eq:}%
+      \frac{d^{l} f(\rho)}{d\rho^{l}} = 
+      \lim_{t\to\infty}\sum_{k=0}^{t} \frac{k!}{(k-l)!}\alpha_{k}\rho^{k-l}
+      \quad \forall \rho \in (-R, R),
+      \quad \forall l=1,2,\ldots
+    \end{equation}
+    meaning that the limit on the right-hand side exists for any $\rho \in (-R, R)$
+  \item Hence,
+    \begin{equation}\nonumber%\label{eq:}%
+      \sum_{k=0}^{t}|\alpha_{k}(\rho(\bm{A}))^{k}| \text{ converges }
+      \implies
+      \rho(\bm{A}) < R
+      \implies
+      \sum_{k=0}^{t} \frac{k!}{(k-l)!}|\alpha_{k}|(\rho(\bm{A}))^{k-l}
+      \text{ converges }
+    \end{equation}
+  \item Then, the above claim follows form the observation that
+    \begin{align}
+      \sum_{k=0}^{t}\alpha_{k}\bm{A}^{k}
+        & = \bm{V}\left(\sum_{k=0}^{t}\alpha_{k}\bm{J}^{k}\right)\bm{V}^{-1} \nonumber \\
+        & = 
+      \bm{V}\left(
+      \begin{bmatrix}
+        \sum_{k=0}^{t}\alpha_{k}(\bm{J}_{n_{1}}(\lambda_{1}))^{k} & \bm{O} & \cdots & \bm{O} \\
+        \bm{O} & \sum_{k=0}^{t}\alpha_{k}(\bm{J}_{n_{2}}(\lambda_{2}))^{k} & \cdots & \bm{O} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \bm{O} & \bm{O} & \cdots & \sum_{k=0}^{t}\alpha_{k}(\bm{J}_{n_{d}}(\lambda_{d}))^{k} \\
+      \end{bmatrix}
+      \right)\bm{V}^{-1},
+    \nonumber%\label{eq:}%
+    \end{align}
+    where a typical element of $\sum_{k=0}^{t}\alpha_{k}(\bm{J}_{n_{i}}(\lambda_{i}))^{k}$ satisfies
+    \begin{equation}\nonumber%\label{eq:}%
+      \left|
+      \sum_{k=0}^{t}\frac{k!}{l!(k-l)!}\alpha_{k}\lambda_{i}^{k-l}
+      \right|
+      \leq
+      \frac{1}{l!}\sum_{k=0}^{t}\frac{k!}{(k-l)!}|\alpha_{k}||\lambda_{i}|^{k-l}
+      \leq
+      \frac{1}{l!}\sum_{k=0}^{t}\frac{k!}{(k-l)!}|\alpha_{k}|(\rho(\bm{A}))^{k-l},
+    \end{equation}
+    which means that each element of $\sum_{k=0}^{t}\alpha_{k}(\bm{J}_{n_{i}}(\lambda_{i}))^{k}$
+    converges due to the comparison test
+    
+  \end{itemize}
+
+\item \textbf{Example}
+  \begin{itemize}
+  \item Consider a matrix sequence of the form
+    \begin{equation}\nonumber%\label{eq:}%
+      \sum_{k=0}^{\infty} \frac{1}{k!}\bm{A}^{k}
+      := \bm{I} + \bm{A} + \frac{1}{2!}\bm{A}^{2} + \frac{1}{3!}\bm{A}^{3} + \ldots
+    \end{equation}
+  \item Does this series converge? For any matrix $\bm{A}$?
+  \end{itemize}
+
+
+\end{itemize}
+
+\end{document}
