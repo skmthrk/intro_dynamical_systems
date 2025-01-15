@@ -632,8 +632,8 @@ def plot_results(model, n):
 
 if __name__ == "__main__":
 
-    seeds = range(0, 5)
-    parallel_processing = False
+    seeds = range(0, 50)
+    parallel_processing = True
 
     if parallel_processing:
         num_processes = max(1, multiprocessing.cpu_count() - 1)
