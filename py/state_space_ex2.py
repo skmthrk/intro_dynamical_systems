@@ -37,10 +37,10 @@ class KalmanFilter(object):
         # placeholder for measurement
         self.Y = []
 
-        # favorite inverse/determinant operation 
+        # favorite inverse/determinant operation
         self.inv = inv
         self.det = det
-    
+
         # clear up model parameters
         self._reset_model()
 
@@ -167,16 +167,16 @@ class KalmanFilter(object):
 
         # load measurement data
         Y = self.Y
-        
+
         value = 0 # initialize output value
         for y in Y:
 
             # set self.y, self.x_prior, self.Q, self.Qinv, and self.K
-            self.predict(A, B, u, V, C, w, W) 
+            self.predict(A, B, u, V, C, w, W)
 
             # set self.x, self.P, self.y, self.q
-            self.update(y) 
-        
+            self.update(y)
+
             # compute Pt and add log(Pt) to output value
             value += self.log_Pt(checkError)
 
@@ -217,7 +217,7 @@ class Model(object):
         self.output_dir = 'output_ex2'
 
     def build_matrices(self, parameters):
-        
+
         a11, a21, a22, a23, a32, a33, b, sigma1, sigma2, sigma3 = parameters
 
         # A, B, V
@@ -258,15 +258,15 @@ class Model(object):
             np.random.seed(seed=seed)
 
         A, B, u, V, C, w, W, x0, P0 = self.build_matrices(self.parameters_true)
-       
+
         # draw initial state x0 from N(x0, P0)
         P0_sqrt = np.linalg.cholesky(P0)
         x0 = x0 + P0_sqrt @ np.random.randn(P0_sqrt.shape[-1]).reshape(-1,1)
-    
+
         # draw state disturbance nu from N(0, V)
         V_sqrt = np.linalg.cholesky(V)
         Nu = [V_sqrt @ np.random.randn(V_sqrt.shape[-1]).reshape(-1,1) for _ in range(n)]
-    
+
         # draw measurement error omega from N(0, W)
         W_sqrt = np.linalg.cholesky(W)
         Omega = [W_sqrt @ np.random.randn(W_sqrt.shape[-1]).reshape(-1,1) for _ in range(n)]
@@ -275,15 +275,15 @@ class Model(object):
         X, Y = [], []
         x_prev = x0
         for nu, omega in zip(Nu, Omega):
-    
+
             # state transition
             x = A @ x_prev + B @ u + nu
             X.append(x)
-    
+
             # measurement
             y = C @ x + w + omega
             Y.append(y)
-    
+
             # update previous state
             x_prev = x
 
@@ -314,7 +314,7 @@ class Model(object):
 
         # initial guess
         parameters = self.parameters_true
-    
+
         # initialize best fvalue and best_parameters
         best_fvalue = inf
         best_parameters = parameters
@@ -341,7 +341,7 @@ class Model(object):
                     fvalue = fvalue0
 
             bounds = [(None, None) for _ in parameters]
-    
+
             # find the minimizing point using multiple methods
             for method in methods:
                 success = False
@@ -384,7 +384,6 @@ class Model(object):
                 except Exception as e:
                     print(f"===> Error in {method}: {e}\n")
                     continue
-            
 
                 status = 'Success' if success else 'Failure'
                 print(f"===> {status} in {elapsed_time:.3f} seconds: {message} ({num_iter} iterations)")
@@ -410,7 +409,7 @@ class Model(object):
                             std_errs = sqrt(diag(covariance))
                             confidence_intvls = 1.959 * std_errs # 95% interval
                         except Exception as e:
-                            print(f".... failed to compute std_errs: {e})")
+                            print(f".... failed to compute std_errs: {e}")
                             confidence_intvls = nan * ones(len(res.x))
 
                     # update the best estimate for a given method
@@ -426,7 +425,7 @@ class Model(object):
                             'res': res,
                         }
                         print(f'===> Best estimate for {method} updated')
-        
+
                     # update the best estimate among all methods
                     if fvalue < best_fvalue:
                         print(f'===> Best estimate updated')
@@ -434,7 +433,7 @@ class Model(object):
                         best_parameters = parameters # update min_parameters
                         best_fvalue = fvalue # update min_fvalue
                 print()
-    
+
             if set(results.keys()) == set(methods):
                 break
 
@@ -461,7 +460,7 @@ class Model(object):
             print(f" - estimated parameters (vs true parameter values):")
             for parameter, parameter_true, ce in zip(parameters, self.parameters_true, confidence_intvls):
                 print(f"  {parameter:.4f} +-{ce:.4f} ({parameter_true:.4f})")
-        
+
             print()
 
 def run_optimization(seed, n=SAMPLE_SIZE):
@@ -497,7 +496,7 @@ def run_optimization(seed, n=SAMPLE_SIZE):
             f.write('\n'.join(out))
 
 def plot_results(model, n):
-    
+
     labels = [
         r'$\hat{a}_{11}$',
         r'$\hat{a}_{21}$',
@@ -509,10 +508,10 @@ def plot_results(model, n):
         r'$\hat{\sigma}_{1}$',
         r'$\hat{\sigma}_{2}$',
         r'$\hat{\sigma}_{3}$']
-    
+
     data_dir = model.output_dir
     parameters_true = model.parameters_true
-    
+
     seed_methods = {}
     for f in os.listdir(data_dir):
         if f.startswith(f"n{n}_") and f.endswith('.csv'):
@@ -521,7 +520,7 @@ def plot_results(model, n):
             seed = int(fname.split('_')[1][4:])
             method = fname.split('_')[-1]
             seed_methods.setdefault(seed, []).append(method)
-    
+
     seeds = sorted(seed_methods.keys())
     data = []
     for seed in seeds:
@@ -534,7 +533,7 @@ def plot_results(model, n):
                 if float(lines[0]) < fvalue:
                     parameters = [float(line.split(',')[0]) for line in lines[3:]]
                     ces = [float(line.split(',')[1]) for line in lines[3:]]
-                    
+
         # exclude extreme outliers
         outlier = False
         for parameter, parameter_true in zip(parameters, parameters_true):
@@ -545,29 +544,29 @@ def plot_results(model, n):
             print(f"Skipped: {seed} {parameters}")
             continue
         data.append(parameters)
-    
+
     df = pd.DataFrame(data, columns=labels)
     print(df.describe())
-    
+
     num_rows, num_cols = df.shape
-    
+
     fig = plt.figure(figsize=(15, 15))
     gs = gridspec.GridSpec(num_cols, num_cols, wspace=0.10, hspace=0.10)
     fontsize = 12
-    
+
     statistics = []
-    
+
     for i in range(num_cols):
         for j in range(num_cols):
             ax = plt.Subplot(fig, gs[i, j])
             fig.add_subplot(ax)
-            
+
             if i == j: # If same column (diagonal) plot histogram
                 bins = 50
                 freqs, bins, patches =ax.hist(df.iloc[:, i], edgecolor = 'white', bins=35)
                 for patch in patches:
                     patch.set_linewidth(0.5)  # Set linewidth for each patch
-                
+
                 ax.spines['top'].set_visible(False)    # Removing spines from top
                 ax.spines['right'].set_visible(False) # Removing spines from right
                 ax.spines['left'].set_visible(False) # Removing spines from left
@@ -587,24 +586,24 @@ def plot_results(model, n):
                 ax.set_xticks([])
                 ax.set_yticks([])
                 ax.set_frame_on(False) # remove the frame
-    
+
             #Remove x and y axis labels for all cells except bottom and right end
             if i != num_cols-1:
                 ax.set_xticks([])
             ax.set_yticks([])
-    
+
             # Add labels on the first row and column
             if j == 0 and i != 0:
                 ax.set_ylabel(df.columns[i], rotation = 0, ha='right', fontsize=fontsize)
                 ax.yaxis.set_label_coords(-0.1,0.5)
             if i == num_cols-1:
                 ax.set_xlabel(f'{df.columns[j]}\n', fontsize=fontsize)
-            
+
             # Add x ticks at the bottom of figure
             if i == num_cols -1:
                 ax.set_xticks(np.linspace(df.iloc[:,j].min(), df.iloc[:,j].max(), 5)) # 5 ticks
                 ax.set_xticklabels(np.round(np.linspace(df.iloc[:,j].min(), df.iloc[:,j].max(), 5),2), fontsize = fontsize, rotation=45) # set labels
-    
+
     ax = fig.add_subplot(1, 1, 1, facecolor='none')
     ax.set_frame_on(False)
     ax.set_xticks([])
@@ -624,7 +623,7 @@ def plot_results(model, n):
         ax.text(x0 + 0.760, y, f"{true_value:5.3f}", ha='right', fontsize=fsize)
     ax.text(x0 + 0.490, 0.550, f"* based on {num_rows} simulated samples", ha='left', fontsize=fsize)
     ax.text(x0 + 0.490, 0.525, f"   (size of each sample is n = {n})", ha='left', fontsize=fsize)
-    
+
     fig.subplots_adjust(left=0.03, right=0.99, bottom=0.06, top=0.98, wspace = 0.2, hspace = 0.2)
     filename = 'fig_state_space_ex2'
     fig.savefig(f"{filename}.png", dpi=300)
@@ -633,7 +632,7 @@ def plot_results(model, n):
 
 if __name__ == "__main__":
 
-    seeds = range(0, 1000)
+    seeds = range(0, 5)
     parallel_processing = False
 
     if parallel_processing:
