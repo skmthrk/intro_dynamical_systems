@@ -331,7 +331,7 @@ class Model(object):
             print('Searching for a good initial guess...\n')
             scale = attempt/10 if attempt else 1.0e-3
             for _ in range(250):
-                log_parameters_candidate = log(best_parameters) + np.random.randn(10) * scale
+                log_parameters_candidate = log(best_parameters) + np.random.randn(len(best_parameters)) * scale
                 try:
                     fvalue0 = self.objfun(log_parameters_candidate, verbose=False)
                 except Exception as e:
